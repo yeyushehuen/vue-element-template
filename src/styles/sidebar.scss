@@ -83,6 +83,9 @@
 
     .is-active>.el-submenu__title {
       color: $subMenuActiveText !important;
+      svg{
+        fill: $subMenuActiveText;
+      }
     }
 
     & .nest-menu .el-submenu>.el-submenu__title,

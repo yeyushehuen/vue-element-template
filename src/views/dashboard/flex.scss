@@ -1,0 +1,16 @@
+
+.el-form .el-form--inline{
+  display: flex;
+  .el-form-item .el-form-item--medium{
+    flex: 1 1 25%;
+    &{
+      display: flex;
+      .el-form-item__label{
+        flex: 1 1 auto;
+      }
+      .el-input .el-input--medium {
+        flex: 1 1 auto;
+      }
+    }
+  }
+}

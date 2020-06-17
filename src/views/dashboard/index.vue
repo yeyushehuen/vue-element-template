@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <!-- <component :is="currentRole" /> -->
-    <base-table :data="tableData" :row-header="rowHeader">
+    <base-table :form-options="formOptions" :data="tableData" :row-header="rowHeader">
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -21,6 +21,44 @@ export default {
   data() {
     return {
       currentRole: 'adminDashboard',
+      formOptions: {
+        inline: true,
+        submitBtnText: 'Search',
+        forms: [
+          { prop: 'name', label: 'Name' },
+          { prop: 'mobile', label: 'Mobile' },
+          { prop: 'mobasdfafsdilaffdfse', label: 'mobasdfafsdilaffdfse' },
+          { prop: 'mobilasdfe', label: 'Mobiasdfle' },
+          { prop: 'sex', label: 'Sex', itemType: 'select',
+            options: [
+              { value: '', label: 'All' },
+              { value: 0, label: 'Male' },
+              { value: 1, label: 'Female' }
+            ]
+          },
+          { prop: 'sex', label: 'Sesdfdsfx', itemType: 'select',
+            options: [
+              { value: '', label: 'All' },
+              { value: 0, label: 'Male' },
+              { value: 1, label: 'Female' }
+            ]
+          },
+          { prop: 'sexs', label: 'Sexdsf', itemType: 'select',
+            options: [
+              { value: '', label: 'All' },
+              { value: 0, label: 'Male' },
+              { value: 1, label: 'Female' }
+            ]
+          },
+          { prop: 'sexd', label: 'Ssdex', itemType: 'select',
+            options: [
+              { value: '', label: 'All' },
+              { value: 0, label: 'Male' },
+              { value: 1, label: 'Female' }
+            ]
+          }
+        ]
+      },
       tableData: [
         {
           name: '老王',
