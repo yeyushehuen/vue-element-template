@@ -23,7 +23,7 @@ export default {
       currentRole: 'adminDashboard',
       formOptions: {
         inline: true,
-        submitBtnText: 'Search',
+        submitBtnText: '查询',
         forms: [
           { prop: 'name', label: 'Name' },
           { prop: 'mobile', label: 'Mobile' },
