@@ -85,10 +85,10 @@ export default {
   background-color: #fff;
   padding: 12px;
   border-radius: 2px;
-  margin-bottom: 10px;
   border: 1px solid RGB(238, 238, 238);
 }
 .base-table-search-form-wrapper{
+  margin-bottom: 6px;
   padding: 12px 12px 0 12px;
 }
 .base-table-wrapper{
@@ -120,7 +120,8 @@ export default {
     margin-left: 10px;
   }
   .search-input-area .el-form-item {
-    padding-right: 10px;
+    padding-right: 12px;
+    margin-bottom: 12px;
     flex: 0 0 25%;
     margin-right: 0;
     & {
