@@ -12,7 +12,7 @@
         :label-width="formOptions.labelWidth"
         :item-width="formOptions.itemWidth"
         :submit-handler="searchHandler"
-        :submit-loading="loading"
+        :submit-loading="false"
         :show-reset-btn="formOptions.showResetBtn"
         :submit-btn-text="formOptions.submitBtnText"
         :reset-btn-text="formOptions.resetBtnText"
@@ -39,6 +39,17 @@
           </template>
         </el-table-column>
       </el-table>
+    </div>
+
+    <div class="base-table-pagination-wrapper">
+      <el-pagination
+        background
+        :total="1000"
+        layout="total, prev, pager, next, sizes, jumper"
+        :page-sizes="[20, 50, 100]"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
@@ -72,12 +83,27 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      pagination: {
+        pageIndex: 1,
+        pageSize: 20
+      }
+
+    }
+  },
   methods: {
     handleSelectionChange(val) {
       console.log(val)
     },
     searchHandler() {
-      
+
+    },
+    handleSizeChange() {
+
+    },
+    handleCurrentChange() {
+
     }
   }
 }

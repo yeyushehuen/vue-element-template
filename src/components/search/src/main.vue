@@ -8,7 +8,7 @@
     :label-width="labelWidth ? (labelWidth + 'px') : ''"
     @submit.native.prevent="searchHandler()"
   >
-    <div class="search-input-area">
+    <div class="search-input-area" :class="{ hideHigherSearch: isHide }">
       <el-form-item
         v-for="(form, index) in forms"
         :key="index"
@@ -76,24 +76,26 @@
       </el-form-item>
     </div>
     <div class="search-button">
-      <el-form-item label="">
+      <el-form-item label>
+        <i
+          class="el-icon-d-arrow-right"
+          :style="isHide ? 'transform: rotate(90deg)' : 'transform: rotate(-90deg)'"
+          @click="higherSearchTrigger"
+        />
+      </el-form-item>
+      <el-form-item label>
         <el-button
           type="primary"
           :size="size"
           :loading="submitLoading"
           @click="searchHandler"
-        >
-          {{ submitBtnText }}
-        </el-button>
+        >{{ submitBtnText }}</el-button>
         <el-button
-          type="primary"
           :plain="true"
           :size="size"
           :loading="submitLoading"
           @click="resetForm"
-        >
-          {{ resetBtnText }}
-        </el-button>
+        >{{ resetBtnText }}</el-button>
       </el-form-item>
     </div>
   </el-form>
@@ -127,7 +129,10 @@ export default {
         if (v.format) {
           format[v.prop] = v.format
         }
-      } else if (propType === 'object' && Object.prototype.toString.call(v.prop) === '[object Array]') {
+      } else if (
+        propType === 'object' &&
+        Object.prototype.toString.call(v.prop) === '[object Array]'
+      ) {
         v.prop.forEach(vv => {
           params[vv] = ''
           if (v.format) {
@@ -149,10 +154,16 @@ export default {
           v.selectMethod = 'get'
         }
         this.getRemoteData({
-          fetch: v.selectFetch ? v.selectFetch : () => {
-            return $axios[v.selectMethod](v.selectUrl, v.selectMethod.toLowerCase() === 'get'
-              ? { params: v.selectParams } : v.selectParams)
-          },
+          fetch: v.selectFetch
+            ? v.selectFetch
+            : () => {
+              return $axios[v.selectMethod](
+                v.selectUrl,
+                v.selectMethod.toLowerCase() === 'get'
+                  ? { params: v.selectParams }
+                  : v.selectParams
+              )
+            },
           dataKey,
           resultField: v.selectResultField || 'result',
           resultHandler: v.selectResultHandler
@@ -166,7 +177,8 @@ export default {
       selectOptionPrefix,
       ...dataObj,
       format,
-      fuzzyOps
+      fuzzyOps,
+      isHide: true
     }
   },
   computed: {
@@ -180,7 +192,10 @@ export default {
   },
   methods: {
     isArray(value) {
-      return typeof value === 'object' && Object.prototype.toString.call(value) === '[object Array]'
+      return (
+        typeof value === 'object' &&
+        Object.prototype.toString.call(value) === '[object Array]'
+      )
     },
     searchHandler() {
       this.getParams((error, params) => {
@@ -204,7 +219,9 @@ export default {
           const formattedForm = {}
           Object.keys(params).forEach(v => {
             if (v.indexOf(datePrefix) === -1) {
-              formattedForm[v] = format[v] ? format[v](params[v], v) : params[v]
+              formattedForm[v] = format[v]
+                ? format[v](params[v], v)
+                : params[v]
             }
           })
           if (callback) callback(null, formattedForm)
@@ -231,8 +248,14 @@ export default {
         const firstDate = date[0]
         const secondDate = date[1]
         dates = [
-          `${firstDate.getFullYear()}-${('0' + (firstDate.getMonth() + 1)).substr(-2)}-${('0' + firstDate.getDate()).substr(-2)}`,
-          `${secondDate.getFullYear()}-${('0' + (secondDate.getMonth() + 1)).substr(-2)}-${('0' + secondDate.getDate()).substr(-2)}`
+          `${firstDate.getFullYear()}-${(
+            '0' +
+            (firstDate.getMonth() + 1)
+          ).substr(-2)}-${('0' + firstDate.getDate()).substr(-2)}`,
+          `${secondDate.getFullYear()}-${(
+            '0' +
+            (secondDate.getMonth() + 1)
+          ).substr(-2)}-${('0' + secondDate.getDate()).substr(-2)}`
         ]
       }
 
@@ -253,7 +276,9 @@ export default {
         }
 
         if (!result || !(result instanceof Array)) {
-          console.warn(`The result of key:${resultField} is not Array. 接口返回的字段:${resultField} 不是一个数组`)
+          console.warn(
+            `The result of key:${resultField} is not Array. 接口返回的字段:${resultField} 不是一个数组`
+          )
         }
 
         if (resultHandler) {
@@ -262,7 +287,34 @@ export default {
           this.selectOptions[dataKey] = result
         }
       })
+    },
+    higherSearchTrigger() {
+      this.isHide = !this.isHide
     }
   }
 }
 </script>
+
+<style lang="scss">
+div[class="search-input-area"]{
+  max-height: 2000px;
+  overflow: hidden;
+  transition: max-height 1.8s;
+}
+.search-input-area.hideHigherSearch {
+  max-height: 59px;
+  div.el-form-item:nth-child(n + 5) {
+    display: none;
+  }
+  @media only screen and (max-width: 1400px) {
+    div.el-form-item:nth-child(n + 4) {
+      display: none;
+    }
+  }
+  @media only screen and (max-width: 1000px) {
+    div.el-form-item:nth-child(n + 3) {
+      display: none;
+    }
+  }
+}
+</style>
