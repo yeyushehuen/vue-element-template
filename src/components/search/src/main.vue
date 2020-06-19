@@ -290,16 +290,19 @@ export default {
     },
     higherSearchTrigger() {
       this.isHide = !this.isHide
+      setTimeout(() => {
+        this.$emit('higherSearchChange', this.isHide)
+      }, 2)
     }
   }
 }
 </script>
 
-<style lang="scss">
-div[class="search-input-area"]{
+<style lang="scss" scoped>
+div[class="search-input-area"] {
   max-height: 2000px;
   overflow: hidden;
-  transition: max-height 1.8s;
+  transition: max-height .3s;
 }
 .search-input-area.hideHigherSearch {
   max-height: 59px;

@@ -13,7 +13,7 @@
 import { mapGetters } from 'vuex'
 // import adminDashboard from './admin'
 // import editorDashboard from './editor'
-import BaseTable from './BaseTable'
+import BaseTable from '@/components/BaseTable'
 
 export default {
   name: 'Dashboard',
@@ -59,38 +59,12 @@ export default {
           }
         ]
       },
-      tableData: [
-        {
-          name: '老王',
-          sex: 0,
-          age: 18,
-          score: 60
-        },
-        {
-          name: '老王',
-          sex: 0,
-          age: 18,
-          score: 60
-        },
-        {
-          name: '老王',
-          sex: 0,
-          age: 18,
-          score: 60
-        },
-        {
-          name: '老王',
-          sex: 0,
-          age: 18,
-          score: 60
-        },
-        {
-          name: '老王',
-          sex: 0,
-          age: 18,
-          score: 60
-        }
-      ],
+      tableData: Array(100).fill({
+        name: '老王',
+        sex: 0,
+        age: 18,
+        score: 60
+      }),
       rowHeader: [
         {
           prop: 'name',

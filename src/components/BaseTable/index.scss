@@ -1,10 +1,13 @@
 .base-table-search-form-wrapper,
 .base-table-wrapper,
 .base-table-pagination-wrapper {
+  box-sizing: border-box;
   background-color: #fff;
   padding: 10px 12px;
-  border-radius: 2px;
+  // border-radius: 2px;
   border: 1px solid RGB(238, 238, 238);
+  // box-shadow: 0 4px 8px 0 #f0f0f0;
+  box-shadow: 0 0 4px #f0f0f0;
 }
 
 // 搜索区域

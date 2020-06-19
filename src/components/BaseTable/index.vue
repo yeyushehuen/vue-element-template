@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin: 4px">
     <div class="base-table-search-form-wrapper">
       <search-form
         v-if="formOptions"
@@ -17,6 +17,7 @@
         :submit-btn-text="formOptions.submitBtnText"
         :reset-btn-text="formOptions.resetBtnText"
         :reset-btn-callback="formOptions.resetBtnCallback"
+        @higherSearchChange="higherSearchChange"
       />
     </div>
 
@@ -27,6 +28,7 @@
         fit
         style="width: 100%;"
         :data="data"
+        :max-height="calcHeight"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="51" />
@@ -88,9 +90,19 @@ export default {
       pagination: {
         pageIndex: 1,
         pageSize: 20
-      }
-
+      },
+      tableHeight: '100vh',
+      hideHigherSearch: false
     }
+  },
+  computed: {
+    calcHeight: function() {
+      return this.tableHeight
+    }
+  },
+  mounted() {
+    const windowHeight = document.querySelector('div.sidebar-container')
+    this.tableHeight = windowHeight && windowHeight.clientHeight - 214
   },
   methods: {
     handleSelectionChange(val) {
@@ -104,6 +116,14 @@ export default {
     },
     handleCurrentChange() {
 
+    },
+    higherSearchChange(status) {
+      this.hideHigherSearch = status || false
+      const siderContainer = document.querySelector('div.sidebar-container')
+      const formContainer = document.querySelector('div.base-table-search-form-wrapper')
+      const windowHeight = siderContainer.clientHeight
+      const formHeight = formContainer.clientHeight
+      this.tableHeight = windowHeight - formHeight - 157
     }
   }
 }
