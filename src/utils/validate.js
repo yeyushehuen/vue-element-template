@@ -1,6 +1,26 @@
 /**
- * Created by PanJiaChen on 16/11/18.
+ * 获取数据类型
  */
+export const getDataType = (function() {
+  const typeEnum = {
+    '[object Boolean]': 'boolean',
+    '[object Number]': 'number',
+    '[object String]': 'string',
+    '[object Function]': 'function',
+    '[object Undefined]': 'undefined',
+    '[object Null]': 'null',
+    '[object Symbol]': 'symbol',
+    '[object Array]': 'array',
+    '[object Object]': 'object',
+    '[object Date]': 'date',
+    '[object RegExp]': 'regExp'
+  }
+  const localToString = Object.prototype.toString
+
+  return (data) => {
+    return typeEnum[localToString.call(data)]
+  }
+})()
 
 /**
  * @param {string} path
@@ -84,4 +104,25 @@ export function isArray(arg) {
     return Object.prototype.toString.call(arg) === '[object Array]'
   }
   return Array.isArray(arg)
+}
+
+/**
+ * isObject
+ * @param {any} value
+ */
+export function isObject(value) {
+  return getDataType(value) === 'object'
+}
+
+/**
+ * 验证是否为空
+ */
+export function validatenull(value) {
+  const valueType = getDataType(value)
+  // 判断对象数组是否为空
+  if (valueType === 'array' || valueType === 'object') {
+    return Object.keys(value).length === 0
+  }
+  // 值是否为null,undefined,空字符串
+  return valueType === 'undefined' || value === 'null' || `${value}`.trim() === ''
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <!-- <component :is="currentRole" /> -->
-    <base-table :form-options="formOptions" :data="tableData" :row-header="rowHeader">
+    <base-table :form-options="formOptions" :columns="columns">
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -11,8 +11,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import adminDashboard from './admin'
-// import editorDashboard from './editor'
 import BaseTable from '@/components/BaseTable'
 
 export default {
@@ -59,13 +57,7 @@ export default {
           }
         ]
       },
-      tableData: Array(100).fill({
-        name: '老王',
-        sex: 0,
-        age: 18,
-        score: 60
-      }),
-      rowHeader: [
+      columns: [
         {
           prop: 'name',
           label: '姓名',

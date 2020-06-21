@@ -10,22 +10,22 @@ const baseInfoRouter = {
   name: '基础资料',
   meta: {
     title: '基础资料',
-    icon: 'lock',
-    roles: ['admin', 'editor'] // you can set roles in root nav
+    icon: 'lock'
+    // roles: ['admin', 'editor'] // you can set roles in root nav
   },
   children: [
     {
       path: 'area',
-      component: () => import('@/views/permission/page'),
+      component: () => import('@/views/baseinfo/area'),
       name: '区域管理',
       meta: {
-        title: '区域管理',
-        roles: ['admin'] // or you can only set roles in sub nav
+        title: '区域管理'
+        // roles: ['admin'] // or you can only set roles in sub nav
       }
     },
     {
       path: 'department',
-      component: () => import('@/views/permission/directive'),
+      component: () => import('@/views/baseinfo/department'),
       name: '部门管理',
       meta: {
         title: '部门管理'
@@ -34,34 +34,34 @@ const baseInfoRouter = {
     },
     {
       path: 'salesentity',
-      component: () => import('@/views/permission/role'),
+      component: () => import('@/views/baseinfo/salesentity'),
       name: '销售主体',
       meta: {
-        title: '销售主体',
-        roles: ['admin']
+        title: '销售主体'
+        // roles: ['admin']
       }
     },
     {
       path: 'shop',
-      component: () => import('@/views/permission/role'),
+      component: () => import('@/views/baseinfo/shop'),
       name: '店铺管理',
       meta: {
-        title: '店铺管理',
-        roles: ['admin']
+        title: '店铺管理'
+        // roles: ['admin']
       }
     },
     {
       path: 'reporttype',
-      component: () => import('@/views/permission/role'),
+      component: () => import('@/views/baseinfo/reporttype'),
       name: '报表类型',
       meta: {
-        title: '报表类型',
-        roles: ['admin']
+        title: '报表类型'
+        // roles: ['admin']
       }
     },
     {
       path: 'scheduledtask',
-      component: () => import('@/views/permission/role'),
+      component: () => import('@/views/baseinfo/scheduledtask'),
       name: '计划任务',
       meta: {
         title: '计划任务',

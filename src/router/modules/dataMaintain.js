@@ -10,22 +10,22 @@ const dataMaintainRouter = {
   name: '数据维护',
   meta: {
     title: '数据维护',
-    icon: 'lock',
-    roles: ['admin', 'editor'] // you can set roles in root nav
+    icon: 'lock'
+    // roles: ['admin', 'editor'] // you can set roles in root nav
   },
   children: [
     {
       path: 'conversion',
-      component: () => import('@/views/permission/page'),
+      component: () => import('@/views/datamaintain/conversion'),
       name: 'type类型转换',
       meta: {
-        title: 'type类型转换',
-        roles: ['admin'] // or you can only set roles in sub nav
+        title: 'type类型转换'
+        // roles: ['admin'] // or you can only set roles in sub nav
       }
     },
     {
       path: 'relationship',
-      component: () => import('@/views/permission/directive'),
+      component: () => import('@/views/datamaintain/relationship'),
       name: 'Seller Sku 关系维护',
       meta: {
         title: 'Seller Sku 关系维护'
@@ -34,11 +34,11 @@ const dataMaintainRouter = {
     },
     {
       path: 'rate',
-      component: () => import('@/views/permission/role'),
+      component: () => import('@/views/datamaintain/rate'),
       name: '汇率数据',
       meta: {
-        title: '汇率数据',
-        roles: ['admin']
+        title: '汇率数据'
+        // roles: ['admin']
       }
     }
   ]

@@ -2,6 +2,8 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
+import { validatenull, isObject } from './validate'
+
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
@@ -45,7 +47,7 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -355,3 +357,20 @@ export function removeClass(ele, cls) {
     ele.className = ele.className.replace(reg, ' ')
   }
 }
+
+/**
+ * 删除Object中的空值
+ * @param params
+ */
+export function deleteNullProps(params) {
+  if (!isObject(params)) {
+    return params
+  }
+  return Object.keys(params)
+    .filter((key) => !validatenull(params[key]))
+    .reduce((res, curKey) => {
+      res[curKey] = params[curKey]
+      return res
+    }, {})
+}
+
