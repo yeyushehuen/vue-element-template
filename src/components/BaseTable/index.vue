@@ -12,18 +12,16 @@
     </div>
 
     <div class="base-table-wrapper">
-      <!-- <el-button v-for="(item, index) in actionButtons" :key="index" v-bind="item.attrs">{{ item.name }}</el-button> -->
-      <!-- <inject-component v-for="(item, index) in actionButtons" :key="index" :attrs="item.attrs" :name="'el-button'">{{ item.name }}</inject-component> -->
       <el-dropdown @command="handleCommand">
         <el-button>
           下拉菜单<i class="el-icon-arrow-down el-icon--right" />
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="a">黄金糕</el-dropdown-item>
-          <el-dropdown-item command="b">狮子头</el-dropdown-item>
-          <el-dropdown-item command="c">螺蛳粉</el-dropdown-item>
-          <el-dropdown-item command="d" disabled>双皮奶</el-dropdown-item>
-          <el-dropdown-item command="e" divided>蚵仔煎</el-dropdown-item>
+          <el-dropdown-item command="add">新增</el-dropdown-item>
+          <el-dropdown-item command="update">修改</el-dropdown-item>
+          <el-dropdown-item command="delete">删除</el-dropdown-item>
+          <el-dropdown-item command="import">导入</el-dropdown-item>
+          <el-dropdown-item command="export">导出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-table
@@ -68,7 +66,6 @@ import request from '@/utils/request'
 import { deleteNullProps } from '@/utils'
 import searchForm from '@/components/search/src/main'
 import { paginationConfig } from './config/constants'
-import InjectComponent from './components/InjectComponent'
 
 function fetchList(api, query) {
   return request({
@@ -80,7 +77,7 @@ function fetchList(api, query) {
 
 export default {
   name: 'BaseTable',
-  components: { searchForm, InjectComponent },
+  components: { searchForm },
   props: {
     api: {
       type: String,
@@ -193,16 +190,18 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-        }, 1.5 * 1000)
+        }, 0.5 * 1000)
       })
     },
     searchHandler(values) {
+      console.log(values)
+      
       this.pagination.currentPage = 1
       this.searchQuery = deleteNullProps(values) || {}
       this.getList()
     },
     handleCommand(command) {
-      this.$message('click on item ' + command)
+      this.$emit('dispatch', command)
     }
   }
 }

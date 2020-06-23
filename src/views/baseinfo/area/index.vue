@@ -1,5 +1,5 @@
 <template>
-  <base-table :form-options="formOptions" :columns="columns">
+  <base-table :form-options="formOptions" :columns="columns" @dispatch="dispatch">
     <template slot="name" slot-scope="scope">
       {{ scope.$index }}
     </template>
@@ -18,6 +18,11 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns
+    }
+  },
+  methods: {
+    dispatch(type) {
+      alert(type)
     }
   }
 }
