@@ -6,3 +6,11 @@ export const paginationConfig = {
   pageSizes: [20, 50, 100],
   total: 0
 }
+
+export const actionTextConfig = {
+  add: '新增',
+  update: '修改',
+  delete: '删除',
+  import: '导入',
+  export: '导出'
+}

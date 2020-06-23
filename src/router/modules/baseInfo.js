@@ -15,6 +15,15 @@ const baseInfoRouter = {
   },
   children: [
     {
+      path: 'money',
+      component: () => import('@/views/baseinfo/money'),
+      name: '货币管理',
+      meta: {
+        title: '货币管理'
+        // roles: ['admin'] // or you can only set roles in sub nav
+      }
+    },
+    {
       path: 'area',
       component: () => import('@/views/baseinfo/area'),
       name: '区域管理',

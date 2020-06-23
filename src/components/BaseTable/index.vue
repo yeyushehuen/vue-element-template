@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 4px">
+  <div style="margin: 4px" class="emm-base-table-root">
     <div v-if="formOptions" class="base-table-search-form-wrapper">
       <search-form
         ref="searchForm"
@@ -12,16 +12,16 @@
     </div>
 
     <div class="base-table-wrapper">
-      <el-dropdown @command="handleCommand">
+      <el-dropdown v-if="actionCode && actionCode.length > 0" class="demo-ruleForm" @command="handleCommand">
         <el-button>
-          下拉菜单<i class="el-icon-arrow-down el-icon--right" />
+          功能菜单<i class="el-icon-arrow-down el-icon--right" />
         </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="add">新增</el-dropdown-item>
-          <el-dropdown-item command="update">修改</el-dropdown-item>
-          <el-dropdown-item command="delete">删除</el-dropdown-item>
-          <el-dropdown-item command="import">导入</el-dropdown-item>
-          <el-dropdown-item command="export">导出</el-dropdown-item>
+        <el-dropdown-menu slot="dropdown" style="min-width: 116px">
+          <el-dropdown-item
+            v-for="(code, index) in actionCode"
+            :key="index"
+            :command="code"
+          >{{ actionTextConfig[code] || code }}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-table
@@ -65,7 +65,7 @@
 import request from '@/utils/request'
 import { deleteNullProps } from '@/utils'
 import searchForm from '@/components/search/src/main'
-import { paginationConfig } from './config/constants'
+import { paginationConfig, actionTextConfig } from './config/constants'
 
 function fetchList(api, query) {
   return request({
@@ -82,14 +82,6 @@ export default {
     api: {
       type: String,
       default: ''
-    },
-    actionButtons: {
-      type: Array,
-      default: () => [
-        { name: 'name', attrs: { type: 'primary', disabled: true }},
-        { name: 'name', attrs: { type: 'primary', disabled: true }},
-        { name: 'name', attrs: { type: 'primary', disabled: true }}
-      ]
     },
     // 表头数据
     columns: {
@@ -122,6 +114,10 @@ export default {
     params: {
       type: Object,
       default: () => ({})
+    },
+    actionCode: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -131,7 +127,8 @@ export default {
       hideHigherSearch: false,
       listLoading: true,
       list: null,
-      searchQuery: {}
+      searchQuery: {},
+      actionTextConfig
     }
   },
   computed: {
@@ -195,7 +192,7 @@ export default {
     },
     searchHandler(values) {
       console.log(values)
-      
+
       this.pagination.currentPage = 1
       this.searchQuery = deleteNullProps(values) || {}
       this.getList()

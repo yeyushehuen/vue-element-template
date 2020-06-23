@@ -1,96 +1,98 @@
-.base-table-search-form-wrapper,
-.base-table-wrapper,
-.base-table-pagination-wrapper {
-  box-sizing: border-box;
-  background-color: #fff;
-  padding: 10px 12px;
-  // border-radius: 2px;
-  border: 1px solid RGB(238, 238, 238);
-  // box-shadow: 0 4px 8px 0 #f0f0f0;
-  box-shadow: 0 0 4px #f0f0f0;
-}
+.emm-base-table-root{
+  .base-table-search-form-wrapper,
+  .base-table-wrapper,
+  .base-table-pagination-wrapper {
+    box-sizing: border-box;
+    background-color: #fff;
+    padding: 10px 12px;
+    // border-radius: 2px;
+    border: 1px solid RGB(238, 238, 238);
+    // box-shadow: 0 4px 8px 0 #f0f0f0;
+    box-shadow: 0 0 4px #f0f0f0;
+  }
 
-// 搜索区域
-.base-table-search-form-wrapper {
-  margin-bottom: 6px;
-  padding: 12px 12px 0 12px;
+  // 搜索区域
+  .base-table-search-form-wrapper {
+    margin-bottom: 6px;
+    padding: 12px 12px 0 12px;
 
-  .base-table-search-form {
-    display: flex;
-    padding: 0;
-    .search-input-area,
-    .search-button {
+    .base-table-search-form {
       display: flex;
-    }
-    .search-input-area {
-      flex: 1 1 auto;
-      flex-wrap: wrap;
-    }
-    .search-button {
-      flex: 0 0 200px;
-      background-color: #f6f7f9;
-      justify-content: center;
-      align-items: center;
-      margin: -12px -12px 0 -12px;
-      border-left: 1px solid RGB(238, 238, 238);
-      margin-left: 10px;
-      .el-form-item{
-        margin-bottom: 0;
-      }
-    }
-    .search-input-area .el-form-item {
-      flex: 0 0 25%;
-      @media only screen and (max-width: 1400px) {
-        flex: 0 0 33.333%;
-      }
-      @media only screen and (max-width: 1000px) {
-        flex: 0 0 50%;
-      }
-  
-  
-      padding-right: 12px;
-      margin-bottom: 12px;
-      
-      margin-right: 0;
-      & {
+      padding: 0;
+      .search-input-area,
+      .search-button {
         display: flex;
-        .el-form-item__label {
-          font-weight: normal;
-          color: #333;
-          flex: 0 0 auto;
+      }
+      .search-input-area {
+        flex: 1 1 auto;
+        flex-wrap: wrap;
+      }
+      .search-button {
+        flex: 0 0 200px;
+        background-color: #f6f7f9;
+        justify-content: center;
+        align-items: center;
+        margin: -12px -12px 0 -12px;
+        border-left: 1px solid RGB(238, 238, 238);
+        margin-left: 10px;
+        .el-form-item{
+          margin-bottom: 0;
         }
-        .el-form-item__content {
-          flex: 1 1 auto;
-          > div {
-            width: 100%;
+      }
+      .search-input-area .el-form-item {
+        flex: 0 0 25%;
+        @media only screen and (max-width: 1400px) {
+          flex: 0 0 33.333%;
+        }
+        @media only screen and (max-width: 1000px) {
+          flex: 0 0 50%;
+        }
+    
+    
+        padding-right: 12px;
+        margin-bottom: 12px;
+        
+        margin-right: 0;
+        & {
+          display: flex;
+          .el-form-item__label {
+            font-weight: normal;
+            color: #333;
+            flex: 0 0 auto;
+          }
+          .el-form-item__content {
+            flex: 1 1 auto;
+            > div {
+              width: 100%;
+            }
           }
         }
       }
     }
   }
-}
 
-// table
-.base-table-wrapper {
-  .el-table__header th {
-    background-color: #f6f7f9;
-  }
-  .el-table__body-wrapper .el-table__body {
-    td {
-      padding: 4px 0;
+  // table
+  .base-table-wrapper {
+    .el-table__header th {
+      background-color: #f6f7f9;
+    }
+    .el-table__body-wrapper .el-table__body {
+      td {
+        padding: 4px 0;
+      }
     }
   }
-}
 
-// pagination
-.base-table-pagination-wrapper{
-  // margin-top: 10px;
-  border-top: none;
-  text-align: right;
-  padding: 10px 12px;
-  position: sticky;
-  bottom: 0;
-  .is-background{
-    font-weight: normal;
+  // pagination
+  .base-table-pagination-wrapper{
+    // margin-top: 10px;
+    border-top: none;
+    text-align: right;
+    padding: 10px 12px;
+    position: sticky;
+    bottom: 0;
+    .is-background{
+      font-weight: normal;
+    }
   }
 }

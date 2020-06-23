@@ -11,15 +11,15 @@
     <div class="search-input-area" :class="{ hideHigherSearch: isHide }">
       <el-form-item
         v-for="(form, index) in forms"
-        v-show="renderItem(index)"
         :key="index"
         :prop="form.itemType != 'daterange' ? form.prop : (datePrefix + index)"
         :label="form.label"
         :rules="form.rules || []"
         :label-width="form.labelWidth ? (form.labelWidth + 'px') : ''"
       >
+        <span v-if="renderItem(index)" />
         <el-input
-          v-if="form.itemType === 'input' || form.itemType === undefined"
+          v-else-if="form.itemType === 'input' || form.itemType === undefined"
           v-model="params[form.modelValue]"
           :size="form.size ? form.size : size"
           :readonly="form.readonly"
@@ -210,18 +210,16 @@ export default {
       const { isHide, sm, md, lg } = this.showItem
       let res = false
       if (sm) {
-        res = !itemIndex > 1
+        res = itemIndex > 1
       }
       if (md) {
-        res = !itemIndex > 2
+        res = itemIndex > 2
       }
       if (lg) {
-        res = !itemIndex > 3
+        res = itemIndex > 3
       }
 
-      console.log('res', res)
-      
-      return isHide ? false : res
+      return isHide ? res : false
     },
     searchHandler() {
       this.getParams((error, params) => {
