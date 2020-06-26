@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" @dispatch="dispatch">
+    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" @dispatch="actionHandler">
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -31,6 +31,7 @@
 <script>
 import BaseTable from '@/components/BaseTable'
 import tableConfig from './props.js'
+import { actionCode } from '../../../components/BaseTable/config/constants'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -41,7 +42,7 @@ export default {
       formOptions: formOptions,
       columns: columns,
       dialogVisible: false,
-      actionCode: ['add', 'update', 'delete', 'import', 'export'],
+      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export],
       areaForm: {
         site: '',
         country: '',
@@ -65,15 +66,34 @@ export default {
     }
   },
   methods: {
-    dispatch(type) {
+    clearFormVal() {
+      const _this = this
+      Object.keys(_this.moneyForm).forEach(key => {
+        _this.moneyForm[key] = ''
+      })
+    },
+    setFormVal() {
+      const _this = this
+      const defaultData = {}
+      Object.keys(_this.moneyForm).forEach(key => {
+        _this.moneyForm[key] = defaultData[key] || 'defaultData'
+      })
+    },
+    actionHandler(type) {
+      this.clearFormVal()
       switch (type) {
-        case 'add':
+        case actionCode.add:
           this.dialogVisible = true
           break
-
+        case actionCode.update:
+          this.dialogVisible = true
+          break
         default:
           break
       }
+    },
+    handleClose(done) {
+      done()
     }
   }
 }

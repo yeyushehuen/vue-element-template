@@ -10,16 +10,15 @@
   >
     <div class="search-input-area" :class="{ hideHigherSearch: isHide }">
       <el-form-item
-        v-for="(form, index) in forms"
+        v-for="(form, index) in computedForms"
         :key="index"
         :prop="form.itemType != 'daterange' ? form.prop : (datePrefix + index)"
         :label="form.label"
         :rules="form.rules || []"
         :label-width="form.labelWidth ? (form.labelWidth + 'px') : ''"
       >
-        <span v-if="renderItem(index)" />
         <el-input
-          v-else-if="form.itemType === 'input' || form.itemType === undefined"
+          v-if="form.itemType === 'input' || form.itemType === undefined"
           v-model="params[form.modelValue]"
           :size="form.size ? form.size : size"
           :readonly="form.readonly"
@@ -190,13 +189,15 @@ export default {
       }
       return ''
     },
-    showItem() {
+    computedForms() {
+      const { forms } = this.$props
       const wth = window.innerWidth
       const sm = wth <= 1000
       const md = (wth > 1000 && wth <= 1400)
       const lg = wth > 1400
+      const sliceLength = lg ? 4 : (md ? 3 : (sm ? 1 : 2))
 
-      return { isHide: this.isHide, md, sm, lg }
+      return this.isHide ? forms.slice(0, sliceLength) : forms
     }
   },
   methods: {
@@ -240,6 +241,8 @@ export default {
       this.$refs['form'].validate(valid => {
         if (valid) {
           const { params, datePrefix, format } = this
+          console.log('params', params)
+          
           const formattedForm = {}
           Object.keys(params).forEach(v => {
             if (v.indexOf(datePrefix) === -1) {

@@ -12,5 +12,19 @@ export const actionTextConfig = {
   update: '修改',
   delete: '删除',
   import: '导入',
-  export: '导出'
+  export: '导出',
+  disable: '禁用',
+  enable: '启用',
+  translate: '移动'
+}
+
+export const actionCode = {
+  add: 'add',
+  update: 'update',
+  delete: 'delete',
+  import: 'import',
+  export: 'export',
+  disable: 'disable',
+  enable: 'enable',
+  translate: 'translate'
 }
