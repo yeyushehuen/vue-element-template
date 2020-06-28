@@ -1,17 +1,17 @@
 <template>
   <div>
     <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" @dispatch="actionHandler">
-      <template slot="name" slot-scope="scope">
+      <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
     </base-table>
     <el-dialog class="base-dialog-wrapper" :title="`组织管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="depForm" size="small" label-position="left" :model="depForm" :rules="rules" label-width="80px">
         <el-form-item label="编码" prop="code">
-          <el-input v-model="depForm.name" />
+          <el-input v-model="depForm.name" placeholder="请填写编码"/>
         </el-form-item>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="depForm.code" />
+          <el-input v-model="depForm.code" placeholder="请填写名称"/>
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-select v-model="depForm.status" style="width: 100%" placeholder="请选择状态">
@@ -40,7 +40,16 @@ export default {
     return {
       formOptions,
       columns,
-      actionCode: Object.keys(actionCode),
+      actionCode: [
+        actionCode.add,
+        actionCode.update,
+        actionCode.delete,
+        actionCode.import,
+        actionCode.export,
+        actionCode.disable,
+        actionCode.enable,
+        actionCode.translate
+      ],
       dialogVisible: false,
       editStatus: actionCode.add,
       actionTextConfig,
@@ -51,8 +60,7 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
+          { required: true, message: '请填写名称', trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请填写编码', trigger: 'blur' }
@@ -77,17 +85,53 @@ export default {
         _this.depForm[key] = defaultData[key] || 'defaultData'
       })
     },
+    deleteHandler() {
+      // todo 校验删除逻辑
+    },
+    importHandler() {
+      // todo 导入逻辑
+    },
+    exportHandler() {
+      // todo 导出逻辑
+    },
+    translateHandler() {
+      // todo 转移逻辑
+    },
+    disableHandler() {
+      // todo 禁用逻辑
+    },
+    enableHandler() {
+      // todo 启用逻辑
+    },
     actionHandler(type) {
-      this.clearFormVal()
+      const _this = this
+      _this.editStatus = type
+      _this.clearFormVal()
       switch (type) {
         case actionCode.add:
-          this.dialogVisible = true
-          this.editStatus = actionCode.add
+          _this.dialogVisible = true
           break
         case actionCode.update:
-          this.setFormVal()
-          this.dialogVisible = true
-          this.editStatus = actionCode.update
+          _this.setFormVal()
+          _this.dialogVisible = true
+          break
+        case actionCode.delete:
+          _this.deleteHandler()
+          break
+        case actionCode.import:
+          _this.importHandler()
+          break
+        case actionCode.export:
+          _this.exportHandler()
+          break
+        case actionCode.enable:
+          _this.enableHandler()
+          break
+        case actionCode.disable:
+          _this.disableHandler()
+          break
+        case actionCode.translate:
+          _this.translateHandler()
           break
         default:
           break

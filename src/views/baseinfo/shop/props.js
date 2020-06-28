@@ -3,36 +3,34 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'name', label: 'Name' },
-      { prop: 'mobile', label: 'Mobile' },
-      { prop: 'testProps', label: '测试属性' },
-      { prop: 'mobilasdfe', label: 'Mobiasdfle' },
-      { prop: 'sex', label: 'Sex', itemType: 'select',
+      { prop: 'name', label: '店铺名称' },
+      { prop: 'sex', label: '销售部门', itemType: 'select',
         options: [
           { value: '', label: 'All' },
           { value: 0, label: 'Male' },
           { value: 1, label: 'Female' }
         ]
       },
-      { prop: 'sex', label: 'Sesdfdsfx', itemType: 'select',
+      { prop: 'sex', label: '销售国家', itemType: 'select',
         options: [
           { value: '', label: 'All' },
           { value: 0, label: 'Male' },
           { value: 1, label: 'Female' }
         ]
       },
-      { prop: 'sexs', label: 'Sexdsf', itemType: 'select',
+      { prop: 'sexs', label: '销售主体', itemType: 'select',
         options: [
           { value: '', label: 'All' },
           { value: 0, label: 'Male' },
           { value: 1, label: 'Female' }
         ]
       },
-      { prop: 'sexd', label: 'Ssdex', itemType: 'select',
+      { prop: 'sellerId', label: 'seller ID' },
+      { prop: 'leader', label: '负责人' },
+      { prop: 'status', label: '状态', itemType: 'select',
         options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
+          { value: 0, label: '启用' },
+          { value: 1, label: '禁用' }
         ]
       }
     ]
@@ -40,25 +38,52 @@ export default {
   columns: [
     {
       prop: 'name',
-      label: '姓名',
-      slotName: 'name'
+      label: '店铺名称'
     },
-    // 格式化为字符串
     {
       prop: 'sex',
-      label: '性别'
+      label: '店铺简称'
     },
     {
       prop: 'age',
-      label: '年龄'
+      label: '销售部门'
     },
     {
       prop: 'score',
-      label: '分数'
+      label: '销售国家'
     },
     {
-      prop: '',
-      label: '操作'
+      prop: '0',
+      label: '销售主体'
+    }, {
+      prop: '1',
+      label: 'Seller ID'
+    }, {
+      prop: '2',
+      label: 'Token'
+    }, {
+      prop: '3',
+      label: 'secretKey'
+    }, {
+      prop: '4',
+      label: 'awsAccessKeyId'
+    }, {
+      prop: '5',
+      label: '负责人'
+    }, {
+      prop: '6',
+      label: '状态'
+    }, {
+      prop: '7',
+      label: '创建人'
+    }, {
+      prop: '8',
+      label: '创建时间'
+    },
+    {
+      prop: 'operate',
+      label: '操作',
+      slotName: 'operate'
     }
   ]
 }

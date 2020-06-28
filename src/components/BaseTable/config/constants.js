@@ -15,7 +15,9 @@ export const actionTextConfig = {
   export: '导出',
   disable: '禁用',
   enable: '启用',
-  translate: '移动'
+  translate: '移动',
+  view: '一键查看',
+  manualReport: '手动生成报表记录'
 }
 
 export const actionCode = {
@@ -26,5 +28,7 @@ export const actionCode = {
   export: 'export',
   disable: 'disable',
   enable: 'enable',
-  translate: 'translate'
+  translate: 'translate',
+  view: 'view',
+  manualReport: 'manualReport'
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" @dispatch="actionHandler">
-      <template slot="name" slot-scope="scope">
+      <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
     </base-table>
@@ -26,6 +26,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
+
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -45,8 +46,7 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入货币名称', trigger: 'blur' },
-          { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
+          { required: true, message: '请输入货币名称', trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请填写标准代码', trigger: 'blur' }
@@ -68,17 +68,35 @@ export default {
         _this.moneyForm[key] = defaultData[key] || 'defaultData'
       })
     },
+    deleteHandler() {
+      // todo 校验删除逻辑
+    },
+    importHandler() {
+      // todo 导入逻辑
+    },
+    exportHandler() {
+      // todo 导出逻辑
+    },
     actionHandler(type) {
-      this.clearFormVal()
+      const _this = this
+      _this.editStatus = type
+      _this.clearFormVal()
       switch (type) {
-        case actionCode.add:
-          this.dialogVisible = true
-          this.editStatus = actionCode.add
+        case actionCode.add: // 新增
+          _this.dialogVisible = true
           break
-        case actionCode.update:
-          this.setFormVal()
-          this.dialogVisible = true
-          this.editStatus = actionCode.update
+        case actionCode.update: // 修改
+          _this.setFormVal()
+          _this.dialogVisible = true
+          break
+        case actionCode.delete:
+          _this.deleteHandler()
+          break
+        case actionCode.import:
+          _this.importHandler()
+          break
+        case actionCode.export:
+          _this.exportHandler()
           break
         default:
           break

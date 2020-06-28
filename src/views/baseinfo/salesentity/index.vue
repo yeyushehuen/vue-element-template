@@ -1,7 +1,7 @@
 <template>
   <div>
     <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" @dispatch="actionHandler">
-      <template slot="name" slot-scope="scope">
+      <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
     </base-table>
@@ -34,13 +34,13 @@ import { actionCode, actionTextConfig } from '@/components/BaseTable/config/cons
 import tableConfig from './props.js'
 const { formOptions, columns } = tableConfig
 export default {
-  name: 'Salesentity',
+  name: 'SalesEntity',
   components: { BaseTable },
   data() {
     return {
       formOptions,
       columns,
-      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export],
+      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export, actionCode.disable, actionCode.enable],
       dialogVisible: false,
       editStatus: actionCode.add,
       actionTextConfig,
@@ -77,17 +77,47 @@ export default {
         _this.entityForm[key] = defaultData[key] || 'defaultData'
       })
     },
+    deleteHandler() {
+      // todo 校验删除逻辑
+    },
+    importHandler() {
+      // todo 导入逻辑
+    },
+    exportHandler() {
+      // todo 导出逻辑
+    },
+    disableHandler() {
+      // todo 禁用逻辑
+    },
+    enableHandler() {
+      // todo 启用逻辑
+    },
     actionHandler(type) {
+      const _this = this
+      _this.editStatus = type
       this.clearFormVal()
       switch (type) {
         case actionCode.add:
-          this.dialogVisible = true
-          this.editStatus = actionCode.add
+          _this.dialogVisible = true
           break
         case actionCode.update:
-          this.setFormVal()
-          this.dialogVisible = true
-          this.editStatus = actionCode.update
+          _this.setFormVal()
+          _this.dialogVisible = true
+          break
+        case actionCode.delete:
+          _this.deleteHandler()
+          break
+        case actionCode.import:
+          _this.importHandler()
+          break
+        case actionCode.export:
+          _this.exportHandler()
+          break
+        case actionCode.enable:
+          _this.enableHandler()
+          break
+        case actionCode.disable:
+          _this.disableHandler()
           break
         default:
           break
