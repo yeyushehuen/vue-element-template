@@ -71,7 +71,7 @@ function fetchList(api, query) {
   return request({
     url: api || '/vue-element-admin/article/list',
     method: 'get',
-    params: query
+    params: { limit: 30, offset: 0 }
   })
 }
 

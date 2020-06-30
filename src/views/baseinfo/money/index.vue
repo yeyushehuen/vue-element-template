@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" @dispatch="actionHandler">
+    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" @dispatch="actionHandler" api="/currency/list">
       <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
