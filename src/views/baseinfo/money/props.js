@@ -14,15 +14,15 @@ export default {
       label: '货币名称'
     },
     {
-      prop: 'sex',
+      prop: 'code',
       label: '标准代码'
     },
     {
-      prop: 'age',
+      prop: 'createUser',
       label: '创建人'
     },
     {
-      prop: 'score',
+      prop: 'createTime',
       label: '创建时间'
     },
     {

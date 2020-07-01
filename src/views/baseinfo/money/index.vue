@@ -26,6 +26,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
+import { addCurrency } from '@/api/baseInfo'
 
 const { formOptions, columns } = tableConfig
 
@@ -40,6 +41,7 @@ export default {
       dialogVisible: false,
       editStatus: actionCode.add,
       actionTextConfig,
+      actionCallback: () => {},
       moneyForm: {
         name: '',
         code: ''
@@ -77,13 +79,14 @@ export default {
     exportHandler() {
       // todo 导出逻辑
     },
-    actionHandler(type) {
+    actionHandler(type, callback) {
       const _this = this
       _this.editStatus = type
       _this.clearFormVal()
       switch (type) {
         case actionCode.add: // 新增
           _this.dialogVisible = true
+          _this.actionCallback = callback
           break
         case actionCode.update: // 修改
           _this.setFormVal()
@@ -106,9 +109,17 @@ export default {
       done()
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      const _this = this
+      _this.$refs[formName].validate((valid) => {
         if (valid) {
           alert('submit!')
+          console.log(_this[formName])
+          addCurrency(_this[formName]).then(res => {
+            // _this.getList()
+            console.log('res', res)
+            _this.actionCallback()
+            return true
+          })
         } else {
           console.log('error submit!!')
           return false

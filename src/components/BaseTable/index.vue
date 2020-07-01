@@ -68,10 +68,16 @@ import searchForm from '@/components/search/src/main'
 import { paginationConfig, actionTextConfig } from './config/constants'
 
 function fetchList(api, query) {
+  const { currentPage, pageSize, ...rest } = query
+  let offset = 0
+  const limit = pageSize
+  if (currentPage > 1) {
+    offset = (currentPage - 1) * pageSize
+  }
   return request({
-    url: api || '/vue-element-admin/article/list',
+    url: api,
     method: 'get',
-    params: { limit: 30, offset: 0 }
+    params: { ...rest, offset, limit }
   })
 }
 
@@ -106,8 +112,8 @@ export default {
     getResponse: {
       type: Function,
       default: response => ({
-        list: response.data.items,
-        total: response.data.total
+        list: response.data,
+        total: response.totalRows
       })
     },
     // 额外的查询参数
@@ -180,6 +186,7 @@ export default {
       console.log('query', query)
 
       fetchList(this.api, query).then(response => {
+        console.log('response', response)
         const { list, total } = this.getResponse(response)
         this.list = list
         this.pagination.total = total
@@ -198,7 +205,9 @@ export default {
       this.getList()
     },
     handleCommand(command) {
-      this.$emit('dispatch', command)
+      this.$emit('dispatch', command, function() {
+        alert(123)
+      })
     }
   }
 }
