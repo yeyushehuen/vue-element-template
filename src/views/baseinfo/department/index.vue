@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" @dispatch="actionHandler">
+    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/dept/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -8,10 +8,10 @@
     <el-dialog class="base-dialog-wrapper" :title="`组织管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="depForm" size="small" label-position="left" :model="depForm" :rules="rules" label-width="80px">
         <el-form-item label="编码" prop="code">
-          <el-input v-model="depForm.name" placeholder="请填写编码"/>
+          <el-input v-model="depForm.name" placeholder="请填写编码" />
         </el-form-item>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="depForm.code" placeholder="请填写名称"/>
+          <el-input v-model="depForm.code" placeholder="请填写名称" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-select v-model="depForm.status" style="width: 100%" placeholder="请选择状态">
