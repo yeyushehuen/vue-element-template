@@ -10,22 +10,20 @@ const billingRouter = {
   name: '账单情况',
   meta: {
     title: '账单情况',
-    icon: 'lock',
-    roles: ['admin', 'editor'] // you can set roles in root nav
+    icon: 'lock'
   },
   children: [
     {
       path: 'detail',
-      component: () => import('@/views/permission/page'),
+      component: () => import('@/views/billing/detail'),
       name: '账单详情',
       meta: {
-        title: '账单详情',
-        roles: ['admin'] // or you can only set roles in sub nav
+        title: '账单详情'
       }
     },
     {
       path: 'data',
-      component: () => import('@/views/permission/directive'),
+      component: () => import('@/views/billing/data'),
       name: '数据详情',
       meta: {
         title: '数据详情'
@@ -34,11 +32,10 @@ const billingRouter = {
     },
     {
       path: 'summary',
-      component: () => import('@/views/permission/role'),
+      component: () => import('@/views/billing/summary'),
       name: '数据汇总',
       meta: {
-        title: '数据汇总',
-        roles: ['admin']
+        title: '数据汇总'
       }
     }
   ]

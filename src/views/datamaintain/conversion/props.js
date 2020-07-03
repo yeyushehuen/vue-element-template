@@ -3,62 +3,46 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'name', label: 'Name' },
-      { prop: 'mobile', label: 'Mobile' },
-      { prop: 'testProps', label: '测试属性' },
-      { prop: 'mobilasdfe', label: 'Mobiasdfle' },
-      { prop: 'sex', label: 'Sex', itemType: 'select',
+      { prop: 'country', label: '国家', itemType: 'select',
         options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
+          { value: 0, label: '中国' },
+          { value: 1, label: '俄罗斯' }
         ]
       },
-      { prop: 'sex', label: 'Sesdfdsfx', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      { prop: 'sexs', label: 'Sexdsf', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      { prop: 'sexd', label: 'Ssdex', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      }
+      { prop: 'type', label: 'Type' },
+      { prop: 'convertType', label: '转换类型' }
     ]
   },
   columns: [
     {
-      prop: 'name',
-      label: '姓名',
-      slotName: 'name'
+      prop: 'country',
+      label: '国家'
     },
     // 格式化为字符串
     {
-      prop: 'sex',
-      label: '性别'
+      prop: 'type',
+      label: 'Type'
     },
     {
-      prop: 'age',
-      label: '年龄'
+      prop: 'convertType',
+      label: '转换类型'
     },
     {
-      prop: 'score',
-      label: '分数'
+      prop: 'smallType',
+      label: '转换类型-细分类'
     },
     {
-      prop: '',
-      label: '操作'
+      prop: 'creator',
+      label: '创建人'
+    },
+    {
+      prop: 'createTime',
+      label: '创建时间'
+    },
+    {
+      prop: 'operate',
+      label: '操作',
+      slotName: 'operate'
     }
   ]
 }

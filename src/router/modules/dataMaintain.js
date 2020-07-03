@@ -29,7 +29,6 @@ const dataMaintainRouter = {
       name: 'Seller Sku 关系维护',
       meta: {
         title: 'Seller Sku 关系维护'
-        // if do not set roles, means: this page does not require permission
       }
     },
     {
@@ -38,6 +37,15 @@ const dataMaintainRouter = {
       name: '汇率数据',
       meta: {
         title: '汇率数据'
+        // roles: ['admin']
+      }
+    },
+    {
+      path: 'cost',
+      component: () => import('@/views/datamaintain/cost'),
+      name: '成本数据',
+      meta: {
+        title: '成本数据'
         // roles: ['admin']
       }
     }
