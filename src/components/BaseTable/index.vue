@@ -178,7 +178,7 @@ export default {
       this.pagination.pageSize = size
       this.paginationChange()
     },
-    handleCurrentChange(currentPage) {  
+    handleCurrentChange(currentPage) {
       this.pagination.currentPage = currentPage
       this.paginationChange()
     },

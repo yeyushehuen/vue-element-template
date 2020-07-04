@@ -8,15 +8,15 @@
     <el-dialog class="base-dialog-wrapper" :title="`组织管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="depForm" size="small" label-position="left" :model="depForm" :rules="rules" label-width="80px">
         <el-form-item label="编码" prop="code">
-          <el-input v-model="depForm.name" placeholder="请填写编码" />
+          <el-input v-model="depForm.code" placeholder="请填写编码" />
         </el-form-item>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="depForm.code" placeholder="请填写名称" />
+          <el-input v-model="depForm.name" placeholder="请填写名称" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-select v-model="depForm.status" style="width: 100%" placeholder="请选择状态">
-            <el-option label="正常" :value="1" />
-            <el-option label="禁用" :value="2" />
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="depForm.state" style="width: 100%" placeholder="请选择状态">
+            <el-option label="正常" value="Y" />
+            <el-option label="禁用" value="N" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -58,7 +58,7 @@ export default {
       depForm: {
         name: '',
         code: '',
-        status: ''
+        state: 'Y'
       },
       rules: {
         name: [
@@ -67,7 +67,7 @@ export default {
         code: [
           { required: true, message: '请填写编码', trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: '请选择状态', trigger: 'blur' }
         ]
       }
@@ -114,7 +114,7 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      _this.clearFormVal()
+      // _this.clearFormVal()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" @dispatch="actionHandler" api="/currency/list">
+    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/currency/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -26,7 +26,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { addCurrency, updateCurrency, deleteCurrency, getCurrencyById } from '@/api/baseInfo'
+import { addCurrency, deleteCurrency, getCurrencyById } from '@/api/baseInfo'
 
 const { formOptions, columns } = tableConfig
 
@@ -88,7 +88,7 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      _this.clearFormVal()
+      // _this.clearFormVal()
       switch (type) {
         case actionCode.add: // 新增
           _this.dialogVisible = true

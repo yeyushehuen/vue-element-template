@@ -3,38 +3,38 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'name', label: '编码' },
-      { prop: 'mobile', label: '名称' },
-      { prop: 'testProps', label: '状态' },
-      { prop: 'sex', label: '是否实体中心', itemType: 'select',
+      { prop: 'code', label: '编码' },
+      { prop: 'name', label: '名称' },
+      { prop: 'state', label: '状态', itemType: 'select',
         options: [
           { value: '', label: '全部' },
-          { value: 0, label: '是' },
-          { value: 1, label: '否' }
+          { value: 'Y', label: '启用' },
+          { value: 'N', label: '禁用' }
+        ]
+      },
+      { prop: 'domainLegal', label: '是否实体中心', itemType: 'select',
+        options: [
+          { value: 'Y', label: '是' },
+          { value: 'N', label: '否' }
         ]
       }
     ]
   },
   columns: [
     {
-      prop: 'name',
+      prop: 'code',
       label: '编码'
     },
-    // 格式化为字符串
     {
-      prop: 'sex',
+      prop: 'name',
       label: '名称'
     },
     {
-      prop: 'age',
+      prop: 'domainLegal',
       label: '是否实体中心'
     },
     {
-      prop: 'creator',
-      label: '创建人'
-    },
-    {
-      prop: 'creator',
+      prop: 'createUser',
       label: '创建人'
     },
     {
@@ -46,7 +46,7 @@ export default {
       label: '禁用时间'
     },
     {
-      prop: 'status',
+      prop: 'state',
       label: '状态'
     },
     {

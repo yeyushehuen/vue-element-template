@@ -17,7 +17,7 @@
           <el-input v-model="areaForm.nameShort" placeholder="请填写缩写" />
         </el-form-item>
         <el-form-item label="货币名称" prop="currencyId">
-          <el-select v-model="areaForm.currency" style="width: 100%" placeholder="请选择货币名称">
+          <el-select v-model="areaForm.currencyId" style="width: 100%" placeholder="请选择货币">
             <el-option label="人民币" :value="1" />
             <el-option label="人民币" :value="2" />
           </el-select>
@@ -51,23 +51,23 @@ export default {
       actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export],
       actionCallback: () => {},
       areaForm: {
-        site: '',
+        province: '',
         country: '',
-        shorthand: '',
+        nameShort: '',
         currency: ''
       },
       rules: {
-        site: [
+        province: [
           { required: true, message: '请填写州属', trigger: 'blur' }
         ],
         country: [
           { required: true, message: '请填写国家', trigger: 'blur' }
         ],
-        shorthand: [
+        nameShort: [
           { required: true, message: '请填写缩写', trigger: 'blur' }
         ],
-        currency: [
-          { required: true, message: '请选择货币名称', trigger: 'blur' }
+        currencyId: [
+          { required: true, message: '请选择货币', trigger: 'blur' }
         ]
       }
     }
@@ -104,7 +104,7 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      _this.clearFormVal()
+      // _this.clearFormVal()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true

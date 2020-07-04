@@ -3,28 +3,21 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'sex', label: '报表类型', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      { prop: 'name', label: '创建人' }
+      { prop: 'reportName', label: '报表类型' },
+      { prop: 'createUser', label: '创建人' }
     ]
   },
   columns: [
     {
-      prop: 'name',
+      prop: 'reportName',
       label: '报表类型'
     },
-    // 格式化为字符串
     {
-      prop: 'sex',
+      prop: 'suffix',
       label: '文件格式'
     },
     {
-      prop: 'creator',
+      prop: 'createUser',
       label: '创建人'
     },
     {

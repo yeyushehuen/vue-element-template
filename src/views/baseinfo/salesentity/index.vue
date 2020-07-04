@@ -15,8 +15,8 @@
         </el-form-item>
         <el-form-item label="状态" prop="state">
           <el-select v-model="entityForm.state" style="width: 100%" placeholder="请选择状态">
-            <el-option label="正常" :value="1" />
-            <el-option label="禁用" :value="2" />
+            <el-option label="正常" value="Y" />
+            <el-option label="禁用" value="N" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -49,7 +49,7 @@ export default {
       entityForm: {
         legalName: '',
         code: '',
-        state: ''
+        state: 'Y'
       },
       rules: {
         legalName: [

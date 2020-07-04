@@ -53,7 +53,7 @@ export default {
       label: '自发货运费'
     },
     {
-      prop: 'creator',
+      prop: 'createUser',
       label: '创建人'
     },
     {

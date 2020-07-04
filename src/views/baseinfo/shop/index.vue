@@ -10,19 +10,19 @@
         <el-form-item label="店铺名称" prop="name">
           <el-input v-model="shopForm.name" placeholder="请填写店铺名称" />
         </el-form-item>
-        <el-form-item label="店铺简称" prop="shortName">
-          <el-input v-model="shopForm.shortName" placeholder="请填写编码" />
+        <el-form-item label="店铺简称" prop="nameShort">
+          <el-input v-model="shopForm.nameShort" :value="generateNameShort" placeholder="根据名称生成拼音" />
         </el-form-item>
-        <el-form-item label="销售部门" prop="dept">
-          <el-select v-model="shopForm.dept" style="width: 100%" placeholder="请选择销售部门">
-            <el-option label="正常" :value="1" />
-            <el-option label="禁用" :value="2" />
+        <el-form-item label="销售部门" prop="deptId">
+          <el-select v-model="shopForm.deptId" style="width: 100%" placeholder="请选择销售部门">
+            <el-option label="一部" :value="1" />
+            <el-option label="二部" :value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item label="销售主体" prop="entity">
-          <el-select v-model="shopForm.entity" style="width: 100%" placeholder="请选择销售主体">
-            <el-option label="正常" :value="1" />
-            <el-option label="禁用" :value="2" />
+        <el-form-item label="销售主体" prop="sellerLegalId">
+          <el-select v-model="shopForm.sellerLegalId" style="width: 100%" placeholder="请选择销售主体">
+            <el-option label="地球" :value="1" />
+            <el-option label="月亮" :value="2" />
           </el-select>
         </el-form-item>
         <el-form-item label="销售国家" prop="country">
@@ -31,25 +31,25 @@
             <el-option label="禁用" :value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item label="负责人" prop="leader">
-          <el-input v-model="shopForm.leader" placeholder="请填写负责人" />
+        <el-form-item label="负责人" prop="principal">
+          <el-input v-model="shopForm.principal" placeholder="请填写负责人" />
         </el-form-item>
-        <el-form-item label="Seller ID" prop="sellerID">
-          <el-input v-model="shopForm.sellerID" placeholder="请填写sellerID" />
+        <el-form-item label="Seller ID" prop="sellerId">
+          <el-input v-model="shopForm.sellerId" placeholder="sellerId" />
         </el-form-item>
         <el-form-item label="Token" prop="token">
-          <el-input v-model="shopForm.token" placeholder="请填写Token" />
+          <el-input v-model="shopForm.token" placeholder="请填写token" />
         </el-form-item>
         <el-form-item label="secretKey" prop="secretKey">
           <el-input v-model="shopForm.secretKey" placeholder="请填写secretKey" />
         </el-form-item>
-        <el-form-item label="awsAccessKeyId" prop="awsAccessKeyId">
-          <el-input v-model="shopForm.awsAccessKeyId" placeholder="请填写awsAccessKeyId" />
+        <el-form-item label="awsAccessKeyId" prop="awsAccesskeyId">
+          <el-input v-model="shopForm.awsAccesskeyId" placeholder="请填写awsAccessKeyId" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-select v-model="shopForm.status" style="width: 100%" placeholder="请选择状态">
-            <el-option label="正常" :value="1" />
-            <el-option label="禁用" :value="2" />
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="shopForm.state" style="width: 100%" placeholder="请选择状态">
+            <el-option label="正常" value="Y" />
+            <el-option label="禁用" value="N" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -94,38 +94,38 @@ export default {
       actionCallback: () => {},
       shopForm: {
         name: '',
-        shortName: '',
-        dept: '',
-        entity: '',
+        nameShort: '',
+        deptId: '',
+        sellerLegalId: '',
         country: '',
-        leader: '',
+        principal: '',
         sellerID: '',
         token: '',
         secretKey: '',
         awsAccessKeyId: '',
-        status: ''
+        state: 'Y'
       },
       rules: {
         name: [
-          { required: true, message: '请填写名称', tirgger: 'blur' }
+          { required: true, message: '请填写店铺名称', tirgger: 'blur' }
         ],
-        shortName: [
-          { required: true, message: '请填写名称缩写', tirgger: 'blur' }
+        nameShort: [
+          { required: true, message: '请填写店铺简称', tirgger: 'blur' }
         ],
-        dept: [
+        deptId: [
           { required: true, message: '请选择销售部门', tirgger: 'blur' }
         ],
-        entity: [
-          { required: true, message: '请选择销售实体', tirgger: 'blur' }
+        sellerLegalId: [
+          { required: true, message: '请选择销售主体', tirgger: 'blur' }
         ],
         country: [
           { required: true, message: '请选择国家', tirgger: 'blur' }
         ],
-        leader: [
+        principal: [
           // { required: true, message: '', tirgger: 'blur' }
         ],
-        sellerID: [
-          { required: true, message: '请填写sellerID', tirgger: 'blur' }
+        sellerId: [
+          { required: true, message: '请填写sellerId', tirgger: 'blur' }
         ],
         token: [
           // { required: true, message: '', tirgger: 'blur' }
@@ -133,13 +133,18 @@ export default {
         secretKey: [
           // { required: true, message: '请填写secretKey', tirgger: 'blur' }
         ],
-        awsAccessKeyId: [
-          { required: true, message: '请填写awsAccessKeyId', tirgger: 'blur' }
+        awsAccesskeyId: [
+          // { required: true, message: '请填写awsAccessKeyId', tirgger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: '请选择状态', tirgger: 'blur' }
         ]
       }
+    }
+  },
+  computed: {
+    generateNameShort() {
+      return this.shopForm.name
     }
   },
   methods: {
@@ -186,7 +191,7 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      _this.clearFormVal()
+      // _this.clearFormVal()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true

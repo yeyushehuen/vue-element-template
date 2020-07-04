@@ -3,32 +3,32 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'name', label: '编码' },
-      { prop: 'mobile', label: '销售主题' },
-      { prop: 'sex', label: '状态', itemType: 'select',
+      { prop: 'code', label: '编码' },
+      { prop: 'legalName', label: '销售主体' },
+      { prop: 'state', label: '状态', itemType: 'select',
         options: [
           { value: '', label: '全部' },
-          { value: 0, label: '启用' },
-          { value: 1, label: '禁用' }
+          { value: 'Y', label: '启用' },
+          { value: 'N', label: '禁用' }
         ]
       }
     ]
   },
   columns: [
     {
-      prop: 'name',
+      prop: 'code',
       label: '编码'
     },
     {
-      prop: 'sex',
+      prop: 'legalName',
       label: '销售主体'
     },
     {
-      prop: 'age',
+      prop: 'state',
       label: '状态'
     },
     {
-      prop: 'creator',
+      prop: 'createUser',
       label: '创建人'
     },
     {

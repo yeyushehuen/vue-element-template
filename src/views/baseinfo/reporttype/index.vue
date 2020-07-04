@@ -7,11 +7,11 @@
     </base-table>
     <el-dialog class="base-dialog-wrapper" :title="`报表类型 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="reportForm" size="small" label-position="left" :model="reportForm" :rules="rules" label-width="80px">
-        <el-form-item label="报表类型" prop="reportType">
-          <el-input v-model="reportForm.reportType" />
+        <el-form-item label="报表类型" prop="reportName">
+          <el-input v-model="reportForm.reportName" />
         </el-form-item>
-        <el-form-item label="文件格式" prop="fileType">
-          <el-input v-model="reportForm.fileType" />
+        <el-form-item label="文件格式" prop="suffix">
+          <el-input v-model="reportForm.suffix" />
         </el-form-item>
       </el-form>
       <span slot="footer">
@@ -43,14 +43,14 @@ export default {
       actionTextConfig,
       actionCallback: () => {},
       reportForm: {
-        reportType: '',
-        fileType: ''
+        reportName: '',
+        suffix: ''
       },
       rules: {
-        reportType: [
+        reportName: [
           { required: true, message: '请填写报表类型', trigger: 'blur' }
         ],
-        fileType: [
+        suffix: [
           { required: true, message: '请填写文件格式', trigger: 'blur' }
         ]
       }
@@ -82,7 +82,7 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      _this.clearFormVal()
+      // _this.clearFormVal()
       switch (type) {
         case actionCode.add: // 新增
           _this.dialogVisible = true

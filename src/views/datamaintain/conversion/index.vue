@@ -1,12 +1,12 @@
 <template>
-<div>
-  <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/dept/list" @dispatch="actionHandler">
-    <template slot="name" slot-scope="scope">
-      {{ scope.$index }}
-    </template>
-  </base-table>
+  <div>
+    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/dept/list" @dispatch="actionHandler">
+      <template slot="name" slot-scope="scope">
+        {{ scope.$index }}
+      </template>
+    </base-table>
 
-  <el-dialog class="base-dialog-wrapper" :title="`Type类型转换 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
+    <el-dialog class="base-dialog-wrapper" :title="`Type类型转换 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="convertTypeForm" size="small" label-position="left" :model="convertTypeForm" :rules="rules" label-width="80px">
         <el-form-item label="type" prop="type1">
           <el-input v-model="convertTypeForm.type1" placeholder="请填写type" />
@@ -104,7 +104,7 @@ export default {
     actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
-      _this.clearFormVal()
+      // _this.clearFormVal()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true

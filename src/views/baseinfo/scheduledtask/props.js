@@ -30,16 +30,18 @@ export default {
       label: '任务描述'
     },
     {
-      prop: 'createTime',
+      prop: 'createUser',
       label: '创建人'
     },
     {
-      prop: 'desc',
+      prop: 'createTime',
       label: '创建时间'
     },
     {
-      prop: 'desc',
-      label: '操作记录'
+      prop: 'operate',
+      label: '操作',
+      slotName: 'operate',
+      width: 120
     }
   ]
 }

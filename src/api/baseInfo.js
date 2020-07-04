@@ -20,8 +20,9 @@ export function updateCurrency(id, data) {
 /* 删除 */
 export function deleteCurrency(id) {
   return request({
-    url: `/currency/remove/${id}`,
-    method: 'delete'
+    url: `/currency/remove`,
+    method: 'delete',
+    data: { id }
   })
 }
 /** 获取修改详情 */
@@ -53,8 +54,9 @@ export function updateArea(id, data) {
 /* 删除 */
 export function deleteArea(id) {
   return request({
-    url: `/area/remove/${id}`,
-    method: 'delete'
+    url: `/area/remove`,
+    method: 'delete',
+    data: { id }
   })
 }
 /** 获取修改详情 */
@@ -86,7 +88,7 @@ export function updateDept(id, data) {
 /* 删除 */
 export function deleteDept(id) {
   return request({
-    url: `/dept/delete/${id}`,
+    url: `/dept/remove`,
     method: 'delete'
   })
 }
@@ -118,8 +120,9 @@ export function updateLegalEntity(id, data) {
 /* 删除 */
 export function deleteLegalEntity(id) {
   return request({
-    url: `/legalEntity/delete/${id}`,
-    method: 'delete'
+    url: `/legalEntity/remove`,
+    method: 'delete',
+    data: { id }
   })
 }
 /** 获取修改详情 */
@@ -150,8 +153,9 @@ export function updateReportType(id, data) {
 /* 删除 */
 export function deleteReportType(id) {
   return request({
-    url: `/reportType/delete/${id}`,
-    method: 'delete'
+    url: `/reportType/remove`,
+    method: 'delete',
+    data: { id }
   })
 }
 /** 获取修改详情 */
@@ -182,8 +186,9 @@ export function updateAccount(id, data) {
 /* 删除 */
 export function deleteAccount(id) {
   return request({
-    url: `/account/delete/${id}`,
-    method: 'delete'
+    url: `/account/remove`,
+    method: 'delete',
+    data: { id }
   })
 }
 /** 获取修改详情 */

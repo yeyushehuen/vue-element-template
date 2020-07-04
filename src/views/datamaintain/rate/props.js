@@ -26,7 +26,7 @@ export default {
       label: '生效时间'
     },
     {
-      prop: 'creator',
+      prop: 'createUser',
       label: '创建人'
     },
     {

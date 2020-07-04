@@ -3,30 +3,30 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'name', label: '州属' },
-      { prop: 'mobile', label: '国家' },
-      { prop: 'testProps', label: '简称' }
+      { prop: 'province', label: '州属' },
+      { prop: 'country', label: '国家' },
+      { prop: 'nameShort', label: '简称' }
     ]
   },
   columns: [
     {
-      prop: 'name',
+      prop: 'province',
       label: '州属'
     },
     {
-      prop: 'sex',
+      prop: 'country',
       label: '国家'
     },
     {
-      prop: 'age',
+      prop: 'nameShort',
       label: '简称'
     },
     {
-      prop: 'score',
+      prop: 'currencyName',
       label: '货币名称'
     },
     {
-      prop: 'creator',
+      prop: 'createUser',
       label: '创建人'
     },
     {
@@ -36,7 +36,8 @@ export default {
     {
       prop: 'operate',
       label: '操作',
-      slotName: 'operate'
+      slotName: 'operate',
+      width: 120
     }
   ]
 }

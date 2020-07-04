@@ -32,7 +32,7 @@ export default {
       label: '转换类型-细分类'
     },
     {
-      prop: 'creator',
+      prop: 'createUser',
       label: '创建人'
     },
     {

@@ -38,11 +38,11 @@ export default {
       label: '产品名称'
     },
     {
-      prop: 'score',
+      prop: 'createUser',
       label: '创建人'
     },
     {
-      prop: 'score',
+      prop: 'createTime',
       label: '创建时间'
     },
     {

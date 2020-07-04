@@ -244,7 +244,7 @@ export default {
         if (valid) {
           const { params, datePrefix, format } = this
           console.log('params', params)
-          
+
           const formattedForm = {}
           Object.keys(params).forEach(v => {
             if (v.indexOf(datePrefix) === -1) {

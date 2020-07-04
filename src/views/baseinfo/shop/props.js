@@ -4,21 +4,16 @@ export default {
     submitBtnText: '查询',
     forms: [
       { prop: 'name', label: '店铺名称' },
-      { prop: 'sex', label: '销售部门', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
+      {
+        prop: 'deptId', label: '销售部门', itemType: 'select',
+        options: []
       },
-      { prop: 'sex', label: '销售国家', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
+      {
+        prop: 'sellerCountry', label: '销售国家', itemType: 'select',
+        options: []
       },
-      { prop: 'sexs', label: '销售主体', itemType: 'select',
+      {
+        prop: 'seller_legal_id', label: '销售主体', itemType: 'select',
         options: [
           { value: '', label: 'All' },
           { value: 0, label: 'Male' },
@@ -26,11 +21,12 @@ export default {
         ]
       },
       { prop: 'sellerId', label: 'seller ID' },
-      { prop: 'leader', label: '负责人' },
-      { prop: 'status', label: '状态', itemType: 'select',
+      { prop: 'principal', label: '负责人' },
+      { prop: 'state', label: '状态', itemType: 'select',
         options: [
-          { value: 0, label: '启用' },
-          { value: 1, label: '禁用' }
+          { value: '', label: '全部' },
+          { value: 'Y', label: '启用' },
+          { value: 'N', label: '禁用' }
         ]
       }
     ]
@@ -41,50 +37,52 @@ export default {
       label: '店铺名称'
     },
     {
-      prop: 'sex',
+      prop: 'nameShort',
       label: '店铺简称'
     },
     {
-      prop: 'age',
+      prop: 'deptName',
       label: '销售部门'
     },
     {
-      prop: 'score',
+      prop: 'sellerCountry',
       label: '销售国家'
     },
     {
-      prop: '0',
+      prop: 'sellerLegal',
       label: '销售主体'
     }, {
-      prop: '1',
+      prop: 'sellerId',
       label: 'Seller ID'
     }, {
-      prop: '2',
+      prop: 'token',
       label: 'Token'
     }, {
-      prop: '3',
+      prop: 'secretKey',
       label: 'secretKey'
     }, {
-      prop: '4',
+      prop: 'awsAccesskeyId',
       label: 'awsAccessKeyId',
       width: 180
     }, {
-      prop: '5',
+      prop: 'principal',
       label: '负责人'
     }, {
-      prop: '6',
+      prop: 'state',
       label: '状态'
     }, {
-      prop: '7',
+      prop: 'createUser',
       label: '创建人'
-    }, {
-      prop: '8',
+    },
+    {
+      prop: 'createTime',
       label: '创建时间'
     },
     {
       prop: 'operate',
       label: '操作',
-      slotName: 'operate'
+      slotName: 'operate',
+      width: 120
     }
   ]
 }
