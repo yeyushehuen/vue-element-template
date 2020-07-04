@@ -15,20 +15,17 @@
         </el-form-item>
         <el-form-item label="销售部门" prop="deptId">
           <el-select v-model="shopForm.deptId" style="width: 100%" placeholder="请选择销售部门">
-            <el-option label="一部" value="1" />
-            <el-option label="二部" value="2" />
+            <el-option v-for="option in selectOption.deptDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="销售主体" prop="sellerLegalId">
           <el-select v-model="shopForm.sellerLegalId" style="width: 100%" placeholder="请选择销售主体">
-            <el-option label="地球" value="1" />
-            <el-option label="月亮" value="2" />
+            <el-option v-for="option in selectOption.leDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="销售国家" prop="sellerCountry">
           <el-select v-model="shopForm.sellerCountry" style="width: 100%" placeholder="请选择销售国家">
-            <el-option label="中国" value="1" />
-            <el-option label="俄罗斯" value="2" />
+            <el-option v-for="option in selectOption.areaDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="负责人" prop="principal">
@@ -65,7 +62,9 @@
 import BaseTable from '@/components/BaseTable'
 import tableConfig from './props.js'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
-import { addAccount, deleteAccount, getAccountById, updateAccount } from '../../../api/baseInfo'
+import { addAccount, deleteAccount, getAccountById, updateAccount } from '@/api/baseInfo'
+import { areaDropdown, deptDropdown, leDropdown } from '@/api/common'
+import { toSelectOption } from '../../../utils'
 
 const { formOptions, columns } = tableConfig
 
@@ -88,6 +87,11 @@ export default {
         actionCode.view,
         actionCode.manualReport
       ],
+      selectOption: {
+        areaDropdown: [],
+        deptDropdown: [],
+        leDropdown: []
+      },
       dialogVisible: false,
       editStatus: actionCode.add,
       selectIds: '',
@@ -97,8 +101,8 @@ export default {
         name: '',
         nameShort: '',
         deptId: '',
-        sellerLegalId: '',
-        sellerCountry: '',
+        sellerLegalId: null,
+        sellerCountry: null,
         principal: '',
         sellerID: '',
         token: '',
@@ -148,7 +152,18 @@ export default {
       return this.shopForm.name
     }
   },
+  mounted() {
+    this.getSelectData()
+  },
   methods: {
+    async getSelectData() {
+      const areaDropdownSelect = await areaDropdown()
+      this.selectOption.areaDropdown = toSelectOption(areaDropdownSelect.data, 'id', 'country')
+      const deptDropdownSelect = await deptDropdown()
+      this.selectOption.deptDropdown = toSelectOption(deptDropdownSelect.data, 'id', 'name')
+      const leDropdownSelect = await leDropdown()
+      this.selectOption.leDropdown = toSelectOption(leDropdownSelect.data, 'id', 'legalName')
+    },
     clearFormVal() {
       const _this = this
       Object.keys(_this.shopForm).forEach(key => {

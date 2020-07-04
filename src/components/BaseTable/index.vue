@@ -57,11 +57,12 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="51" />
-        <el-table-column v-for="(col, index) in showColumns" :key="index" v-bind="col">
+        <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">
               <slot :name="col.slotName" :row="scope.row" :$index="scope.$index" />
             </span>
+            <span v-else-if="col.render">{{ col.render(scope.row) }}</span>
             <span v-else>{{ scope.row[col.prop] }}</span>
           </template>
         </el-table-column>

@@ -4,25 +4,25 @@ export default {
     submitBtnText: '查询',
     forms: [
       { prop: 'name', label: '币别' },
-      { prop: 'mobile', label: '生效时间' }
+      { prop: 'effectTime', label: '生效时间', itemType: 'daterange' }
     ]
   },
   columns: [
     {
-      prop: 'name',
+      prop: 'originCurrency',
       label: '原币'
     },
     // 格式化为字符串
     {
-      prop: 'sex',
+      prop: 'standardCurrency',
       label: '本币'
     },
     {
-      prop: 'age',
+      prop: 'exchangeRate',
       label: '汇率'
     },
     {
-      prop: 'usefulTime',
+      prop: 'effectTime',
       label: '生效时间'
     },
     {

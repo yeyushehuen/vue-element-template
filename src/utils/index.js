@@ -2,7 +2,7 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
-import { validatenull, isObject } from './validate'
+import { validatenull, isObject, isArray } from './validate'
 
 /**
  * Parse the time to string
@@ -403,4 +403,13 @@ export const randomStr = (function() {
     return res
   }
 })()
+
+/** 格式化为select下拉 */
+export function toSelectOption(sourceData = [], valueKey, labelKey) {
+  if (!isArray(sourceData)) {
+    return []
+  }
+
+  return sourceData.map(item => ({ value: `${item[valueKey] || ''}`, label: item[labelKey] }))
+}
 

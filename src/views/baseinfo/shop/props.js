@@ -34,39 +34,51 @@ export default {
   columns: [
     {
       prop: 'name',
-      label: '店铺名称'
+      label: '店铺名称',
+      width: 150
     },
     {
       prop: 'nameShort',
-      label: '店铺简称'
+      label: '店铺简称',
+      width: 150
     },
     {
       prop: 'deptName',
-      label: '销售部门'
+      label: '销售部门',
+      width: 150
     },
     {
       prop: 'sellerCountry',
-      label: '销售国家'
+      label: '销售国家',
+      width: 150
     },
     {
       prop: 'sellerLegal',
-      label: '销售主体'
+      label: '销售主体',
+      width: 150
     }, {
       prop: 'sellerId',
-      label: 'Seller ID'
+      label: 'Seller ID',
+      width: 150
     }, {
       prop: 'token',
-      label: 'Token'
+      label: 'Token',
+      render: () => '************',
+      width: 150
     }, {
       prop: 'secretKey',
-      label: 'secretKey'
+      label: 'secretKey',
+      render: () => '************',
+      width: 150
     }, {
       prop: 'awsAccesskeyId',
       label: 'awsAccessKeyId',
-      width: 180
+      render: () => '************',
+      width: 150
     }, {
       prop: 'principal',
-      label: '负责人'
+      label: '负责人',
+      width: 150
     }, {
       prop: 'state',
       label: '状态'
@@ -76,7 +88,8 @@ export default {
     },
     {
       prop: 'createTime',
-      label: '创建时间'
+      label: '创建时间',
+      width: 160
     },
     {
       prop: 'operate',
