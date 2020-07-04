@@ -154,6 +154,7 @@ export default {
         if (valid) {
           addDept(_this[formName]).then(res => {
             _this.actionCallback()
+            _this.dialogVisible = false
             return true
           })
         } else {

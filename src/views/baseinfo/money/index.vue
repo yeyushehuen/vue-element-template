@@ -119,6 +119,7 @@ export default {
         if (valid) {
           addCurrency(_this[formName]).then(res => {
             _this.actionCallback()
+            _this.dialogVisible = false
             return true
           })
         } else {

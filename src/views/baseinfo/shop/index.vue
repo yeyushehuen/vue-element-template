@@ -229,6 +229,7 @@ export default {
         if (valid) {
           addAccount(_this[formName]).then(res => {
             _this.actionCallback()
+            _this.dialogVisible = false
             return true
           })
         } else {
