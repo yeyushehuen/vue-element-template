@@ -32,6 +32,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
+import { addDept, deleteDept, getDeptById } from '../../../api/baseInfo'
 const { formOptions, columns } = tableConfig
 export default {
   name: 'Department',
@@ -51,6 +52,7 @@ export default {
         actionCode.translate
       ],
       dialogVisible: false,
+      actionCallback: () => {},
       editStatus: actionCode.add,
       actionTextConfig,
       depForm: {
@@ -78,15 +80,20 @@ export default {
         _this.depForm[key] = ''
       })
     },
-    setFormVal() {
+    setFormVal(defaultData = {}) {
       const _this = this
-      const defaultData = {}
       Object.keys(_this.depForm).forEach(key => {
         _this.depForm[key] = defaultData[key] || 'defaultData'
       })
     },
-    deleteHandler() {
-      // todo 校验删除逻辑
+    async deleteHandler(selectIds) {
+      const res = await deleteDept(selectIds.join(','))
+      console.log('res', res)
+    },
+    async updateHandler(selectIds) {
+      const res = await getDeptById(selectIds[0])
+      console.log('res', res)
+      this.setFormVal()
     },
     importHandler() {
       // todo 导入逻辑
@@ -103,20 +110,21 @@ export default {
     enableHandler() {
       // todo 启用逻辑
     },
-    actionHandler(type) {
+    actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
+      _this.actionCallback = callback
       _this.clearFormVal()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true
           break
         case actionCode.update:
-          _this.setFormVal()
           _this.dialogVisible = true
+          _this.updateHandler(selectIds)
           break
         case actionCode.delete:
-          _this.deleteHandler()
+          _this.deleteHandler(selectIds)
           break
         case actionCode.import:
           _this.importHandler()
@@ -141,9 +149,13 @@ export default {
       done()
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      const _this = this
+      _this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          addDept(_this[formName]).then(res => {
+            _this.actionCallback()
+            return true
+          })
         } else {
           console.log('error submit!!')
           return false

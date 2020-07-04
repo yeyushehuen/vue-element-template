@@ -10,7 +10,7 @@ const billingRouter = {
   name: '账单情况',
   meta: {
     title: '账单情况',
-    icon: 'lock'
+    icon: 'el-icon-money'
   },
   children: [
     {

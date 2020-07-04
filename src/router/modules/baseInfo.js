@@ -10,7 +10,7 @@ const baseInfoRouter = {
   name: '基础资料',
   meta: {
     title: '基础资料',
-    icon: 'lock'
+    icon: 'el-icon-document'
     // roles: ['admin', 'editor'] // you can set roles in root nav
   },
   children: [

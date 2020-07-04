@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" @dispatch="actionHandler">
+    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/legalEntity/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -8,13 +8,13 @@
     <el-dialog class="base-dialog-wrapper" :title="`销售主体 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="entityForm" size="small" label-position="left" :model="entityForm" :rules="rules" label-width="80px">
         <el-form-item label="编码" prop="code">
-          <el-input v-model="entityForm.name" />
-        </el-form-item>
-        <el-form-item label="名称" prop="name">
           <el-input v-model="entityForm.code" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-select v-model="entityForm.status" style="width: 100%" placeholder="请选择状态">
+        <el-form-item label="名称" prop="legalName">
+          <el-input v-model="entityForm.legalName" />
+        </el-form-item>
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="entityForm.state" style="width: 100%" placeholder="请选择状态">
             <el-option label="正常" :value="1" />
             <el-option label="禁用" :value="2" />
           </el-select>
@@ -32,6 +32,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
+import { addLegalEntity, deleteLegalEntity, getLegalEntityById } from '../../../api/baseInfo'
 const { formOptions, columns } = tableConfig
 export default {
   name: 'SalesEntity',
@@ -43,21 +44,22 @@ export default {
       actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export, actionCode.disable, actionCode.enable],
       dialogVisible: false,
       editStatus: actionCode.add,
+      actionCallback: () => {},
       actionTextConfig,
       entityForm: {
-        name: '',
+        legalName: '',
         code: '',
-        status: ''
+        state: ''
       },
       rules: {
-        name: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
+        legalName: [
+          { required: true, message: '请填写名称', trigger: 'blur' },
           { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请填写编码', trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: '请选择状态', trigger: 'blur' }
         ]
       }
@@ -70,15 +72,20 @@ export default {
         _this.entityForm[key] = ''
       })
     },
-    setFormVal() {
+    setFormVal(defaultData = {}) {
       const _this = this
-      const defaultData = {}
       Object.keys(_this.entityForm).forEach(key => {
         _this.entityForm[key] = defaultData[key] || 'defaultData'
       })
     },
-    deleteHandler() {
-      // todo 校验删除逻辑
+    async deleteHandler(selectIds) {
+      const res = await deleteLegalEntity(selectIds.join(','))
+      console.log('res', res)
+    },
+    async updateHandler(selectIds) {
+      const res = await getLegalEntityById(selectIds[0])
+      console.log('res', res)
+      this.setFormVal()
     },
     importHandler() {
       // todo 导入逻辑
@@ -92,20 +99,21 @@ export default {
     enableHandler() {
       // todo 启用逻辑
     },
-    actionHandler(type) {
+    actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
+      _this.actionCallback = callback
       this.clearFormVal()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true
           break
         case actionCode.update:
-          _this.setFormVal()
           _this.dialogVisible = true
+          _this.updateHandler(selectIds)
           break
         case actionCode.delete:
-          _this.deleteHandler()
+          _this.deleteHandler(selectIds)
           break
         case actionCode.import:
           _this.importHandler()
@@ -127,9 +135,13 @@ export default {
       done()
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      const _this = this
+      _this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          addLegalEntity(_this[formName]).then(res => {
+            _this.actionCallback()
+            return true
+          })
         } else {
           console.log('error submit!!')
           return false

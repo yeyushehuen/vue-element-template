@@ -23,16 +23,16 @@
           :size="form.size ? form.size : size"
           :readonly="form.readonly"
           :disabled="form.disabled"
-          :placeholder="form.placeholder"
+          :placeholder="form.placeholder || '请输入' + form.label"
           :style="itemStyle + (form.itemWidth ? `width: ${form.itemWidth}px;` : '')"
         />
         <el-select
           v-else-if="form.itemType === 'select'"
           v-model="params[form.modelValue]"
+          filterable
           :size="form.size ? form.size : size"
           :disabled="form.disabled"
-          :placeholder="form.placeholder"
-          filterable
+          :placeholder="form.placeholder || '请选择' + form.label"
           :style="itemStyle + (form.itemWidth ? `width: ${form.itemWidth}px;` : '')"
         >
           <el-option
@@ -52,7 +52,7 @@
           v-else-if="form.itemType === 'date'"
           v-model="params[form.modelValue]"
           type="date"
-          :placeholder="form.placeholder"
+          :placeholder="form.placeholder || '请选择时间'"
           :size="form.size ? form.size : size"
           :disabled="form.disabled"
           :readonly="form.readonly"
@@ -69,6 +69,8 @@
           :readonly="form.readonly"
           :editable="form.editable"
           :placeholder="form.placeholder"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :style="itemStyle + (form.itemWidth ? `width: ${form.itemWidth}px;` : '')"
           :picker-options="form.pickerOptions || {}"
           @change="date => changeDate(date, form.prop[0], form.prop[1])"

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" @dispatch="actionHandler">
+    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/reportType/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -26,6 +26,7 @@
 import BaseTable from '@/components/BaseTable'
 import tableConfig from './props.js'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
+import { addReportType, deleteReportType, getReportTypeById } from '../../../api/baseInfo'
 
 const { formOptions, columns } = tableConfig
 
@@ -40,6 +41,7 @@ export default {
       dialogVisible: false,
       editStatus: actionCode.add,
       actionTextConfig,
+      actionCallback: () => {},
       reportForm: {
         reportType: '',
         fileType: ''
@@ -61,30 +63,36 @@ export default {
         _this.reportForm[key] = ''
       })
     },
-    setFormVal() {
+    setFormVal(defaultData = {}) {
       const _this = this
-      const defaultData = {}
       Object.keys(_this.reportForm).forEach(key => {
         _this.reportForm[key] = defaultData[key] || 'defaultData'
       })
     },
-    deleteHandler() {
-      // todo 校验删除逻辑
+    async deleteHandler(selectIds) {
+      const res = await deleteReportType(selectIds.join(','))
+      console.log('res', res)
     },
-    actionHandler(type) {
+    async updateHandler(selectIds) {
+      const res = await getReportTypeById(selectIds[0])
+      console.log('res', res)
+      this.setFormVal()
+    },
+    actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
+      _this.actionCallback = callback
       _this.clearFormVal()
       switch (type) {
         case actionCode.add: // 新增
           _this.dialogVisible = true
           break
         case actionCode.update: // 修改
-          _this.setFormVal()
           _this.dialogVisible = true
+          _this.updateHandler(selectIds)
           break
         case actionCode.delete:
-          _this.deleteHandler()
+          _this.deleteHandler(selectIds)
           break
         default:
           break
@@ -94,9 +102,13 @@ export default {
       done()
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      const _this = this
+      _this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          addReportType(_this[formName]).then(res => {
+            _this.actionCallback()
+            return true
+          })
         } else {
           console.log('error submit!!')
           return false

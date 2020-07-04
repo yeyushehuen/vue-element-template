@@ -1,21 +1,22 @@
 <template>
   <div class="dashboard-container">
-    <!-- <component :is="currentRole" /> -->
-    <base-table :form-options="formOptions" :columns="columns">
+    <component :is="currentRole" />
+    <!-- <base-table :form-options="formOptions" :columns="columns">
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
-    </base-table>
+    </base-table> -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import adminDashboard from './admin'
 import BaseTable from '@/components/BaseTable'
 
 export default {
   name: 'Dashboard',
-  components: { BaseTable },
+  components: { BaseTable, adminDashboard },
   data() {
     return {
       currentRole: 'adminDashboard',

@@ -83,15 +83,17 @@ export default {
         _this.convertTypeForm[key] = ''
       })
     },
-    setFormVal() {
+    setFormVal(defaultData = {}) {
       const _this = this
-      const defaultData = {}
       Object.keys(_this.convertTypeForm).forEach(key => {
         _this.convertTypeForm[key] = defaultData[key] || 'defaultData'
       })
     },
-    deleteHandler() {
+    async deleteHandler(selectIds) {
       // todo 校验删除逻辑
+    },
+    async updateHandler(selectIds) {
+      this.setFormVal()
     },
     importHandler() {
       // todo 导入逻辑
@@ -99,7 +101,7 @@ export default {
     exportHandler() {
       // todo 导出逻辑
     },
-    actionHandler(type) {
+    actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
       _this.clearFormVal()
@@ -108,11 +110,10 @@ export default {
           _this.dialogVisible = true
           break
         case actionCode.update:
-          _this.setFormVal()
           _this.dialogVisible = true
           break
         case actionCode.delete:
-          _this.deleteHandler()
+          _this.deleteHandler(selectIds)
           break
         case actionCode.import:
           _this.importHandler()

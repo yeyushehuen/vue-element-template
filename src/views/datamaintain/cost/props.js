@@ -3,62 +3,67 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'name', label: 'Name' },
-      { prop: 'mobile', label: 'Mobile' },
-      { prop: 'testProps', label: '测试属性' },
-      { prop: 'mobilasdfe', label: 'Mobiasdfle' },
-      { prop: 'sex', label: 'Sex', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      { prop: 'sex', label: 'Sesdfdsfx', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      { prop: 'sexs', label: 'Sexdsf', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      { prop: 'sexd', label: 'Ssdex', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      }
+      { prop: 'name', label: '期间' },
+      { prop: 'mobile', label: 'Seller Sku' },
+      { prop: 'testProps', label: '品类' },
+      { prop: 'mobilasdfe', label: 'SKU' },
+      { prop: 'mobilasdfe', label: '创建人' }
     ]
   },
   columns: [
     {
       prop: 'name',
-      label: '姓名',
-      slotName: 'name'
+      label: '期间'
     },
     // 格式化为字符串
     {
       prop: 'sex',
-      label: '性别'
+      label: 'ASIN'
     },
     {
       prop: 'age',
-      label: '年龄'
+      label: 'Seller Sku'
     },
     {
       prop: 'score',
-      label: '分数'
+      label: '公司型号'
     },
     {
-      prop: '',
-      label: '操作'
+      prop: 'creator',
+      label: '名称'
+    },
+    {
+      prop: 'createTime',
+      label: '品类'
+    },
+    {
+      prop: 'createTime',
+      label: '采购成本'
+    },
+    {
+      prop: 'createTime',
+      label: '头程运费'
+    },
+    {
+      prop: 'createTime',
+      label: '转运运费'
+    },
+    {
+      prop: 'createTime',
+      label: '自发货运费'
+    },
+    {
+      prop: 'creator',
+      label: '创建人'
+    },
+    {
+      prop: 'createTime',
+      label: '创建时间'
+    },
+    {
+      prop: 'operate',
+      label: '操作',
+      slotName: 'operate'
     }
   ]
 }

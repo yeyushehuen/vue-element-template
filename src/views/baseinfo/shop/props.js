@@ -66,7 +66,8 @@ export default {
       label: 'secretKey'
     }, {
       prop: '4',
-      label: 'awsAccessKeyId'
+      label: 'awsAccessKeyId',
+      width: 180
     }, {
       prop: '5',
       label: '负责人'

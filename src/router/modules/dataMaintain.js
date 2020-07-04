@@ -10,7 +10,7 @@ const dataMaintainRouter = {
   name: '数据维护',
   meta: {
     title: '数据维护',
-    icon: 'lock'
+    icon: 'el-icon-coin'
     // roles: ['admin', 'editor'] // you can set roles in root nav
   },
   children: [

@@ -12,7 +12,7 @@
     </div>
 
     <div class="base-table-wrapper">
-      <el-dropdown v-if="actionCode && actionCode.length > 0" class="demo-ruleForm" @command="handleCommand">
+      <el-dropdown v-if="actionCode && actionCode.length > 0" class="base-table-action-wrapper" @command="handleCommand">
         <el-button>
           功能菜单<i class="el-icon-arrow-down el-icon--right" />
         </el-button>
@@ -25,6 +25,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-table
+        ref="multipleTable"
         v-loading="listLoading"
         size="mini"
         border
@@ -63,17 +64,27 @@
 
 <script>
 import request from '@/utils/request'
-import { deleteNullProps } from '@/utils'
+import { deleteNullProps, randomStr } from '@/utils'
 import searchForm from '@/components/search/src/main'
-import { paginationConfig, actionTextConfig } from './config/constants'
+import { paginationConfig, actionTextConfig, actionCode } from './config/constants'
 
-function fetchList(api, query) {
+const mock = false
+
+async function fetchList(api, query, columns) {
   const { currentPage, pageSize, ...rest } = query
   let offset = 0
   const limit = pageSize
   if (currentPage > 1) {
     offset = (currentPage - 1) * pageSize
   }
+  if (mock) {
+    const records = {}
+    columns.forEach((row, idx) => { records[row.prop] = randomStr({ flag: false, minLen: 8 }) })
+    const data = Array(15).fill(records)
+    const totalRows = 15
+    return { data, totalRows }
+  }
+
   return request({
     url: api,
     method: 'get',
@@ -150,8 +161,8 @@ export default {
     this.tableHeight = windowHeight && windowHeight.clientHeight - 214
   },
   methods: {
-    handleSelectionChange(val) {
-      console.log(val)
+    handleSelectionChange(val, ...rest) {
+      console.log('handleSelectionChange', val, rest)
     },
     getQueryParams() {
       const { currentPage, pageSize } = this.pagination || {}
@@ -167,7 +178,7 @@ export default {
       this.pagination.pageSize = size
       this.paginationChange()
     },
-    handleCurrentChange(currentPage) {
+    handleCurrentChange(currentPage) {  
       this.pagination.currentPage = currentPage
       this.paginationChange()
     },
@@ -185,12 +196,15 @@ export default {
       const query = this.getQueryParams()
       console.log('query', query)
 
-      fetchList(this.api, query).then(response => {
+      fetchList(this.api, query, this.columns).then(response => {
         console.log('response', response)
         const { list, total } = this.getResponse(response)
         this.list = list
+        if (mock) {
+          this.list = list.map((item, index) => ({ ...item, id: index + 1 }))
+        }
         this.pagination.total = total
-
+      }).finally(() => {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -198,16 +212,42 @@ export default {
       })
     },
     searchHandler(values) {
-      console.log(values)
-
       this.pagination.currentPage = 1
       this.searchQuery = deleteNullProps(values) || {}
       this.getList()
     },
+    callback() {
+      this.getList()
+    },
+    selectValidate(command) {
+      if (command === actionCode.add) {
+        return true
+      }
+      const selection = this.getSelection()
+      const selectLen = selection.selectIds.length
+      if (selectLen < 1) {
+        this.$message('请选择要操作的数据')
+        return false
+      }
+      if (command === actionCode.update && selectLen > 1) {
+        this.$message('最多只能选择一条数据')
+        return false
+      }
+
+      return true
+    },
     handleCommand(command) {
-      this.$emit('dispatch', command, function() {
-        alert(123)
-      })
+      const _this = this
+      if (!this.selectValidate(command)) {
+        return false
+      }
+      const selection = this.getSelection()
+      this.$emit('dispatch', command, { ...selection, callback: _this.callback })
+    },
+    getSelection() {
+      const selectRows = this.$refs.multipleTable.selection || []
+      const selectIds = selectRows.map(row => row.id)
+      return { selectIds, selectRows }
     }
   }
 }

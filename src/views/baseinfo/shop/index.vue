@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" @dispatch="actionHandler">
+    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/account/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -65,6 +65,7 @@
 import BaseTable from '@/components/BaseTable'
 import tableConfig from './props.js'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
+import { addAccount, deleteAccount, getAccountById } from '../../../api/baseInfo'
 
 const { formOptions, columns } = tableConfig
 
@@ -90,6 +91,7 @@ export default {
       dialogVisible: false,
       editStatus: actionCode.add,
       actionTextConfig,
+      actionCallback: () => {},
       shopForm: {
         name: '',
         shortName: '',
@@ -147,15 +149,20 @@ export default {
         _this.shopForm[key] = ''
       })
     },
-    setFormVal() {
+    setFormVal(defaultData = {}) {
       const _this = this
-      const defaultData = {}
       Object.keys(_this.shopForm).forEach(key => {
         _this.shopForm[key] = defaultData[key] || 'defaultData'
       })
     },
-    deleteHandler() {
-      // todo 校验删除逻辑
+    async deleteHandler(selectIds) {
+      const res = await deleteAccount(selectIds.join(','))
+      console.log('res', res)
+    },
+    async updateHandler(selectIds) {
+      const res = await getAccountById(selectIds[0])
+      console.log('res', res)
+      this.setFormVal()
     },
     importHandler() {
       // todo 导入逻辑
@@ -175,20 +182,21 @@ export default {
     reportHandler() {
       // todo 手动生成报表记录
     },
-    actionHandler(type) {
+    actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
+      _this.actionCallback = callback
       _this.clearFormVal()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true
           break
         case actionCode.update:
-          _this.setFormVal()
           _this.dialogVisible = true
+          _this.updateHandler(selectIds)
           break
         case actionCode.delete:
-          _this.deleteHandler()
+          _this.deleteHandler(selectIds)
           break
         case actionCode.import:
           _this.importHandler()
@@ -216,9 +224,13 @@ export default {
       done()
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      const _this = this
+      _this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          addAccount(_this[formName]).then(res => {
+            _this.actionCallback()
+            return true
+          })
         } else {
           console.log('error submit!!')
           return false

@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Element Admin',
+      title: '暖喵先生',
       logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }
@@ -47,7 +47,8 @@ export default {
   height: 41px;
   line-height: 41px;
   background: #2b2f3a;
-  text-align: center;
+  text-align: left;
+  padding: 0 16px;
   overflow: hidden;
 
   & .sidebar-logo-link {
@@ -67,7 +68,7 @@ export default {
       color: #fff;
       font-weight: 600;
       line-height: 41px;
-      font-size: 14px;
+      font-size: 18px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }

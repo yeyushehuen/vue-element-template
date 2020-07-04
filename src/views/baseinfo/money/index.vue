@@ -26,7 +26,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { addCurrency } from '@/api/baseInfo'
+import { addCurrency, updateCurrency, deleteCurrency, getCurrencyById } from '@/api/baseInfo'
 
 const { formOptions, columns } = tableConfig
 
@@ -48,7 +48,7 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入货币名称', trigger: 'blur' }
+          { required: true, message: '请填写货币名称', trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请填写标准代码', trigger: 'blur' }
@@ -63,15 +63,20 @@ export default {
         _this.moneyForm[key] = ''
       })
     },
-    setFormVal() {
+    setFormVal(defaultData = {}) {
       const _this = this
-      const defaultData = {}
       Object.keys(_this.moneyForm).forEach(key => {
         _this.moneyForm[key] = defaultData[key] || 'defaultData'
       })
     },
-    deleteHandler() {
-      // todo 校验删除逻辑
+    async deleteHandler(selectIds) {
+      const res = await deleteCurrency(selectIds.join(','))
+      console.log('res', res)
+    },
+    async updateHandler(selectIds) {
+      const res = await getCurrencyById(selectIds[0])
+      console.log('res', res)
+      this.setFormVal()
     },
     importHandler() {
       // todo 导入逻辑
@@ -79,21 +84,21 @@ export default {
     exportHandler() {
       // todo 导出逻辑
     },
-    actionHandler(type, callback) {
+    actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
+      _this.actionCallback = callback
       _this.clearFormVal()
       switch (type) {
         case actionCode.add: // 新增
           _this.dialogVisible = true
-          _this.actionCallback = callback
           break
         case actionCode.update: // 修改
-          _this.setFormVal()
           _this.dialogVisible = true
+          _this.updateHandler(selectIds)
           break
         case actionCode.delete:
-          _this.deleteHandler()
+          _this.deleteHandler(selectIds)
           break
         case actionCode.import:
           _this.importHandler()
@@ -112,11 +117,7 @@ export default {
       const _this = this
       _this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
-          console.log(_this[formName])
           addCurrency(_this[formName]).then(res => {
-            // _this.getList()
-            console.log('res', res)
             _this.actionCallback()
             return true
           })
@@ -129,6 +130,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
       this.dialogVisible = false
+      // this.actionCallback()
     }
   }
 }
