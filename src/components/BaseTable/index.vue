@@ -12,18 +12,39 @@
     </div>
 
     <div class="base-table-wrapper">
-      <el-dropdown v-if="actionCode && actionCode.length > 0" class="base-table-action-wrapper" @command="handleCommand">
-        <el-button>
-          功能菜单<i class="el-icon-arrow-down el-icon--right" />
-        </el-button>
-        <el-dropdown-menu slot="dropdown" style="min-width: 116px">
-          <el-dropdown-item
-            v-for="(code, index) in actionCode"
-            :key="index"
-            :command="code"
-          >{{ actionTextConfig[code] || code }}</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <div>
+        <el-dropdown v-if="actionCode && actionCode.length > 0" placement="bottom-start" class="base-table-action-wrapper" @command="handleCommand">
+          <el-button>
+            功能菜单<i class="el-icon-arrow-down el-icon--right" />
+          </el-button>
+          <el-dropdown-menu slot="dropdown" style="min-width: 116px">
+            <el-dropdown-item
+              v-for="(code, index) in actionCode"
+              :key="index"
+              :command="code"
+            >{{ actionTextConfig[code] || code }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-button @click="showDialog">大窗口自定义字段</el-button>
+        <el-dialog title="自定义字段" class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" width="666px" :visible.sync="dialogVisible" :before-close="handleClose">
+          <div class="board">
+            <CustomColumn :key="1" :list="hiddenColumns" :group="group" class="kanban todo" header-text="隐藏字段" />
+            <CustomColumn :key="2" :list="showColumns" :group="group" class="kanban working" header-text="显示的字段" />
+          </div>
+        </el-dialog>
+        <el-popover
+          v-model="visible"
+          placement="bottom"
+          width="666"
+          trigger="manual"
+        >
+          <div class="board">
+            <CustomColumn :key="1" :list="hiddenColumns" :group="group" class="kanban todo" header-text="隐藏字段" />
+            <CustomColumn :key="2" :list="showColumns" :group="group" class="kanban working" header-text="显示的字段" />
+          </div>
+          <el-button slot="reference" @click="visible = !visible">小窗口自定义字段</el-button></el-button>
+        </el-popover>
+      </div>
       <el-table
         ref="multipleTable"
         v-loading="listLoading"
@@ -36,7 +57,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="51" />
-        <el-table-column v-for="(col, index) in columns" :key="index" v-bind="col">
+        <el-table-column v-for="(col, index) in showColumns" :key="index" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">
               <slot :name="col.slotName" :row="scope.row" :$index="scope.$index" />
@@ -64,8 +85,9 @@
 
 <script>
 import request from '@/utils/request'
-import { deleteNullProps, randomStr } from '@/utils'
+import { deleteNullProps, randomStr, deepClone } from '@/utils'
 import searchForm from '@/components/search/src/main'
+import CustomColumn from './components/CustomColumn'
 import { paginationConfig, actionTextConfig, actionCode } from './config/constants'
 
 const mock = false
@@ -94,7 +116,7 @@ async function fetchList(api, query, columns) {
 
 export default {
   name: 'BaseTable',
-  components: { searchForm },
+  components: { searchForm, CustomColumn },
   props: {
     api: {
       type: String,
@@ -143,9 +165,14 @@ export default {
       tableHeight: '100vh',
       hideHigherSearch: false,
       listLoading: true,
+      dialogVisible: false,
+      visible: false,
       list: null,
       searchQuery: {},
-      actionTextConfig
+      actionTextConfig,
+      hiddenColumns: [],
+      showColumns: [],
+      group: 'mission'
     }
   },
   computed: {
@@ -155,6 +182,7 @@ export default {
   },
   created() {
     this.getList()
+    this.showColumns = deepClone(this.$props.columns)
   },
   mounted() {
     const windowHeight = document.querySelector('div.sidebar-container')
@@ -226,7 +254,10 @@ export default {
       const selection = this.getSelection()
       const selectLen = selection.selectIds.length
       if (selectLen < 1) {
-        this.$message('请选择要操作的数据')
+        this.$message({
+          message: '请选择要操作的数据',
+          type: 'warning'
+        })
         return false
       }
       if (command === actionCode.update && selectLen > 1) {
@@ -248,6 +279,12 @@ export default {
       const selectRows = this.$refs.multipleTable.selection || []
       const selectIds = selectRows.map(row => row.id)
       return { selectIds, selectRows }
+    },
+    showDialog() {
+      this.dialogVisible = true
+    },
+    handleClose(done) {
+      done()
     }
   }
 }
@@ -255,4 +292,32 @@ export default {
 
 <style lang="scss">
 @import "./index.scss";
+
+.board {
+  // width: 1000px;
+  // margin-left: 20px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: flex-start;
+  max-height: 600px;
+  overflow-y: auto;
+}
+.kanban {
+  &.todo {
+    .board-column-header {
+      background: RGB(25, 25, 25);
+    }
+  }
+  &.working {
+    .board-column-header {
+      background: #4A9FF9;
+    }
+  }
+  // &.done {
+  //   .board-column-header {
+  //     background: #2ac06d;
+  //   }
+  // }
+}
 </style>

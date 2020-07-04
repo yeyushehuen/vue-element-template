@@ -5,7 +5,7 @@
         {{ scope.$index }}
       </template>
     </base-table>
-    <el-dialog class="base-dialog-wrapper" :title="`报表类型 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`报表类型 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="reportForm" size="small" label-position="left" :model="reportForm" :rules="rules" label-width="80px">
         <el-form-item label="报表类型" prop="reportName">
           <el-input v-model="reportForm.reportName" />
@@ -26,7 +26,7 @@
 import BaseTable from '@/components/BaseTable'
 import tableConfig from './props.js'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
-import { addReportType, deleteReportType, getReportTypeById } from '../../../api/baseInfo'
+import { addReportType, deleteReportType, getReportTypeById, updateReportType } from '../../../api/baseInfo'
 
 const { formOptions, columns } = tableConfig
 
@@ -40,6 +40,7 @@ export default {
       actionCode: [actionCode.add, actionCode.update, actionCode.delete],
       dialogVisible: false,
       editStatus: actionCode.add,
+      selectIds: '',
       actionTextConfig,
       actionCallback: () => {},
       reportForm: {
@@ -72,11 +73,16 @@ export default {
     async deleteHandler(selectIds) {
       const res = await deleteReportType(selectIds.join(','))
       console.log('res', res)
+      if (res && res.code === 200) {
+        this.actionCallback()
+      }
     },
     async updateHandler(selectIds) {
       const res = await getReportTypeById(selectIds[0])
       console.log('res', res)
-      this.setFormVal()
+      if (res && res.code === 200) {
+        this.setFormVal(res.data)
+      }
     },
     actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
@@ -90,6 +96,7 @@ export default {
         case actionCode.update: // 修改
           _this.dialogVisible = true
           _this.updateHandler(selectIds)
+          _this.selectIds = selectIds.join(',')
           break
         case actionCode.delete:
           _this.deleteHandler(selectIds)
@@ -103,9 +110,13 @@ export default {
     },
     submitForm(formName) {
       const _this = this
+      const apiRep = {
+        [actionCode.add]: addReportType,
+        [actionCode.update]: updateReportType
+      }
       _this.$refs[formName].validate((valid) => {
         if (valid) {
-          addReportType(_this[formName]).then(res => {
+          apiRep[_this.editStatus]({ id: _this.selectIds, data: _this[formName] }).then(res => {
             _this.actionCallback()
             _this.dialogVisible = false
             return true

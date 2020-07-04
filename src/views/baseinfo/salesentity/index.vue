@@ -5,7 +5,7 @@
         {{ scope.$index }}
       </template>
     </base-table>
-    <el-dialog class="base-dialog-wrapper" :title="`销售主体 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`销售主体 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="entityForm" size="small" label-position="left" :model="entityForm" :rules="rules" label-width="80px">
         <el-form-item label="编码" prop="code">
           <el-input v-model="entityForm.code" />
@@ -32,7 +32,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { addLegalEntity, deleteLegalEntity, getLegalEntityById } from '../../../api/baseInfo'
+import { addLegalEntity, deleteLegalEntity, getLegalEntityById, updateLegalEntity } from '../../../api/baseInfo'
 const { formOptions, columns } = tableConfig
 export default {
   name: 'SalesEntity',
@@ -44,6 +44,7 @@ export default {
       actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export, actionCode.disable, actionCode.enable],
       dialogVisible: false,
       editStatus: actionCode.add,
+      selectIds: '',
       actionCallback: () => {},
       actionTextConfig,
       entityForm: {
@@ -81,11 +82,16 @@ export default {
     async deleteHandler(selectIds) {
       const res = await deleteLegalEntity(selectIds.join(','))
       console.log('res', res)
+      if (res && res.code === 200) {
+        this.actionCallback()
+      }
     },
     async updateHandler(selectIds) {
       const res = await getLegalEntityById(selectIds[0])
       console.log('res', res)
-      this.setFormVal()
+      if (res && res.code === 200) {
+        this.setFormVal(res.data)
+      }
     },
     importHandler() {
       // todo 导入逻辑
@@ -103,7 +109,7 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      this.clearFormVal()
+      // this.clearFormVal()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true
@@ -111,6 +117,7 @@ export default {
         case actionCode.update:
           _this.dialogVisible = true
           _this.updateHandler(selectIds)
+          _this.selectIds = selectIds.join(',')
           break
         case actionCode.delete:
           _this.deleteHandler(selectIds)
@@ -136,9 +143,13 @@ export default {
     },
     submitForm(formName) {
       const _this = this
+      const apiRep = {
+        [actionCode.add]: addLegalEntity,
+        [actionCode.update]: updateLegalEntity
+      }
       _this.$refs[formName].validate((valid) => {
         if (valid) {
-          addLegalEntity(_this[formName]).then(res => {
+          apiRep[_this.editStatus]({ id: _this.selectIds, data: _this[formName] }).then(res => {
             _this.actionCallback()
             _this.dialogVisible = false
             return true

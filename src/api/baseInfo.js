@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 /** ******************** 货币管理 *********************/
 /* 新增 */
-export function addCurrency(data) {
+export function addCurrency({ data } = {}) {
   return request({
     url: '/currency/add',
     method: 'post',
@@ -10,7 +10,8 @@ export function addCurrency(data) {
   })
 }
 /* 修改 */
-export function updateCurrency(id, data) {
+export function updateCurrency({ id, data } = {}) {
+  debugger
   return request({
     url: `/currency/edit`,
     method: 'put',
@@ -36,7 +37,7 @@ export function getCurrencyById(id) {
 
 /** ******************** 区域管理 *********************/
 /* 新增 */
-export function addArea(data) {
+export function addArea({ data } = {}) {
   return request({
     url: '/area/add',
     method: 'post',
@@ -44,11 +45,11 @@ export function addArea(data) {
   })
 }
 /* 修改 */
-export function updateArea(id, data) {
+export function updateArea({ id, data } = {}) {
   return request({
-    url: `/area/edit/${id}`,
+    url: `/area/edit`,
     method: 'put',
-    data
+    data: { id, ...data }
   })
 }
 /* 删除 */
@@ -70,7 +71,7 @@ export function getAreaById(id) {
 
 /** ******************** 部门管理 *********************/
 /* 新增 */
-export function addDept(data) {
+export function addDept({ data } = {}) {
   return request({
     url: '/dept/add',
     method: 'post',
@@ -78,18 +79,19 @@ export function addDept(data) {
   })
 }
 /* 修改 */
-export function updateDept(id, data) {
+export function updateDept({ id, data } = {}) {
   return request({
-    url: `/dept/edit/${id}`,
+    url: `/dept/edit`,
     method: 'put',
-    data
+    data: { id, ...data }
   })
 }
 /* 删除 */
 export function deleteDept(id) {
   return request({
     url: `/dept/remove`,
-    method: 'delete'
+    method: 'delete',
+    data: { id }
   })
 }
 /** 获取修改详情 */
@@ -102,7 +104,7 @@ export function getDeptById(id) {
 }
 /** ******************** 销售主体 *********************/
 /* 新增 */
-export function addLegalEntity(data) {
+export function addLegalEntity({ data } = {}) {
   return request({
     url: '/legalEntity/add',
     method: 'post',
@@ -110,11 +112,11 @@ export function addLegalEntity(data) {
   })
 }
 /* 修改 */
-export function updateLegalEntity(id, data) {
+export function updateLegalEntity({ id, data } = {}) {
   return request({
-    url: `/legalEntity/edit/${id}`,
+    url: `/legalEntity/edit`,
     method: 'put',
-    data
+    data: { id, ...data }
   })
 }
 /* 删除 */
@@ -135,7 +137,7 @@ export function getLegalEntityById(id) {
 }
 /** ******************** 报表类型 *********************/
 /* 新增 */
-export function addReportType(data) {
+export function addReportType({ data } = {}) {
   return request({
     url: '/reportType/add',
     method: 'post',
@@ -143,11 +145,11 @@ export function addReportType(data) {
   })
 }
 /* 修改 */
-export function updateReportType(id, data) {
+export function updateReportType({ id, data } = {}) {
   return request({
-    url: `/reportType/edit/${id}`,
+    url: `/reportType/edit`,
     method: 'put',
-    data
+    data: { id, ...data }
   })
 }
 /* 删除 */
@@ -168,7 +170,7 @@ export function getReportTypeById(id) {
 }
 /** ******************** 店铺管理 *********************/
 /* 新增 */
-export function addAccount(data) {
+export function addAccount({ data } = {}) {
   return request({
     url: '/account/add',
     method: 'post',
@@ -176,11 +178,11 @@ export function addAccount(data) {
   })
 }
 /* 修改 */
-export function updateAccount(id, data) {
+export function updateAccount({ id, data } = {}) {
   return request({
-    url: `/account/edit/${id}`,
+    url: `/account/edit`,
     method: 'put',
-    data
+    data: { id, ...data }
   })
 }
 /* 删除 */

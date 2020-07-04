@@ -5,7 +5,7 @@
         {{ scope.$index }}
       </template>
     </base-table>
-    <el-dialog class="base-dialog-wrapper" :title="`区域管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`区域管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="areaForm" size="small" label-position="right" :model="areaForm" :rules="rules" label-width="80px">
         <el-form-item label="州属" prop="province">
           <el-input v-model="areaForm.province" placeholder="请填写州属" />
@@ -35,7 +35,7 @@
 import BaseTable from '@/components/BaseTable'
 import tableConfig from './props.js'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
-import { addArea, deleteArea, getAreaById } from '../../../api/baseInfo'
+import { addArea, deleteArea, getAreaById, updateArea } from '../../../api/baseInfo'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -47,6 +47,7 @@ export default {
       columns: columns,
       dialogVisible: false,
       editStatus: actionCode.add,
+      selectIds: '',
       actionTextConfig,
       actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export],
       actionCallback: () => {},
@@ -88,11 +89,16 @@ export default {
     async deleteHandler(selectIds) {
       const res = await deleteArea(selectIds.join(','))
       console.log('res', res)
+      if (res && res.code === 200) {
+        this.actionCallback()
+      }
     },
     async updateHandler(selectIds) {
       const res = await getAreaById(selectIds[0])
       console.log('res', res)
-      this.setFormVal()
+      if (res && res.code === 200) {
+        this.setFormVal(res.data)
+      }
     },
     importHandler() {
       // todo 导入逻辑
@@ -112,6 +118,7 @@ export default {
         case actionCode.update:
           _this.dialogVisible = true
           _this.updateHandler(selectIds)
+          _this.selectIds = selectIds.join(',')
           break
         case actionCode.delete:
           _this.deleteHandler(selectIds)
@@ -131,9 +138,13 @@ export default {
     },
     submitForm(formName) {
       const _this = this
+      const apiRep = {
+        [actionCode.add]: addArea,
+        [actionCode.update]: updateArea
+      }
       _this.$refs[formName].validate((valid) => {
         if (valid) {
-          addArea(_this[formName]).then(res => {
+          apiRep[_this.editStatus]({ id: _this.selectIds, data: _this[formName] }).then(res => {
             _this.actionCallback()
             _this.dialogVisible = false
             return true

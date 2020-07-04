@@ -6,7 +6,7 @@
       </template>
     </base-table>
 
-    <el-dialog class="base-dialog-wrapper" :title="`Type类型转换 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`Type类型转换 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="convertTypeForm" size="small" label-position="left" :model="convertTypeForm" :rules="rules" label-width="80px">
         <el-form-item label="type" prop="type1">
           <el-input v-model="convertTypeForm.type1" placeholder="请填写type" />
@@ -54,6 +54,7 @@ export default {
       ],
       dialogVisible: false,
       editStatus: actionCode.add,
+      selectIds: '',
       actionTextConfig,
       convertTypeForm: {
         type1: '',

@@ -5,7 +5,7 @@
         {{ scope.$index }}
       </template>
     </base-table>
-    <el-dialog class="base-dialog-wrapper" :title="`店铺管理 - ${actionTextConfig[editStatus]}`" width="800px" :visible.sync="dialogVisible" :before-close="handleClose">
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`店铺管理 - ${actionTextConfig[editStatus]}`" width="800px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="shopForm" class="shop-modal-form" size="small" label-position="right" :inline="true" :model="shopForm" :rules="rules">
         <el-form-item label="店铺名称" prop="name">
           <el-input v-model="shopForm.name" placeholder="请填写店铺名称" />
@@ -15,20 +15,20 @@
         </el-form-item>
         <el-form-item label="销售部门" prop="deptId">
           <el-select v-model="shopForm.deptId" style="width: 100%" placeholder="请选择销售部门">
-            <el-option label="一部" :value="1" />
-            <el-option label="二部" :value="2" />
+            <el-option label="一部" value="1" />
+            <el-option label="二部" value="2" />
           </el-select>
         </el-form-item>
         <el-form-item label="销售主体" prop="sellerLegalId">
           <el-select v-model="shopForm.sellerLegalId" style="width: 100%" placeholder="请选择销售主体">
-            <el-option label="地球" :value="1" />
-            <el-option label="月亮" :value="2" />
+            <el-option label="地球" value="1" />
+            <el-option label="月亮" value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item label="销售国家" prop="country">
-          <el-select v-model="shopForm.country" style="width: 100%" placeholder="请选择销售国家">
-            <el-option label="正常" :value="1" />
-            <el-option label="禁用" :value="2" />
+        <el-form-item label="销售国家" prop="sellerCountry">
+          <el-select v-model="shopForm.sellerCountry" style="width: 100%" placeholder="请选择销售国家">
+            <el-option label="中国" value="1" />
+            <el-option label="俄罗斯" value="2" />
           </el-select>
         </el-form-item>
         <el-form-item label="负责人" prop="principal">
@@ -38,13 +38,13 @@
           <el-input v-model="shopForm.sellerId" placeholder="sellerId" />
         </el-form-item>
         <el-form-item label="Token" prop="token">
-          <el-input v-model="shopForm.token" placeholder="请填写token" />
+          <el-input v-model="shopForm.token" show-password placeholder="请填写token" />
         </el-form-item>
         <el-form-item label="secretKey" prop="secretKey">
-          <el-input v-model="shopForm.secretKey" placeholder="请填写secretKey" />
+          <el-input v-model="shopForm.secretKey" show-password placeholder="请填写secretKey" />
         </el-form-item>
-        <el-form-item label="awsAccessKeyId" prop="awsAccesskeyId">
-          <el-input v-model="shopForm.awsAccesskeyId" placeholder="请填写awsAccessKeyId" />
+        <el-form-item label="awsAccessKeyId" prop="awsAccessKeyId">
+          <el-input v-model="shopForm.awsAccessKeyId" show-password placeholder="请填写awsAccessKeyId" />
         </el-form-item>
         <el-form-item label="状态" prop="state">
           <el-select v-model="shopForm.state" style="width: 100%" placeholder="请选择状态">
@@ -65,7 +65,7 @@
 import BaseTable from '@/components/BaseTable'
 import tableConfig from './props.js'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
-import { addAccount, deleteAccount, getAccountById } from '../../../api/baseInfo'
+import { addAccount, deleteAccount, getAccountById, updateAccount } from '../../../api/baseInfo'
 
 const { formOptions, columns } = tableConfig
 
@@ -90,6 +90,7 @@ export default {
       ],
       dialogVisible: false,
       editStatus: actionCode.add,
+      selectIds: '',
       actionTextConfig,
       actionCallback: () => {},
       shopForm: {
@@ -97,7 +98,7 @@ export default {
         nameShort: '',
         deptId: '',
         sellerLegalId: '',
-        country: '',
+        sellerCountry: '',
         principal: '',
         sellerID: '',
         token: '',
@@ -118,17 +119,17 @@ export default {
         sellerLegalId: [
           { required: true, message: '请选择销售主体', tirgger: 'blur' }
         ],
-        country: [
+        sellerCountry: [
           { required: true, message: '请选择国家', tirgger: 'blur' }
         ],
         principal: [
-          // { required: true, message: '', tirgger: 'blur' }
+          // { required: true, message: '负责人', tirgger: 'blur' }
         ],
         sellerId: [
           { required: true, message: '请填写sellerId', tirgger: 'blur' }
         ],
         token: [
-          // { required: true, message: '', tirgger: 'blur' }
+          // { required: true, message: '请填写token', tirgger: 'blur' }
         ],
         secretKey: [
           // { required: true, message: '请填写secretKey', tirgger: 'blur' }
@@ -163,11 +164,16 @@ export default {
     async deleteHandler(selectIds) {
       const res = await deleteAccount(selectIds.join(','))
       console.log('res', res)
+      if (res && res.code === 200) {
+        this.actionCallback()
+      }
     },
     async updateHandler(selectIds) {
       const res = await getAccountById(selectIds[0])
       console.log('res', res)
-      this.setFormVal()
+      if (res && res.code === 200) {
+        this.setFormVal(res.data)
+      }
     },
     importHandler() {
       // todo 导入逻辑
@@ -199,6 +205,7 @@ export default {
         case actionCode.update:
           _this.dialogVisible = true
           _this.updateHandler(selectIds)
+          _this.selectIds = selectIds.join(',')
           break
         case actionCode.delete:
           _this.deleteHandler(selectIds)
@@ -230,9 +237,13 @@ export default {
     },
     submitForm(formName) {
       const _this = this
+      const apiRep = {
+        [actionCode.add]: addAccount,
+        [actionCode.update]: updateAccount
+      }
       _this.$refs[formName].validate((valid) => {
         if (valid) {
-          addAccount(_this[formName]).then(res => {
+          apiRep[_this.editStatus]({ id: _this.selectIds, data: _this[formName] }).then(res => {
             _this.actionCallback()
             _this.dialogVisible = false
             return true
