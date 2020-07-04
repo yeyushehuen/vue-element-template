@@ -65,10 +65,15 @@ export default {
     line-height: 48px;
     height: 48px;
     text-align: right;
-    position: sticky;
-    bottom: 0;
+    // position: sticky;
+    position: absolute;
+    bottom: 43px;
     cursor: pointer;
+    right: 1px;
+    padding: 0px 12px !important;
+    border: 1px solid #fff;
     transition: background .3s;
+    background-color: #000;
     -webkit-tap-highlight-color:transparent;
   }
 </style>

@@ -25,24 +25,24 @@
             >{{ actionTextConfig[code] || code }}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button @click="showDialog">大窗口自定义字段</el-button>
+        <!-- <el-button @click="showDialog">大窗口自定义字段</el-button>
         <el-dialog title="自定义字段" class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" width="666px" :visible.sync="dialogVisible" :before-close="handleClose">
           <div class="board">
             <CustomColumn :key="1" :list="hiddenColumns" :group="group" class="kanban todo" header-text="隐藏字段" />
             <CustomColumn :key="2" :list="showColumns" :group="group" class="kanban working" header-text="显示的字段" />
           </div>
-        </el-dialog>
+        </el-dialog> -->
         <el-popover
           v-model="visible"
           placement="bottom"
           width="666"
-          trigger="manual"
+          trigger="hover"
         >
           <div class="board">
             <CustomColumn :key="1" :list="hiddenColumns" :group="group" class="kanban todo" header-text="隐藏字段" />
             <CustomColumn :key="2" :list="showColumns" :group="group" class="kanban working" header-text="显示的字段" />
           </div>
-          <el-button slot="reference" @click="visible = !visible">小窗口自定义字段</el-button></el-button>
+          <el-button slot="reference" style="float: right; margin-bottom: 8px;" @click="visible = !visible">自定义字段</el-button></el-button>
         </el-popover>
       </div>
       <el-table
@@ -301,7 +301,7 @@ export default {
   justify-content: space-around;
   flex-direction: row;
   align-items: flex-start;
-  max-height: 600px;
+  max-height: 400px;
   overflow-y: auto;
 }
 .kanban {

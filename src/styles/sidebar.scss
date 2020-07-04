@@ -29,8 +29,12 @@
 
     .scrollbar-wrapper {
       overflow-x: hidden !important;
-      .el-scrollbar__view{
-        height: calc(100% - 89px);
+      // .el-scrollbar__view{
+      //   height: calc(100% - 89px);
+      // }
+      &.el-scrollbar__wrap{
+        // position: relative;
+        height: calc(100% - 52px);
       }
     }
 

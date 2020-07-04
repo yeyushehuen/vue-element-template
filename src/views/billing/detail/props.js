@@ -57,56 +57,73 @@ export default {
   columns: [
     {
       prop: '1',
-      label: '文件'
+      label: '文件',
+      width: 120,
+      render: () => '待处理'
     },
     // 格式化为字符串
     {
-      prop: '2',
-      label: '报表类型'
+      prop: 'reportTypeId',
+      label: '报表类型',
+      width: 120
     },
     {
-      prop: '3',
-      label: '部门'
+      prop: 'accountId',
+      label: '部门',
+      width: 120
     },
     {
-      prop: '4',
-      label: '国家'
+      prop: 'country',
+      label: '国家',
+      width: 120
     },
     {
       prop: '5',
-      label: '店铺名称'
+      label: '店铺名称',
+      width: 120
     },
     {
-      prop: '6',
-      label: '账单状态'
+      prop: 'paymentState',
+      label: '账单状态',
+      width: 120
     },
     {
-      prop: '7',
-      label: '开始时间'
+      prop: 'startDate',
+      label: '开始时间',
+      width: 120
     },
     {
-      prop: '8',
+      prop: 'endDate',
       label: '结束时间'
     },
     {
       prop: '9',
-      label: '生成时间'
+      label: '生成时间',
+      width: 120
     },
     {
-      prop: '10',
-      label: '审核状态'
+      prop: 'verifyState',
+      label: '审核状态',
+      width: 120
     },
     {
       prop: '11',
-      label: '审核人'
+      label: '审核人',
+      width: 120
     },
     {
-      prop: '12',
-      label: '审核时间'
+      prop: 'verifyTime',
+      label: '审核时间',
+      width: 120
     },
     {
       prop: '13',
-      label: '账单详情'
+      label: '账单详情',
+      width: 120
+    }, {
+      prop: 'createTime',
+      label: '创建时间',
+      width: 120
     }
   ]
 }

@@ -1,5 +1,5 @@
 <template>
-  <base-table :form-options="formOptions" :columns="columns">
+  <base-table :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns">
     <template slot="name" slot-scope="scope">
       {{ scope.$index }}
     </template>
