@@ -36,3 +36,19 @@ export const actionCode = {
   start: 'start',
   stop: 'stop'
 }
+
+/** 动作操作成功之后对应的提示信息 */
+export const successText = {
+  add: '新增成功',
+  update: '修改成功',
+  delete: '删除成功',
+  import: 'import',
+  export: 'export',
+  disable: '禁用成功',
+  enable: '启用成功',
+  translate: '转移成功',
+  view: 'view',
+  manualReport: 'manualReport',
+  start: '启动成功',
+  stop: '停止成功'
+}

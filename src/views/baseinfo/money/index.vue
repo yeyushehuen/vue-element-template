@@ -24,7 +24,7 @@
 
 <script>
 import BaseTable from '@/components/BaseTable'
-import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
+import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { addCurrency, deleteCurrency, getCurrencyById, updateCurrency } from '@/api/baseInfo'
 
@@ -58,12 +58,6 @@ export default {
     }
   },
   methods: {
-    clearFormVal() {
-      const _this = this
-      Object.keys(_this.moneyForm).forEach(key => {
-        _this.moneyForm[key] = ''
-      })
-    },
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.moneyForm).forEach(key => {
@@ -72,9 +66,11 @@ export default {
     },
     async deleteHandler(selectIds) {
       const res = await deleteCurrency(selectIds.join(','))
-      console.log('res', res)
       if (res && res.code === 200) {
         this.actionCallback()
+        this.$message.success('删除成功')
+      } else {
+        this.$message.error('删除失败')
       }
     },
     async updateHandler(selectIds) {
@@ -94,10 +90,10 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      // _this.clearFormVal()
       switch (type) {
         case actionCode.add: // 新增
           _this.dialogVisible = true
+          // _this.resetForm('moneyForm')
           break
         case actionCode.update: // 修改
           _this.dialogVisible = true
@@ -129,7 +125,9 @@ export default {
       _this.$refs[formName].validate((valid) => {
         if (valid) {
           apiRep[_this.editStatus]({ id: _this.selectIds, data: _this[formName] }).then(res => {
+            this.$message.success(successText[_this.editStatus])
             _this.actionCallback()
+            _this.$refs[formName].resetFields()
             _this.dialogVisible = false
             return true
           })

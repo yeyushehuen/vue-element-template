@@ -8,7 +8,7 @@
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`货币管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="rateForm" size="small" label-position="left" :model="rateForm" :rules="rules" label-width="80px">
         <el-form-item label="原币" prop="originCurrency">
-          <el-select v-model="rateForm.standardCurrency" style="width: 100%" placeholder="请选择本币">
+          <el-select v-model="rateForm.originCurrency" style="width: 100%" placeholder="请选择本币">
             <el-option v-for="option in selectOption.currencyDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
@@ -18,7 +18,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="汇率" prop="exchangeRate">
-          <el-input v-model="rateForm.exchangeRate" />
+          <el-input v-model="rateForm.exchangeRate" placeholder="请填写汇率，最多6位小数" />
         </el-form-item>
         <el-form-item label="生效时间" prop="effectTime">
           <el-date-picker v-model="rateForm.effectTime" value-format="yyyy-MM-dd HH:mm:ss" type="date" />
@@ -34,7 +34,7 @@
 
 <script>
 import BaseTable from '@/components/BaseTable'
-import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
+import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { currencyDropdown } from '@/api/common'
 import { toSelectOption } from '@/utils'
@@ -71,7 +71,8 @@ export default {
           { required: true, message: '请选择本币', trigger: 'blur' }
         ],
         exchangeRate: [
-          { required: true, message: '请填写汇率', trigger: 'blur' }
+          { required: true, message: '请填写汇率', trigger: 'blur' },
+          { pattern: /^\d+(\.\d{1,6})?$/, message: '只能填写数字，最多6位小数' }
         ],
         effectTime: [
           { required: true, message: '请选择生效时间', trigger: 'blur' }
@@ -85,13 +86,7 @@ export default {
   methods: {
     async getSelectOption() {
       const currencyDropdownRes = await currencyDropdown()
-      this.selectOption.currencyDropdown = toSelectOption(currencyDropdownRes, 'code', 'name')
-    },
-    clearFormVal() {
-      const _this = this
-      Object.keys(_this.rateForm).forEach(key => {
-        _this.rateForm[key] = ''
-      })
+      this.selectOption.currencyDropdown = toSelectOption(currencyDropdownRes.data, 'code', 'name')
     },
     setFormVal(defaultData = {}) {
       const _this = this
@@ -101,9 +96,11 @@ export default {
     },
     async deleteHandler(selectIds) {
       const res = await deleteExchangeRate(selectIds.join(','))
-      console.log('res', res)
       if (res && res.code === 200) {
         this.actionCallback()
+        this.$message.success('删除成功')
+      } else {
+        this.$message.error('删除失败')
       }
     },
     async updateHandler(selectIds) {
@@ -123,10 +120,10 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      // _this.clearFormVal()
       switch (type) {
         case actionCode.add: // 新增
           _this.dialogVisible = true
+          // _this.resetForm('rateForm')
           break
         case actionCode.update: // 修改
           _this.dialogVisible = true
@@ -158,7 +155,9 @@ export default {
       _this.$refs[formName].validate((valid) => {
         if (valid) {
           apiRep[_this.editStatus]({ id: _this.selectIds, data: _this[formName] }).then(res => {
+            this.$message.success(successText[_this.editStatus])
             _this.actionCallback()
+            _this.$refs[formName].resetFields()
             _this.dialogVisible = false
             return true
           })

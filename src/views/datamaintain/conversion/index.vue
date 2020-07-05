@@ -34,7 +34,7 @@
 
 <script>
 import BaseTable from '@/components/BaseTable'
-import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
+import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 const { formOptions, columns } = tableConfig
 
@@ -78,12 +78,6 @@ export default {
     }
   },
   methods: {
-    clearFormVal() {
-      const _this = this
-      Object.keys(_this.convertTypeForm).forEach(key => {
-        _this.convertTypeForm[key] = ''
-      })
-    },
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.convertTypeForm).forEach(key => {
@@ -105,10 +99,11 @@ export default {
     actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
-      // _this.clearFormVal()
+      _this.resetForm()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true
+          // _this.resetForm('convertTypeForm')
           break
         case actionCode.update:
           _this.dialogVisible = true

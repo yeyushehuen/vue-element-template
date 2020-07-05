@@ -3,7 +3,7 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'period', label: '期间' },
+      { prop: 'period', label: '期间', itemType: 'month' },
       { prop: 'sellerSku', label: 'Seller Sku' },
       { prop: 'category', label: '品类' },
       { prop: 'sku', label: 'SKU' },

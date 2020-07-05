@@ -71,9 +71,10 @@ export default {
     cursor: pointer;
     right: 1px;
     padding: 0px 12px !important;
-    border: 1px solid #fff;
+    // border: 1px solid #fff;
     transition: background .3s;
     background-color: #000;
+    box-shadow: 0 0 4px 1px #1b1b1b;
     -webkit-tap-highlight-color:transparent;
   }
 </style>

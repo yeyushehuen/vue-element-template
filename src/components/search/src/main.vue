@@ -61,6 +61,18 @@
           :picker-options="form.pickerOptions || {}"
         />
         <el-date-picker
+          v-else-if="form.itemType === 'month'"
+          v-model="params[form.modelValue]"
+          type="month"
+          :placeholder="form.placeholder || '请选择期间'"
+          :size="form.size ? form.size : size"
+          :disabled="form.disabled"
+          :readonly="form.readonly"
+          :editable="form.editable"
+          :style="itemStyle + (form.itemWidth ? `width: ${form.itemWidth}px;` : '')"
+          :picker-options="form.pickerOptions || {}"
+        />
+        <el-date-picker
           v-else-if="form.itemType === 'daterange'"
           v-model="params[form.modelValue]"
           :size="form.size ? form.size : size"

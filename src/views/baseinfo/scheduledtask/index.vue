@@ -8,7 +8,7 @@
 
 <script>
 import BaseTable from '@/components/BaseTable'
-import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
+import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 const { formOptions, columns } = tableConfig
 

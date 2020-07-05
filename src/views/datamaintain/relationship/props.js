@@ -4,42 +4,40 @@ export default {
     submitBtnText: '查询',
     forms: [
       { prop: 'asin', label: 'Asin' },
-      { prop: 'mobile', label: 'FNSku' },
+      { prop: 'fnSku', label: 'FNSku' },
       { prop: 'sellerSku', label: 'Seller Sku' },
-      { prop: 'mobilasdfe', label: '创建人' },
-      { prop: 'prodcutName', label: '产品名称' }
+      { prop: 'createUser', label: '创建人' },
+      { prop: 'productName', label: '产品名称' }
     ]
   },
   columns: [
     {
-      prop: 'name',
+      prop: 'period',
       label: '期间',
-      slotName: 'name',
       width: 150
     },
-    // 格式化为字符串
     {
-      prop: 'sex',
+      prop: 'asin',
       label: 'ASIN',
       width: 150
     },
     {
-      prop: 'age',
+      prop: 'sellerSku',
       label: 'Seller Sku',
       width: 150
     },
     {
-      prop: 'score',
+      prop: 'fnSku',
       label: 'FNSku',
       width: 150
     },
     {
-      prop: 'score',
+      prop: 'companySku',
       label: '公司型号',
       width: 150
     },
     {
-      prop: 'score',
+      prop: 'productName',
       label: '产品名称',
       width: 150
     },

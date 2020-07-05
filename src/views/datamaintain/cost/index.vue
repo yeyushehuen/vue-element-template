@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/exchangeRate/list" @dispatch="actionHandler">
+    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/skuCost/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -8,22 +8,22 @@
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`货币管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="skuCostForm" class="flex-form-wrapper" size="small" label-position="left" :model="skuCostForm" :rules="rules" label-width="80px">
         <el-form-item label="期间" prop="period">
-          <el-date-picker v-model="skuCostForm.period" value-format="yyyy-MM-dd HH:mm:ss" type="date" />
+          <el-date-picker v-model="skuCostForm.period" value-format="yyyy-MM" type="month" />
         </el-form-item>
         <el-form-item label="品类" prop="category">
-          <el-input v-model="skuCostForm.category" />
+          <el-input v-model="skuCostForm.category" placeholder="请填写品类" />
         </el-form-item>
         <el-form-item label="采购成本" prop="purchaseCost">
-          <el-input v-model="skuCostForm.purchaseCost" />
+          <el-input v-model="skuCostForm.purchaseCost" placeholder="请填写采购成本" />
         </el-form-item>
         <el-form-item label="头程运费" prop="headTripFee">
-          <el-input v-model="skuCostForm.headTripFee" />
+          <el-input v-model="skuCostForm.headTripFee" placeholder="请填写头程运费" />
         </el-form-item>
         <el-form-item label="转运运费" prop="transportFee">
-          <el-input v-model="skuCostForm.transportFee" />
+          <el-input v-model="skuCostForm.transportFee" placeholder="请填写转运运费" />
         </el-form-item>
         <el-form-item label="自发货运费" label-width="100" prop="selfShipmentFee">
-          <el-input v-model="skuCostForm.selfShipmentFee" />
+          <el-input v-model="skuCostForm.selfShipmentFee" placeholder="请填写自发货运费" />
         </el-form-item>
       </el-form>
       <span slot="footer">
@@ -36,10 +36,12 @@
 
 <script>
 import BaseTable from '@/components/BaseTable'
-import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
+import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { deleteSkuCost, addSkuCost, updateSkuCost, getSkuCostById } from '@/api/dataMaintain'
 const { formOptions, columns } = tableConfig
+
+const commonRules = { pattern: /^\d+(\.\d{1,6})?$/, message: '只能填写数字，最多6位小数' }
 
 export default {
   name: 'Rate',
@@ -70,16 +72,20 @@ export default {
           { required: true, message: '请填写品类', trigger: 'blur' }
         ],
         purchaseCost: [
-          { required: true, message: '请填写采购成本', trigger: 'blur' }
+          { required: true, message: '请填写采购成本', trigger: 'blur' },
+          commonRules
         ],
         headTripFee: [
-          { required: true, message: '请填写头程运费', trigger: 'blur' }
+          { required: true, message: '请填写头程运费', trigger: 'blur' },
+          commonRules
         ],
         transportFee: [
-          { required: true, message: '请填写转运运费', trigger: 'blur' }
+          { required: true, message: '请填写转运运费', trigger: 'blur' },
+          commonRules
         ],
         selfShipmentFee: [
-          { required: true, message: '请填写自发货运费', trigger: 'blur' }
+          { required: true, message: '请填写自发货运费', trigger: 'blur' },
+          commonRules
         ]
       }
     }
@@ -87,12 +93,6 @@ export default {
   mounted() {
   },
   methods: {
-    clearFormVal() {
-      const _this = this
-      Object.keys(_this.skuCostForm).forEach(key => {
-        _this.skuCostForm[key] = ''
-      })
-    },
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.skuCostForm).forEach(key => {
@@ -101,9 +101,11 @@ export default {
     },
     async deleteHandler(selectIds) {
       const res = await deleteSkuCost(selectIds.join(','))
-      console.log('res', res)
       if (res && res.code === 200) {
         this.actionCallback()
+        this.$message.success('删除成功')
+      } else {
+        this.$message.error('删除失败')
       }
     },
     async updateHandler(selectIds) {
@@ -123,10 +125,10 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      // _this.clearFormVal()
       switch (type) {
         case actionCode.add: // 新增
           _this.dialogVisible = true
+          // _this.resetForm('skuCostForm')
           break
         case actionCode.update: // 修改
           _this.dialogVisible = true
@@ -158,7 +160,9 @@ export default {
       _this.$refs[formName].validate((valid) => {
         if (valid) {
           apiRep[_this.editStatus]({ id: _this.selectIds, data: _this[formName] }).then(res => {
+            this.$message.success(successText[_this.editStatus])
             _this.actionCallback()
+            _this.$refs[formName].resetFields()
             _this.dialogVisible = false
             return true
           })
