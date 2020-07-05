@@ -1,4 +1,4 @@
-.emm-base-table-root{
+.emm-base-table-root {
   .base-table-search-form-wrapper,
   .base-table-wrapper,
   .base-table-pagination-wrapper {
@@ -35,7 +35,7 @@
         margin: -12px -12px 0 -12px;
         border-left: 1px solid RGB(238, 238, 238);
         margin-left: 10px;
-        .el-form-item{
+        .el-form-item {
           margin-bottom: 0;
         }
       }
@@ -47,11 +47,10 @@
         @media only screen and (max-width: 1000px) {
           flex: 0 0 50%;
         }
-    
-    
+
         padding-right: 12px;
         margin-bottom: 12px;
-        
+
         margin-right: 0;
         & {
           display: flex;
@@ -76,26 +75,72 @@
     .el-table__header th {
       background-color: #f6f7f9;
     }
+    .el-table__body-wrapper {
+      &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      &::-webkit-scrollbar-track {
+        width: 10px;
+        background: #f4f4f4;
+      }
+      &::-webkit-scrollbar-thumb {
+        width: 10px;
+        background: #cfd1d4;
+        // border-radius: 1px;
+      }
+      &::-webkit-scrollbar-corner {
+        background: #f4f4f4;
+      }
+      &:hover {
+        &::-webkit-scrollbar-thumb {
+          background: #cfd1d4;
+        }
+      }
+    }
     .el-table__body-wrapper .el-table__body {
       td {
         padding: 4px 0;
       }
     }
-    .base-table-action-wrapper{
+    .base-table-action-wrapper {
       margin-bottom: 8px;
     }
   }
 
   // pagination
-  .base-table-pagination-wrapper{
+  .base-table-pagination-wrapper {
     // margin-top: 10px;
     border-top: none;
     text-align: right;
     padding: 10px 12px;
     position: sticky;
     bottom: 0;
-    .is-background{
+    .is-background {
       font-weight: normal;
     }
   }
 }
+
+// scrollbar-width: thin;
+//     &::-webkit-scrollbar {
+//         width: 10px;
+//         height: 10px;
+//     }
+//     &::-webkit-scrollbar-track {
+//         width: 10px;
+//         background: #f4f4f4;
+//     }
+//     &::-webkit-scrollbar-thumb {
+//         width: 10px;
+//         background: #d5d7dc;
+//         // border-radius: 1px;
+//     }
+//     &::-webkit-scrollbar-corner {
+//         background: #f4f4f4;
+//     }
+//     &:hover {
+//         &::-webkit-scrollbar-thumb {
+//             background: #d5d7dc;
+//         }
+//     }
