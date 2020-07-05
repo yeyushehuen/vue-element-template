@@ -1,3 +1,24 @@
+import { deptDropdown, areaDropdown, leDropdown } from '@/api/common'
+
+const deptSelectConfig = {
+  itemType: 'select',
+  selectFetch: deptDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+}
+const countrySelectConfig = {
+  itemType: 'select',
+  selectFetch: areaDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.country })
+}
+const legalSelectConfig = {
+  itemType: 'select',
+  selectFetch: leDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.legalName })
+}
+
 export default {
   formOptions: {
     inline: true,
@@ -5,20 +26,13 @@ export default {
     forms: [
       { prop: 'name', label: '店铺名称' },
       {
-        prop: 'deptId', label: '销售部门', itemType: 'select',
-        options: []
+        prop: 'deptId', label: '销售部门', ...deptSelectConfig
       },
       {
-        prop: 'sellerCountry', label: '销售国家', itemType: 'select',
-        options: []
+        prop: 'sellerCountry', label: '销售国家', ...countrySelectConfig
       },
       {
-        prop: 'seller_legal_id', label: '销售主体', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
+        prop: 'sellerLegalId', label: '销售主体', ...legalSelectConfig
       },
       { prop: 'sellerId', label: 'seller ID' },
       { prop: 'principal', label: '负责人' },

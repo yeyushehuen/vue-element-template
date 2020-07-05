@@ -8,10 +8,10 @@
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`销售主体 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="entityForm" size="small" label-position="left" :model="entityForm" :rules="rules" label-width="80px">
         <el-form-item label="编码" prop="code">
-          <el-input v-model="entityForm.code" />
+          <el-input v-model="entityForm.code" placeholder="编码" />
         </el-form-item>
         <el-form-item label="名称" prop="legalName">
-          <el-input v-model="entityForm.legalName" />
+          <el-input v-model="entityForm.legalName" placeholder="名称" />
         </el-form-item>
         <el-form-item label="状态" prop="state">
           <el-select v-model="entityForm.state" style="width: 100%" placeholder="请选择状态">

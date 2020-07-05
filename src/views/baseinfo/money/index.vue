@@ -8,10 +8,10 @@
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`货币管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="moneyForm" size="small" label-position="left" :model="moneyForm" :rules="rules" label-width="80px">
         <el-form-item label="货币名称" prop="name">
-          <el-input v-model="moneyForm.name" />
+          <el-input v-model="moneyForm.name" placeholder="货币名称" />
         </el-form-item>
         <el-form-item label="标准代码" prop="code">
-          <el-input v-model="moneyForm.code" />
+          <el-input v-model="moneyForm.code" placeholder="标准代码" />
         </el-form-item>
       </el-form>
       <span slot="footer">

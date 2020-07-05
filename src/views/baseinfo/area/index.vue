@@ -18,8 +18,7 @@
         </el-form-item>
         <el-form-item label="货币名称" prop="currencyId">
           <el-select v-model="areaForm.currencyId" style="width: 100%" placeholder="请选择货币">
-            <el-option label="人民币" :value="1" />
-            <el-option label="人民币" :value="2" />
+            <el-option v-for="option in selectOption.currencyDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -36,6 +35,8 @@ import BaseTable from '@/components/BaseTable'
 import tableConfig from './props.js'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import { addArea, deleteArea, getAreaById, updateArea } from '@/api/baseInfo'
+import { currencyDropdown } from '@/api/common'
+import { toSelectOption } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -51,11 +52,14 @@ export default {
       actionTextConfig,
       actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export],
       actionCallback: () => {},
+      selectOption: {
+        currencyDropdown: []
+      },
       areaForm: {
         province: '',
         country: '',
         nameShort: '',
-        currency: ''
+        currencyId: ''
       },
       rules: {
         province: [
@@ -73,7 +77,14 @@ export default {
       }
     }
   },
+  mounted() {
+    this.getSelectOption()
+  },
   methods: {
+    async getSelectOption() {
+      const currencyDropdownRes = await currencyDropdown()
+      this.selectOption.currencyDropdown = toSelectOption(currencyDropdownRes.data, 'id', 'name')
+    },
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.areaForm).forEach(key => {

@@ -6,7 +6,7 @@
       </template>
     </base-table>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`组织管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
-      <el-form ref="depForm" size="small" label-position="left" :model="depForm" :rules="rules" label-width="80px">
+      <el-form ref="depForm" class="flex-form-wrapper" size="small" label-position="left" :model="depForm" :rules="rules" label-width="80px">
         <el-form-item label="编码" prop="code">
           <el-input v-model="depForm.code" placeholder="请填写编码" />
         </el-form-item>
@@ -14,7 +14,7 @@
           <el-input v-model="depForm.name" placeholder="请填写名称" />
         </el-form-item>
         <el-form-item label="是否实体中心" prop="domainLegal">
-          <el-select v-model="depForm.state" style="width: 100%" placeholder="请选择状态">
+          <el-select v-model="depForm.domainLegal" style="width: 100%" placeholder="请选择">
             <el-option label="是" value="Y" />
             <el-option label="否" value="N" />
           </el-select>

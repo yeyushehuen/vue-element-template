@@ -1,9 +1,18 @@
+import { currencyDropdown } from '@/api/common'
+
+const currencySelectConfig = {
+  params: {},
+  selectFetch: currencyDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+}
+
 export default {
   formOptions: {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'name', label: '币别' },
+      { prop: 'code', label: '币别', itemType: 'select', ...currencySelectConfig },
       { prop: 'effectTime', label: '生效时间', itemType: 'daterange' }
     ]
   },
@@ -12,7 +21,6 @@ export default {
       prop: 'originCurrency',
       label: '原币'
     },
-    // 格式化为字符串
     {
       prop: 'standardCurrency',
       label: '本币'

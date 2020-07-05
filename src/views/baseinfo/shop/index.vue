@@ -8,10 +8,10 @@
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`店铺管理 - ${actionTextConfig[editStatus]}`" width="800px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="shopForm" class="shop-modal-form" size="small" label-position="right" :inline="true" :model="shopForm" :rules="rules">
         <el-form-item label="店铺名称" prop="name">
-          <el-input v-model="shopForm.name" placeholder="请填写店铺名称" />
+          <el-input v-model="shopForm.name" placeholder="店铺名称" />
         </el-form-item>
         <el-form-item label="店铺简称" prop="nameShort">
-          <el-input v-model="shopForm.nameShort" :value="generateNameShort" placeholder="根据名称生成拼音" />
+          <el-input v-model="shopForm.nameShort" :value="generateNameShort" placeholder="店铺简称" />
         </el-form-item>
         <el-form-item label="销售部门" prop="deptId">
           <el-select v-model="shopForm.deptId" style="width: 100%" placeholder="请选择销售部门">

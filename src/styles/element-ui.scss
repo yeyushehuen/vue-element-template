@@ -122,6 +122,10 @@
 .flex-form-wrapper{
   .el-form-item{
     display: flex;
+    .el-form-item__label{
+      flex: 0 0 auto;
+      width: auto !important;
+    }
     .el-form-item__content{
       flex: 1 1 auto;
       margin: 0 !important;

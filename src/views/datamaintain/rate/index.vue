@@ -8,7 +8,7 @@
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`货币管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="rateForm" size="small" label-position="left" :model="rateForm" :rules="rules" label-width="80px">
         <el-form-item label="原币" prop="originCurrency">
-          <el-select v-model="rateForm.originCurrency" style="width: 100%" placeholder="请选择本币">
+          <el-select v-model="rateForm.originCurrency" style="width: 100%" placeholder="请选择原币">
             <el-option v-for="option in selectOption.currencyDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
@@ -86,7 +86,8 @@ export default {
   methods: {
     async getSelectOption() {
       const currencyDropdownRes = await currencyDropdown()
-      this.selectOption.currencyDropdown = toSelectOption(currencyDropdownRes.data, 'code', 'name')
+      const list = toSelectOption(currencyDropdownRes.data, 'code', 'name')
+      this.selectOption.currencyDropdown = list
     },
     setFormVal(defaultData = {}) {
       const _this = this
