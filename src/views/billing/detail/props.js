@@ -1,74 +1,65 @@
+import { areaDropdown, deptDropdown } from '@/api/common'
+
+const deptSelectConfig = {
+  params: {},
+  itemType: 'select',
+  selectFetch: deptDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+}
+
+const areaSelectConfig = {
+  params: {},
+  itemType: 'select',
+  selectFetch: areaDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.country })
+}
+
+const accountSelectConfig = {
+  // params: {},
+  itemType: 'select'
+  // selectFetch: areaDropdown,
+  // selectResultField: 'data',
+  // selectResultHandler: (item) => ({ value: item.id, label: item.name })
+}
+
 export default {
   formOptions: {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'name', label: '生成时间', itemType: 'date' },
+      { prop: 'createTime', label: '生成时间', itemType: 'date' },
+      { prop: 'countryId', label: '国家', itemType: 'select', ...areaSelectConfig },
+      { prop: 'accountId', label: '店铺', ...accountSelectConfig },
+      { prop: 'deptId', label: '部门', ...deptSelectConfig },
+      { prop: 'reportTypeId', label: '报表类型', itemType: 'select' },
+      { prop: 'paymentState', label: '账单状态' },
       {
-        prop: 'mobile', label: '国家', itemType: 'select',
+        prop: 'verifyState', label: '审核状态', itemType: 'select',
         options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      {
-        prop: 'testProps', label: '店铺', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      {
-        prop: 'mobilasdfe', label: '部门', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      {
-        prop: 'sex', label: '报表类型', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      {
-        prop: 'sex', label: '账单状态', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      {
-        prop: 'sexs', label: '审核状态', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
+          { value: '', label: '全部' },
+          { value: 'Y', label: '通过' },
+          { value: 'N', label: '驳回' }
         ]
       }
     ]
   },
   columns: [
     {
-      prop: '1',
+      prop: 'fileUpload',
       label: '文件',
-      width: 120,
-      render: () => '待处理'
+      width: 80,
+      align: 'center',
+      slotName: 'fileUpload'
     },
-    // 格式化为字符串
     {
       prop: 'reportTypeId',
       label: '报表类型',
       width: 120
     },
     {
-      prop: 'accountId',
+      prop: 'deptId',
       label: '部门',
       width: 120
     },
@@ -78,7 +69,7 @@ export default {
       width: 120
     },
     {
-      prop: '5',
+      prop: 'accountId',
       label: '店铺名称',
       width: 120
     },
@@ -97,7 +88,7 @@ export default {
       label: '结束时间'
     },
     {
-      prop: '9',
+      prop: 'createTime',
       label: '生成时间',
       width: 120
     },
@@ -107,7 +98,7 @@ export default {
       width: 120
     },
     {
-      prop: '11',
+      prop: 'verifyUser',
       label: '审核人',
       width: 120
     },
@@ -117,13 +108,11 @@ export default {
       width: 120
     },
     {
-      prop: '13',
+      prop: 'billingDetails',
       label: '账单详情',
-      width: 120
-    }, {
-      prop: 'createTime',
-      label: '创建时间',
-      width: 120
+      width: 80,
+      align: 'center',
+      slotName: 'billingDetails'
     }
   ]
 }

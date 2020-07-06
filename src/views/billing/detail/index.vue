@@ -1,27 +1,87 @@
 <template>
-  <base-table :form-options="formOptions" :columns="columns">
-    <template slot="name" slot-scope="scope">
-      {{ scope.$index }}
-    </template>
-  </base-table>
+  <div>
+    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/exchangeRate/list" @dispatch="actionHandler">
+      <template slot="billingDetails" slot-scope="scope">
+        <i class="el-icon-info" />
+      </template>
+      <template slot="fileUpload" slot-scope="scope">
+        <i class="el-icon-upload" />
+      </template>
+    </base-table>
+  </div>
 </template>
 
 <script>
 import BaseTable from '@/components/BaseTable'
+import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 const { formOptions, columns } = tableConfig
 
 export default {
-  name: 'Cost',
+  name: 'BillingDetail',
   components: { BaseTable },
   data() {
     return {
       formOptions: formOptions,
-      columns: columns
+      columns: columns,
+      actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, actionCode.import, actionCode.export],
+      dialogVisible: false,
+      editStatus: actionCode.add,
+      selectIds: '',
+      actionTextConfig,
+      actionCallback: () => {}
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    async deleteHandler(selectIds) {
+    },
+    async updateHandler(selectIds) {
+    },
+    importHandler() {
+      // todo 导入逻辑
+    },
+    exportHandler() {
+      // todo 导出逻辑
+    },
+    actionHandler(type, { selectIds, selectRows, callback }) {
+      const _this = this
+      _this.editStatus = type
+      _this.actionCallback = callback
+      switch (type) {
+        case actionCode.add: // 新增
+          _this.dialogVisible = true
+          // _this.resetForm('rateForm')
+          break
+        case actionCode.update: // 修改
+          _this.dialogVisible = true
+          _this.updateHandler(selectIds)
+          _this.selectIds = selectIds.join(',')
+          break
+        case actionCode.delete:
+          _this.deleteHandler(selectIds)
+          break
+        case actionCode.import:
+          _this.importHandler()
+          break
+        case actionCode.export:
+          _this.exportHandler()
+          break
+        default:
+          break
+      }
+    },
+    handleClose(done) {
+      done()
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.el-icon-upload,.el-icon-info{
+  font-size: 22px;
+  color: #1890ff;
+}
 </style>

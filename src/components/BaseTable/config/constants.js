@@ -19,7 +19,10 @@ export const actionTextConfig = {
   view: '一键查看',
   manualReport: '手动生成报表记录',
   start: '启动',
-  stop: '停止'
+  stop: '停止',
+  audit: '审核',
+  reviews: '反审核',
+  clear: '清除'
 }
 
 export const actionCode = {
@@ -34,7 +37,10 @@ export const actionCode = {
   view: 'view',
   manualReport: 'manualReport',
   start: 'start',
-  stop: 'stop'
+  stop: 'stop',
+  clear: 'clear',
+  audit: 'audit',
+  reviews: 'reviews'
 }
 
 /** 动作操作成功之后对应的提示信息 */

@@ -237,7 +237,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-        }, 0.5 * 1000)
+        }, 0.3 * 1000)
       })
     },
     searchHandler(values) {

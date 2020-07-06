@@ -6,6 +6,8 @@
 @import './btn.scss';
 html{
   @include scrollBar;
+
+  overflow-y: scroll;
 }
 body {
   height: 100%;
