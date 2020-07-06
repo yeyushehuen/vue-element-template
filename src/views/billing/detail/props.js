@@ -76,21 +76,23 @@ export default {
     {
       prop: 'paymentState',
       label: '账单状态',
-      width: 120
+      width: 120,
+      slotName: 'paymentState'
     },
     {
       prop: 'startDate',
       label: '开始时间',
-      width: 120
+      width: 150
     },
     {
       prop: 'endDate',
-      label: '结束时间'
+      label: '结束时间',
+      width: 150
     },
     {
       prop: 'createTime',
       label: '生成时间',
-      width: 120
+      width: 150
     },
     {
       prop: 'verifyState',
@@ -105,7 +107,7 @@ export default {
     {
       prop: 'verifyTime',
       label: '审核时间',
-      width: 120
+      width: 150
     },
     {
       prop: 'billingDetails',

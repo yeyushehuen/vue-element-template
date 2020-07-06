@@ -49,6 +49,7 @@ export default {
   background: #2b2f3a;
   text-align: left;
   padding: 0 16px;
+  text-align: center;
   overflow: hidden;
 
   & .sidebar-logo-link {

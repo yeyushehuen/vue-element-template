@@ -22,7 +22,7 @@ export function deptDropdown() {
   })
 }
 
-/** 法人下拉框 */
+/** 实体下拉框 */
 export function leDropdown() {
   return request({
     url: '/basic/leDropdown',

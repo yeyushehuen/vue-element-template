@@ -83,5 +83,6 @@ export default {
 .el-icon-upload,.el-icon-info{
   font-size: 22px;
   color: #1890ff;
+  vertical-align: bottom;
 }
 </style>

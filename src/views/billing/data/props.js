@@ -66,7 +66,7 @@ export default {
     { prop: '7', width: 150, label: '结算号' },
     { prop: '8', width: 150, label: '类型' },
     { prop: '9', width: 150, label: '订单号' },
-    { prop: '10', width: 150, label: ' seller SKU' },
+    { prop: '10', width: 150, label: 'Seller SKU' },
     { prop: '11', width: 150, label: '描述' },
     { prop: '12', width: 150, label: '数量' },
     { prop: '13', width: 150, label: '市场' },

@@ -18,11 +18,31 @@
             功能菜单<i class="el-icon-arrow-down el-icon--right" />
           </el-button>
           <el-dropdown-menu slot="dropdown" style="min-width: 116px">
-            <el-dropdown-item
-              v-for="(code, index) in actionCode"
-              :key="index"
-              :command="code"
-            >{{ actionTextConfig[code] || code }}</el-dropdown-item>
+            <template v-for="(code, index) in actionCode">
+              <el-dropdown-item
+                v-if="code !== codeRepo.import"
+                :key="index"
+                :command="code"
+              >{{ actionTextConfig[code] || code }}</el-dropdown-item>
+            </template>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown v-if="actionCode.indexOf('import') !== -1" size="small" type="primary" style="margin: 0 10px;">
+          <el-button type="primary">导入<i class="el-icon-arrow-down el-icon--right" /></el-button>
+          <el-dropdown-menu slot="dropdown" class="handleExcel">
+            <el-dropdown-item @command="上传文件">
+              <el-upload
+                class="upload-demo"
+                action=""
+                :auto-upload="true"
+                :show-file-list="false"
+                :http-request="uploadFile"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              >
+                <span size="small">上传文件</span>
+              </el-upload>
+            </el-dropdown-item>
+            <el-dropdown-item @command="下载模板" @click.native="handleDownTemplate">下载模板</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <!-- <el-button @click="showDialog">大窗口自定义字段</el-button>
@@ -89,7 +109,7 @@ import request from '@/utils/request'
 import { deleteNullProps, randomStr, deepClone } from '@/utils'
 import searchForm from '@/components/search/src/main'
 import CustomColumn from './components/CustomColumn'
-import { paginationConfig, actionTextConfig, actionCode } from './config/constants'
+import { paginationConfig, actionTextConfig, actionCode as codeRepo } from './config/constants'
 
 const mock = false
 
@@ -170,6 +190,7 @@ export default {
       visible: false,
       list: null,
       searchQuery: {},
+      codeRepo: codeRepo,
       actionTextConfig,
       hiddenColumns: [],
       showColumns: [],
@@ -249,7 +270,7 @@ export default {
       this.getList()
     },
     selectValidate(command) {
-      if (command === actionCode.add) {
+      if (command === codeRepo.add) {
         return true
       }
       const selection = this.getSelection()
@@ -261,7 +282,7 @@ export default {
         })
         return false
       }
-      if (command === actionCode.update && selectLen > 1) {
+      if (command === codeRepo.update && selectLen > 1) {
         this.$message('最多只能选择一条数据')
         return false
       }
@@ -286,6 +307,12 @@ export default {
     },
     handleClose(done) {
       done()
+    },
+    uploadFile() {},
+    handleDownTemplate() {
+      // 地址使用本地的地址 -- 需要切换
+      // window.location = getUrlConcatToken("http://localhost:8080/template/budgetTemplate.xlsx");
+      // window.location = getUrlConcatToken('http://ads-ui.qa.aukeyit.com/template/bmsBudgetTemplate.xlsx')
     }
   }
 }
