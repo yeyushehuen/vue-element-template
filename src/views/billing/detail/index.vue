@@ -1,13 +1,21 @@
 <template>
-  <div>
+  <div style="position: relative;">
     <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/exchangeRate/list" @dispatch="actionHandler">
       <template slot="billingDetails" slot-scope="scope">
-        <i class="el-icon-info" />
+        <i class="el-icon-info" @click="showDetail" />
       </template>
       <template slot="fileUpload" slot-scope="scope">
         <i class="el-icon-upload" />
       </template>
     </base-table>
+    <el-drawer
+      title="我是里面的"
+      :before-close="handleClose"
+      :modal-append-to-body="false"
+      :visible.sync="innerDrawer"
+    >
+      <p>_(:зゝ∠)_</p>
+    </el-drawer>
   </div>
 </template>
 
@@ -26,6 +34,7 @@ export default {
       columns: columns,
       actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, actionCode.import, actionCode.export],
       dialogVisible: false,
+      innerDrawer: false,
       editStatus: actionCode.add,
       selectIds: '',
       actionTextConfig,
@@ -71,6 +80,9 @@ export default {
         default:
           break
       }
+    },
+    showDetail() {
+      this.innerDrawer = true
     },
     handleClose(done) {
       done()

@@ -27,7 +27,7 @@
             </template>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-dropdown v-if="actionCode.indexOf('import') !== -1" size="small" type="primary" style="margin: 0 10px;">
+        <el-dropdown v-if="actionCode.indexOf('import') !== -1" placement="bottom-start" type="primary" style="margin: 0 10px;">
           <el-button type="primary">导入<i class="el-icon-arrow-down el-icon--right" /></el-button>
           <el-dropdown-menu slot="dropdown" class="handleExcel">
             <el-dropdown-item @command="上传文件">
@@ -65,18 +65,20 @@
           <el-button slot="reference" style="float: right; margin-bottom: 8px;" @click="visible = !visible">自定义字段</el-button></el-button>
         </el-popover>
       </div>
+      <!-- <div id="boxFixed" class="box_fixed" :class="{'is_fixed' : isFixed}">666</div> -->
       <el-table
         ref="multipleTable"
         v-loading="listLoading"
         size="mini"
         border
         fit
+        stripe
         style="width: 100%;"
         :data="list"
         v-bind="tableConfig"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="51" />
+        <el-table-column type="selection" width="41" />
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">
@@ -143,6 +145,10 @@ export default {
       type: String,
       default: ''
     },
+    validate: {
+      type: Boolean,
+      default: true
+    },
     // 表头数据
     columns: {
       type: Array,
@@ -188,6 +194,7 @@ export default {
       listLoading: true,
       dialogVisible: false,
       visible: false,
+      isFixed: false,
       list: null,
       searchQuery: {},
       codeRepo: codeRepo,
@@ -205,10 +212,17 @@ export default {
   created() {
     this.getList()
     this.showColumns = deepClone(this.$props.columns)
+    // window.addEventListener('scroll', this.initHeight)
+    // this.$nextTick(() => {
+    //   this.offsetTop = document.querySelector('#boxFixed').offsetTop
+    // })
   },
   mounted() {
-    const windowHeight = document.querySelector('div.sidebar-container')
-    this.tableHeight = windowHeight && windowHeight.clientHeight - 214
+    // const windowHeight = document.querySelector('div.sidebar-container')
+    // this.tableHeight = windowHeight && windowHeight.clientHeight - 214
+  },
+  destroyed() {
+    // window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
     handleSelectionChange(val, ...rest) {
@@ -234,7 +248,7 @@ export default {
     },
     higherSearchChange(status) {
       this.hideHigherSearch = status || false
-      const siderContainer = document.querySelector('div.sidebar-container')
+      const siderContainer = document.querySelector('div.scrollbar-wrapper.el-scrollbar__wrap')
       const formContainer = document.querySelector('div.base-table-search-form-wrapper')
       const windowHeight = siderContainer.clientHeight
       const formHeight = formContainer.clientHeight
@@ -244,8 +258,6 @@ export default {
       this.listLoading = true
       // 所有的查询参数都在这里获取
       const query = this.getQueryParams()
-      console.log('query', query)
-
       fetchList(this.api, query, this.columns).then(response => {
         console.log('response', response)
         const { list, total } = this.getResponse(response)
@@ -291,7 +303,7 @@ export default {
     },
     handleCommand(command) {
       const _this = this
-      if (!this.selectValidate(command)) {
+      if (_this.$props.validate && !this.selectValidate(command)) {
         return false
       }
       const selection = this.getSelection()
@@ -313,6 +325,10 @@ export default {
       // 地址使用本地的地址 -- 需要切换
       // window.location = getUrlConcatToken("http://localhost:8080/template/budgetTemplate.xlsx");
       // window.location = getUrlConcatToken('http://ads-ui.qa.aukeyit.com/template/bmsBudgetTemplate.xlsx')
+    },
+    initHeight() {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      this.isFixed = scrollTop > this.offsetTop
     }
   }
 }
@@ -348,4 +364,21 @@ export default {
   //   }
   // }
 }
+
+// .box_fixed{
+//     width: 500px;
+//     height: 40px;
+//     border: 2px dashed pink;
+//     border-radius: 20px;
+//     margin: 0 auto;
+//     line-height: 40px;
+//     background: #eee;
+//   }
+//   .is_fixed{
+//     position: fixed;
+//     top: 0;
+//     left: 50%;
+//     margin-left: -250px;
+//     z-index: 999;
+//   }
 </style>

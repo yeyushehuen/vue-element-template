@@ -8,7 +8,7 @@
     // border-radius: 2px;
     border: 1px solid RGB(238, 238, 238);
     // box-shadow: 0 4px 8px 0 #f0f0f0;
-    box-shadow: 0 0 4px #f0f0f0;
+    box-shadow: 0 0 4px 2px #f0f0f0;
   }
 
   // 搜索区域
@@ -87,7 +87,7 @@
       &::-webkit-scrollbar-thumb {
         width: 10px;
         background: #cfd1d4;
-        // border-radius: 1px;
+        border-radius: 5px;
       }
       &::-webkit-scrollbar-corner {
         background: #f7f8fb;
@@ -100,11 +100,18 @@
     }
     .el-table__body-wrapper .el-table__body {
       td {
-        padding: 4px 0;
+        padding: 3px 0;
       }
     }
     .base-table-action-wrapper {
       margin-bottom: 8px;
+    }
+    .el-table--striped .el-table__body tr.el-table__row--striped td {
+      background: #fafcff;
+    }
+    .el-checkbox__inner{
+      width: 16px;
+      height: 16px;
     }
   }
 

@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: '暖喵先生',
+      title: '猿人ERP',
       logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }
@@ -48,8 +48,8 @@ export default {
   line-height: 41px;
   background: #2b2f3a;
   text-align: left;
-  padding: 0 16px;
-  text-align: center;
+  padding-left: 16px;
+  // text-align: center;
   overflow: hidden;
 
   & .sidebar-logo-link {

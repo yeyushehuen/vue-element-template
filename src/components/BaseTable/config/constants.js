@@ -22,7 +22,11 @@ export const actionTextConfig = {
   stop: '停止',
   audit: '审核',
   reviews: '反审核',
-  clear: '清除'
+  clear: '清除',
+  setUp: '结账',
+  reconciliation: '重算',
+  summary: '汇总',
+  checkOut: '反结账'
 }
 
 export const actionCode = {
@@ -40,7 +44,11 @@ export const actionCode = {
   stop: 'stop',
   clear: 'clear',
   audit: 'audit',
-  reviews: 'reviews'
+  reviews: 'reviews',
+  setUp: 'setUp',
+  checkOut: 'checkOut',
+  reconciliation: 'reconciliation',
+  summary: 'summary'
 }
 
 /** 动作操作成功之后对应的提示信息 */
@@ -56,5 +64,9 @@ export const successText = {
   view: 'view',
   manualReport: 'manualReport',
   start: '启动成功',
-  stop: '停止成功'
+  stop: '停止成功',
+  setUp: 'setUp',
+  checkOut: 'checkOut',
+  reconciliation: 'reconciliation',
+  summary: 'summary'
 }

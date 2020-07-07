@@ -1,5 +1,5 @@
 module.exports = {
-  title: '猿人',
+  title: '猿人ERP',
 
   /**
    * @type {boolean} true | false

@@ -70,8 +70,8 @@ export default {
     },
     {
       prop: 'accountId',
-      label: '店铺名称',
-      width: 120
+      label: '店铺名称'
+      // width: 120
     },
     {
       prop: 'paymentState',
