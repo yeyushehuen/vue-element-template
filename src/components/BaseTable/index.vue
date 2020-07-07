@@ -78,7 +78,7 @@
         v-bind="tableConfig"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="41" />
+        <el-table-column type="selection" align="center" width="41" />
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">

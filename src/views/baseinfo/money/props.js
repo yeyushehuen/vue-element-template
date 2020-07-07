@@ -1,3 +1,7 @@
+const format = (...rest) => {
+  console.log('rest', rest)
+}
+
 export default {
   formOptions: {
     inline: true,
@@ -5,12 +9,7 @@ export default {
     forms: [
       { prop: 'name', label: '货币名称' },
       { prop: 'code', label: '标准代码' },
-      { prop: 'code', label: '标准代码' },
-      { prop: 'code', label: '标准代码' },
-      { prop: 'code', label: '标准代码' },
-      { prop: 'code', label: '标准代码' },
-      { prop: 'code', label: '标准代码' },
-      { prop: 'testProps', label: '创建时间', itemType: 'daterange' }
+      { prop: 'testProps', label: '创建时间', itemType: 'daterange', format }
     ]
   },
   columns: [
