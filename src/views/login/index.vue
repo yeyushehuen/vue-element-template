@@ -6,7 +6,7 @@
         <h3 class="title">
           {{ $t('login.title') }}
         </h3>
-        <lang-select class="set-language" />
+        <!-- <lang-select class="set-language" /> -->
       </div>
 
       <el-form-item prop="username">
@@ -52,7 +52,7 @@
         {{ $t('login.logIn') }}
       </el-button>
 
-      <div style="position:relative">
+      <!-- <div style="position:relative">
         <div class="tips">
           <span>{{ $t('login.username') }} : admin</span>
           <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
@@ -67,7 +67,7 @@
         <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
           {{ $t('login.thirdparty') }}
         </el-button>
-      </div>
+      </div> -->
     </el-form>
 
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
@@ -263,7 +263,10 @@ $light_gray:#eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-color: $light_gray;
+  // background: url('../../assets/logo-back.jpg') no-repeat;
+  background: $light_gray url('../../assets/logo-back.jpg') no-repeat fixed center;
+  background-size: 100%;
   overflow: hidden;
 
   .login-form {

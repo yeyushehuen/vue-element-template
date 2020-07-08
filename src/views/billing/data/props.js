@@ -4,8 +4,8 @@ export default {
     submitBtnText: '查询',
     forms: [
       { prop: 'name', label: '订单号' },
-      { prop: 'name', label: '期间', itemType: 'date' },
-      { prop: 'mobile', label: '账单时间', itemType: 'daterange' },
+      { prop: 'name', label: '期间', itemType: 'month' },
+      { prop: 'mobile', label: '账单时间', itemType: 'monthrange' },
       {
         prop: 'mobile', label: '国家', itemType: 'select',
         options: [
@@ -38,22 +38,8 @@ export default {
           { value: 1, label: 'Female' }
         ]
       },
-      {
-        prop: 'sex', label: '账单类型', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      {
-        prop: 'sex', label: '转换类型', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      }
+      { prop: 'sex', label: '账单类型' },
+      { prop: 'sex', label: '转换类型' }
     ]
   },
   columns: [
@@ -108,7 +94,7 @@ export default {
     { prop: '48', width: 150, label: '广告费税费(原币)' },
     { prop: '49', width: 150, label: '转款(原币)' },
     { prop: '50', width: 150, label: '信用卡扣款(原币)' },
-    { prop: '51', width: 150, label: '货币' },
+    { prop: '51', width: 150, label: '币别' },
     { prop: '52', width: 150, label: '汇率' },
     { prop: '53', width: 150, label: '订单收入(本位币)' },
     { prop: '54', width: 150, label: '销售收入(本位币)' },
@@ -129,6 +115,6 @@ export default {
     { prop: '69', width: 150, label: '采购成本' },
     { prop: '70', width: 150, label: '头程运费' },
     { prop: '71', width: 150, label: '转运运费' },
-    { prop: '72', width: 150, label: '自发货' }
+    { prop: '72', width: 150, label: '自发货运费' }
   ]
 }

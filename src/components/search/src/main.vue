@@ -73,6 +73,17 @@
           :picker-options="form.pickerOptions || {}"
         />
         <el-date-picker
+          v-else-if="form.itemType === 'monthrange'"
+          v-model="params[form.modelValue]"
+          type="monthrange"
+          align="right"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始月份"
+          end-placeholder="结束月份"
+          :picker-options="form.pickerOptions || {}"
+        />
+        <el-date-picker
           v-else-if="form.itemType === 'daterange'"
           v-model="params[form.modelValue]"
           :size="form.size ? form.size : size"

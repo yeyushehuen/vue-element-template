@@ -45,6 +45,7 @@
             <el-dropdown-item @command="下载模板" @click.native="handleDownTemplate">下载模板</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+        <!-- 自定义字段例子 -->
         <!-- <el-button @click="showDialog">大窗口自定义字段</el-button>
         <el-dialog title="自定义字段" class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" width="666px" :visible.sync="dialogVisible" :before-close="handleClose">
           <div class="board">
@@ -52,6 +53,7 @@
             <CustomColumn :key="2" :list="showColumns" :group="group" class="kanban working" header-text="显示的字段" />
           </div>
         </el-dialog> -->
+        <!-- 自定义字段例子 -->
         <el-popover
           v-model="visible"
           placement="bottom"
@@ -62,9 +64,10 @@
             <CustomColumn :key="1" :list="hiddenColumns" :group="group" class="kanban todo" header-text="隐藏字段" />
             <CustomColumn :key="2" :list="showColumns" :group="group" class="kanban working" header-text="显示的字段" />
           </div>
-          <el-button slot="reference" style="float: right; margin-bottom: 8px;" @click="visible = !visible">自定义字段</el-button></el-button>
+          <!-- <el-button slot="reference" style="float: right; margin-bottom: 8px;" @click="visible = !visible">自定义字段</el-button></el-button> -->
         </el-popover>
       </div>
+      <!-- 吸顶例子 -->
       <!-- <div id="boxFixed" class="box_fixed" :class="{'is_fixed' : isFixed}">666</div> -->
       <el-table
         ref="multipleTable"

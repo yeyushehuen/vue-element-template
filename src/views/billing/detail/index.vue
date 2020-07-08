@@ -5,16 +5,35 @@
         <i class="el-icon-info" @click="showDetail" />
       </template>
       <template slot="fileUpload" slot-scope="scope">
-        <i class="el-icon-upload" />
+        <el-upload
+          class="upload-demo"
+          action=""
+          :auto-upload="true"
+          :show-file-list="false"
+          :http-request="uploadFile"
+          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+        >
+          <i class="el-icon-upload" />
+        </el-upload>
       </template>
     </base-table>
     <el-drawer
-      title="我是里面的"
+      title="账单详情"
       :before-close="handleClose"
       :modal-append-to-body="false"
       :visible.sync="innerDrawer"
     >
-      <p>_(:зゝ∠)_</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
+      <p>一百万一百万一百万一百万一百万一百万</p>
     </el-drawer>
   </div>
 </template>
@@ -86,7 +105,8 @@ export default {
     },
     handleClose(done) {
       done()
-    }
+    },
+    uploadFile() {}
   }
 }
 </script>
