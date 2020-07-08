@@ -105,6 +105,29 @@
     }
     .base-table-action-wrapper {
       margin-bottom: 8px;
+      background: rgb(240,240,240);
+      background: linear-gradient(0deg, #f6f7f9 0%, #c5dcfb87 50%, #f6f7f9 100%);
+      >span{
+        cursor: pointer;
+        padding: 0 16px;
+        display: inline-block;
+        height: 36px;
+        line-height: 36px;
+
+        &+span{
+          border-left: 1px solid #ddd;
+        }
+
+        &:hover{
+          background: rgb(240,240,240);
+          background: linear-gradient(0deg, #f6f7f9 0%, #c5dcfb 50%, #f6f7f9 100%);
+        }
+
+        .import-button{
+          height: 36px;
+          line-height: 36px;
+        }
+      }
     }
     .el-table--striped .el-table__body tr.el-table__row--striped td {
       background: #fafcff;

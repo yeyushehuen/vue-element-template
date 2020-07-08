@@ -236,7 +236,7 @@ $navActiveBg: mix(#f0f2f5, #fff, 60%);
         // border-color: #1890ff;
         &::before {
           content: '';
-          background: #fff;
+          background: #188fff41;
           display: inline-block;
           width: 8px;
           height: 8px;

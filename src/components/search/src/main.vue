@@ -11,8 +11,8 @@
     <div class="search-input-area" :class="{ hideHigherSearch: isHide }">
       <el-form-item
         v-for="(form, index) in computedForms"
-        :key="index"
-        :prop="form.itemType != 'daterange' ? form.prop : (datePrefix + index)"
+        :key="form.prop"
+        :prop="form.prop"
         :label="form.label"
         :rules="form.rules || []"
         :label-width="form.labelWidth ? (form.labelWidth + 'px') : ''"
@@ -96,7 +96,6 @@
           end-placeholder="结束日期"
           :style="itemStyle + (form.itemWidth ? `width: ${form.itemWidth}px;` : '')"
           :picker-options="form.pickerOptions || {}"
-          @change="date => changeDate(date, form.prop[0], form.prop[1])"
         />
       </el-form-item>
     </div>
@@ -154,23 +153,24 @@ export default {
         if (v.format) {
           format[v.prop] = v.format
         }
-      } else if (
-        propType === 'object' &&
-        Object.prototype.toString.call(v.prop) === '[object Array]'
-      ) {
-        v.prop.forEach(vv => {
-          params[vv] = ''
-          if (v.format) {
-            format[vv] = v.format
-          }
+      }
+      // else if (
+      //   propType === 'object' &&
+      //   Object.prototype.toString.call(v.prop) === '[object Array]'
+      // ) {
+      //   v.prop.forEach(vv => {
+      //     params[vv] = ''
+      //     if (v.format) {
+      //       format[vv] = v.format
+      //     }
 
-          fuzzyOps[vv] = v.fuzzy ? v.fuzzy : fuzzy
-        })
-      }
-      if (v.itemType === 'daterange') {
-        params[datePrefix + i] = ''
-        v.modelValue = datePrefix + i
-      }
+      //     fuzzyOps[vv] = v.fuzzy ? v.fuzzy : fuzzy
+      //   })
+      // }
+      // if (v.itemType === 'daterange') {
+      //   params[datePrefix + i] = ''
+      //   v.modelValue = datePrefix + i
+      // }
       if (v.itemType === 'select' && (v.selectFetch || v.selectUrl)) {
         const dataKey = selectOptionPrefix + i
         dataObj.selectOptions[dataKey] = []
@@ -195,7 +195,6 @@ export default {
         })
       }
     })
-
     return {
       params,
       datePrefix,
@@ -252,6 +251,7 @@ export default {
         if (!error) {
           const { submitHandler } = this
           if (submitHandler) {
+            console.log('submitHandler', params)
             submitHandler(params)
           } else {
             throw new Error('Need to set attribute: submitHandler !')
@@ -265,15 +265,23 @@ export default {
     getParams(callback) {
       this.$refs['form'].validate(valid => {
         if (valid) {
-          const { params, datePrefix, format } = this
-          console.log('params', params)
-
+          // const { params, datePrefix, format } = this
+          const { params, format } = this
           const formattedForm = {}
           Object.keys(params).forEach(v => {
-            if (v.indexOf(datePrefix) === -1) {
-              formattedForm[v] = format[v]
-                ? format[v](params[v], v)
-                : params[v]
+            // if (v.indexOf(datePrefix) === -1) {
+            //   formattedForm[v] = format[v]
+            //     ? format[v](params[v], v)
+            //     : params[v]
+            // }
+            if (typeof format[v] === 'function') {
+              const formatedValues = format[v](params[v], v)
+              // formattedForm[v] = formatedValues
+              Object.keys(formatedValues).forEach(key => {
+                formattedForm[key] = formatedValues[key]
+              })
+            } else {
+              formattedForm[v] = params[v]
             }
           })
           if (callback) callback(null, formattedForm)

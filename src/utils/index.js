@@ -413,3 +413,20 @@ export function toSelectOption(sourceData = [], valueKey, labelKey) {
   return sourceData.map(item => ({ value: `${item[valueKey] || ''}`, label: item[labelKey] }))
 }
 
+export function dateRangeFormat(values, name) {
+  if (isArray(values)) {
+    const [startTime, endTime] = values
+    return { startTime: parseTime(startTime, '{y}-{m}-{d}'), endTime: parseTime(endTime, '{y}-{m}-{d}') }
+  }
+
+  return values
+}
+
+export function monthRangeFormat(values, name) {
+  if (isArray(values)) {
+    const [startTime, endTime] = values
+    return { startTime: parseTime(startTime, '{y}-{m}'), endTime: parseTime(endTime, '{y}-{m}') }
+  }
+
+  return values
+}

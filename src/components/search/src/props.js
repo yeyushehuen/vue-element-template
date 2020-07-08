@@ -108,3 +108,6 @@ function sizeValidator(value) {
 //   }
 //   return valid
 // }
+
+// :prop="form.itemType != 'daterange' ? form.prop : (datePrefix + index)"
+// @change="date => changeDate(date, form.prop[0], form.prop[1])"

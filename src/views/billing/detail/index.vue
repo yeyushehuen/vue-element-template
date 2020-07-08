@@ -5,6 +5,9 @@
         <i class="el-icon-info" @click="showDetail" />
       </template>
       <template slot="fileUpload" slot-scope="scope">
+        <i class="el-icon-download" />
+      </template>
+      <template slot="paymentState" slot-scope="scope">
         <el-upload
           class="upload-demo"
           action=""
@@ -112,8 +115,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-icon-upload,.el-icon-info{
-  font-size: 22px;
+.el-icon-upload,.el-icon-info,.el-icon-download{
+  font-size: 20px;
   color: #1890ff;
   vertical-align: bottom;
 }

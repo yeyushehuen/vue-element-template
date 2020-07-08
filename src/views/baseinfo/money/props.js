@@ -1,6 +1,4 @@
-const format = (...rest) => {
-  console.log('rest', rest)
-}
+import { dateRangeFormat } from '@/utils'
 
 export default {
   formOptions: {
@@ -9,7 +7,7 @@ export default {
     forms: [
       { prop: 'name', label: '货币名称' },
       { prop: 'code', label: '标准代码' },
-      { prop: 'createTime', label: '创建时间', itemType: 'daterange', format }
+      { prop: 'createTime', label: '创建时间', itemType: 'daterange', format: dateRangeFormat }
     ]
   },
   columns: [

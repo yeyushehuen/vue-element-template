@@ -263,10 +263,9 @@ $light_gray:#eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $light_gray;
-  // background: url('../../assets/logo-back.jpg') no-repeat;
-  background: $light_gray url('../../assets/logo-back.jpg') no-repeat fixed center;
-  background-size: 100%;
+  background-color: $bg;
+  // background: $light_gray url('../../assets/login-back.svg') no-repeat fixed center;
+  // background-size: 100%;
   overflow: hidden;
 
   .login-form {

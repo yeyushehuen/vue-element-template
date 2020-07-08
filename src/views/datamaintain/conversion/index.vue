@@ -1,24 +1,24 @@
 <template>
   <div>
-    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/dept/list" @dispatch="actionHandler">
+    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/typeChange/list" @dispatch="actionHandler">
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
     </base-table>
 
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`Type类型转换 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
-      <el-form ref="convertTypeForm" size="small" label-position="left" :model="convertTypeForm" :rules="rules" label-width="80px">
-        <el-form-item label="type" prop="type1">
-          <el-input v-model="convertTypeForm.type1" placeholder="请填写type" />
+      <el-form ref="convertTypeForm" class="flex-form-wrapper" size="small" label-position="left" :model="convertTypeForm" :rules="rules" label-width="80px">
+        <el-form-item label="类型" prop="type">
+          <el-input v-model="convertTypeForm.type" placeholder="请填写type" />
         </el-form-item>
-        <el-form-item label="抓换类型" prop="type2">
-          <el-input v-model="convertTypeForm.type2" placeholder="请填写" />
+        <el-form-item label="转换类型" prop="changeType">
+          <el-input v-model="convertTypeForm.changeType" placeholder="请填写" />
         </el-form-item>
-        <el-form-item label="转换类型-细分类" prop="type3">
-          <el-input v-model="convertTypeForm.type3" placeholder="请填写" />
+        <el-form-item label="转换类型-细分类" prop="changeDetail">
+          <el-input v-model="convertTypeForm.changeDetail" placeholder="请填写" />
         </el-form-item>
-        <el-form-item label="国家" prop="country">
-          <el-select v-model="convertTypeForm.country" style="width: 100%" placeholder="请选择状态">
+        <el-form-item label="国家" prop="areaId">
+          <el-select v-model="convertTypeForm.areaId" style="width: 100%" placeholder="请选择国家">
             <el-option label="中国" :value="1" />
             <el-option label="俄罗斯" :value="2" />
           </el-select>
@@ -36,6 +36,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
+import { addTypeConversion, updateTypeConversion, getTypeConversionById, deleteTypeConversion } from '../../../api/dataMaintain'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -56,23 +57,25 @@ export default {
       editStatus: actionCode.add,
       selectIds: '',
       actionTextConfig,
+      actionCallback: () => {},
       convertTypeForm: {
-        type1: '',
-        type2: '',
-        type3: ''
+        type: '',
+        changeType: '',
+        changeDetail: '',
+        areaId: ''
       },
       rules: {
-        type1: [
-          { required: true, message: '请填写', trigger: 'blur' }
+        type: [
+          { required: true, message: '请填写类型', trigger: 'blur' }
         ],
-        type2: [
-          { required: true, message: '请填写', trigger: 'blur' }
+        changeType: [
+          { required: true, message: '请填写转换类型', trigger: 'blur' }
         ],
-        type3: [
-          { required: true, message: '请填写', trigger: 'blur' }
+        changeDetail: [
+          { required: true, message: '请填写细分类', trigger: 'blur' }
         ],
-        country: [
-          { required: true, message: '请选择', trigger: 'blur' }
+        areaId: [
+          { required: true, message: '请选择国家', trigger: 'blur' }
         ]
       }
     }
@@ -85,10 +88,20 @@ export default {
       })
     },
     async deleteHandler(selectIds) {
-      // todo 校验删除逻辑
+      const res = await deleteTypeConversion(selectIds.join(','))
+      if (res && res.code === 200) {
+        this.actionCallback()
+        this.$message.success('删除成功')
+      } else {
+        this.$message.error('删除失败')
+      }
     },
     async updateHandler(selectIds) {
-      this.setFormVal()
+      const res = await getTypeConversionById(selectIds[0])
+      console.log('res', res)
+      if (res && res.code === 200) {
+        this.setFormVal(res.data)
+      }
     },
     importHandler() {
       // todo 导入逻辑
@@ -99,7 +112,6 @@ export default {
     actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
-      _this.resetForm()
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true
@@ -107,6 +119,8 @@ export default {
           break
         case actionCode.update:
           _this.dialogVisible = true
+          _this.updateHandler(selectIds)
+          _this.selectIds = selectIds.join(',')
           break
         case actionCode.delete:
           _this.deleteHandler(selectIds)
@@ -125,9 +139,20 @@ export default {
       done()
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      const _this = this
+      const apiRep = {
+        [actionCode.add]: addTypeConversion,
+        [actionCode.update]: updateTypeConversion
+      }
+      _this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          apiRep[_this.editStatus]({ id: _this.selectIds, data: _this[formName] }).then(res => {
+            this.$message.success(successText[_this.editStatus])
+            _this.actionCallback()
+            _this.$refs[formName].resetFields()
+            _this.dialogVisible = false
+            return true
+          })
         } else {
           console.log('error submit!!')
           return false

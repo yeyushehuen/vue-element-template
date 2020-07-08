@@ -13,7 +13,7 @@
 
     <div class="base-table-wrapper">
       <div>
-        <el-dropdown v-if="actionCode && actionCode.length > 0" placement="bottom-start" class="base-table-action-wrapper" @command="handleCommand">
+        <!-- <el-dropdown v-if="actionCode && actionCode.length > 0" placement="bottom-start" class="base-table-action-wrapper" @command="handleCommand">
           <el-button>
             功能菜单<i class="el-icon-arrow-down el-icon--right" />
           </el-button>
@@ -26,25 +26,33 @@
               >{{ actionTextConfig[code] || code }}</el-dropdown-item>
             </template>
           </el-dropdown-menu>
-        </el-dropdown>
-        <el-dropdown v-if="actionCode.indexOf('import') !== -1" placement="bottom-start" type="primary" style="margin: 0 10px;">
-          <el-button type="primary">导入<i class="el-icon-arrow-down el-icon--right" /></el-button>
-          <el-dropdown-menu slot="dropdown" class="handleExcel">
-            <el-dropdown-item @command="上传文件">
-              <el-upload
-                class="upload-demo"
-                action=""
-                :auto-upload="true"
-                :show-file-list="false"
-                :http-request="uploadFile"
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              >
-                <span size="small">上传文件</span>
-              </el-upload>
-            </el-dropdown-item>
-            <el-dropdown-item @command="下载模板" @click.native="handleDownTemplate">下载模板</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        </el-dropdown> -->
+
+        <div class="base-table-action-wrapper">
+          <template v-for="(code) in actionCode">
+            <span v-if="code !== codeRepo.import" :key="code" @click="handleCommand(code)">{{ actionTextConfig[code] || code }}</span>
+          </template>
+          <span v-if="actionCode.indexOf('import') !== -1">
+            <el-dropdown placement="bottom-start" type="primary" style="margin: 0 10px;">
+              <el-button>导入<i class="el-icon-arrow-down el-icon--right" /></el-button>
+              <el-dropdown-menu slot="dropdown" class="handleExcel">
+                <el-dropdown-item @command="上传文件">
+                  <el-upload
+                    class="upload-demo"
+                    action=""
+                    :auto-upload="true"
+                    :show-file-list="false"
+                    :http-request="uploadFile"
+                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  >
+                    <span size="small">上传文件</span>
+                  </el-upload>
+                </el-dropdown-item>
+                <el-dropdown-item @command="下载模板" @click.native="handleDownTemplate">下载模板</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </span>
+        </div>
         <!-- 自定义字段例子 -->
         <!-- <el-button @click="showDialog">大窗口自定义字段</el-button>
         <el-dialog title="自定义字段" class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" width="666px" :visible.sync="dialogVisible" :before-close="handleClose">

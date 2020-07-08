@@ -2,34 +2,34 @@ import request from '@/utils/request'
 
 /** ******************** type类型转换 *********************/
 /* 新增 */
-export function addType({ data } = {}) {
+export function addTypeConversion({ data } = {}) {
   return request({
-    url: '/type/add',
+    url: '/typeChange/add',
     method: 'post',
     data
   })
 }
 /* 修改 */
-export function updateCurrency({ id, data } = {}) {
+export function updateTypeConversion({ id, data } = {}) {
   debugger
   return request({
-    url: `/type/edit`,
+    url: `/typeChange/edit`,
     method: 'put',
     data: { id, ...data }
   })
 }
 /* 删除 */
-export function deleteCurrency(id) {
+export function deleteTypeConversion(id) {
   return request({
-    url: `/type/remove`,
+    url: `/typeChange/remove`,
     method: 'delete',
     data: { id }
   })
 }
 /** 获取修改详情 */
-export function getCurrencyById(id) {
+export function getTypeConversionById(id) {
   return request({
-    url: '/type/getById',
+    url: '/typeChange/getById',
     method: 'get',
     params: { id }
   })

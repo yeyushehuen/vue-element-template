@@ -1,3 +1,5 @@
+import { monthRangeFormat } from '@/utils'
+
 export default {
   formOptions: {
     inline: true,
@@ -5,7 +7,7 @@ export default {
     forms: [
       { prop: 'name', label: '订单号' },
       { prop: 'name', label: '期间', itemType: 'month' },
-      { prop: 'mobile', label: '账单时间', itemType: 'monthrange' },
+      { prop: 'mobile', label: '账单时间', itemType: 'monthrange', format: monthRangeFormat },
       {
         prop: 'mobile', label: '国家', itemType: 'select',
         options: [
