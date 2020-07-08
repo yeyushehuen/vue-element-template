@@ -34,7 +34,7 @@
           </template>
           <span v-if="actionCode.indexOf('import') !== -1">
             <el-dropdown placement="bottom-start" type="primary" style="margin: 0 10px;">
-              <el-button>导入<i class="el-icon-arrow-down el-icon--right" /></el-button>
+              <span style="display: inline-block;height: 36px; line-height: 36px; font-size: 16px;color: #333;">导入<i class="el-icon-arrow-down el-icon--right" /></span>
               <el-dropdown-menu slot="dropdown" class="handleExcel">
                 <el-dropdown-item @command="上传文件">
                   <el-upload
