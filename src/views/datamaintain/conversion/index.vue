@@ -50,8 +50,8 @@ export default {
         actionCode.add,
         actionCode.update,
         actionCode.delete,
-        actionCode.import,
-        actionCode.export
+        actionCode.export,
+        actionCode.import
       ],
       dialogVisible: false,
       editStatus: actionCode.add,
@@ -112,6 +112,7 @@ export default {
     actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
       _this.editStatus = type
+      _this.actionCallback = callback
       switch (type) {
         case actionCode.add:
           _this.dialogVisible = true

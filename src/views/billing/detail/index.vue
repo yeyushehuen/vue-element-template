@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative;">
-    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/exchangeRate/list" @dispatch="actionHandler">
+    <base-table :action-code="actionCode" :import-config="importConfig" :form-options="formOptions" :columns="columns" api="/paymentReport/list" @dispatch="actionHandler">
       <template slot="billingDetails" slot-scope="scope">
         <i class="el-icon-info" @click="showDetail" />
       </template>
@@ -20,24 +20,6 @@
         </el-upload>
       </template>
     </base-table>
-    <el-drawer
-      title="账单详情"
-      :before-close="handleClose"
-      :modal-append-to-body="false"
-      :visible.sync="innerDrawer"
-    >
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-      <p>一百万一百万一百万一百万一百万一百万</p>
-    </el-drawer>
   </div>
 </template>
 
@@ -45,6 +27,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
+import { paymentReportUnverify, paymentReportVerify } from '../../../api/bill'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -54,21 +37,31 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, actionCode.import, actionCode.export],
-      dialogVisible: false,
+      actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, actionCode.export, actionCode.import],
       innerDrawer: false,
       editStatus: actionCode.add,
       selectIds: '',
       actionTextConfig,
-      actionCallback: () => {}
+      actionCallback: () => {},
+      importConfig: {
+        action: '/paymentReport/upload',
+        importAccept: '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
+      }
     }
   },
   mounted() {
   },
   methods: {
-    async deleteHandler(selectIds) {
+    async auditHandler(selectIds) {
+      // todo审核
+      paymentReportVerify(selectIds)
     },
-    async updateHandler(selectIds) {
+    async reviewsHandler(selectIds) {
+      // todo反审核
+      paymentReportUnverify(selectIds)
+    },
+    async clearHandler(selectIds) {
+      // todo清除
     },
     importHandler() {
       // todo 导入逻辑
@@ -81,17 +74,15 @@ export default {
       _this.editStatus = type
       _this.actionCallback = callback
       switch (type) {
-        case actionCode.add: // 新增
-          _this.dialogVisible = true
-          // _this.resetForm('rateForm')
+        case actionCode.add: // todo审核
+          _this.auditHandler()
           break
-        case actionCode.update: // 修改
-          _this.dialogVisible = true
-          _this.updateHandler(selectIds)
+        case actionCode.reviews: // todo反审核
+          _this.reviewsHandler(selectIds)
           _this.selectIds = selectIds.join(',')
           break
-        case actionCode.delete:
-          _this.deleteHandler(selectIds)
+        case actionCode.clear:
+          _this.clearHandler(selectIds)
           break
         case actionCode.import:
           _this.importHandler()
@@ -105,9 +96,6 @@ export default {
     },
     showDetail() {
       this.innerDrawer = true
-    },
-    handleClose(done) {
-      done()
     },
     uploadFile() {}
   }

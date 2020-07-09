@@ -50,7 +50,7 @@ export default {
       editStatus: actionCode.add,
       selectIds: '',
       actionTextConfig,
-      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export],
+      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.export, actionCode.import],
       actionCallback: () => {},
       selectOption: {
         currencyDropdown: []

@@ -1,4 +1,5 @@
 import { currencyDropdown } from '@/api/common'
+import { dateRangeFormat } from '@/utils'
 
 const currencySelectConfig = {
   params: {},
@@ -13,7 +14,7 @@ export default {
     submitBtnText: '查询',
     forms: [
       { prop: 'code', label: '币别', itemType: 'select', ...currencySelectConfig },
-      { prop: 'effectTime', label: '生效时间', itemType: 'daterange' }
+      { prop: 'effectTime', label: '生效时间', itemType: 'daterange', format: dateRangeFormat }
     ]
   },
   columns: [

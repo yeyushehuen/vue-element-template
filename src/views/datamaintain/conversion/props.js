@@ -3,7 +3,7 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'country', label: '国家', itemType: 'select',
+      { prop: 'areaId', label: '国家', itemType: 'select',
         options: [
           { value: 0, label: '中国' },
           { value: 1, label: '俄罗斯' }
@@ -15,7 +15,7 @@ export default {
   },
   columns: [
     {
-      prop: 'country',
+      prop: 'areaId',
       label: '国家'
     },
     // 格式化为字符串
@@ -24,11 +24,11 @@ export default {
       label: 'Type'
     },
     {
-      prop: 'convertType',
+      prop: 'changeType',
       label: '转换类型'
     },
     {
-      prop: 'smallType',
+      prop: 'changeDetail',
       label: '转换类型-细分类'
     },
     {

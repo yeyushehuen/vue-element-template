@@ -30,20 +30,20 @@
 
         <div class="base-table-action-wrapper">
           <template v-for="(code) in actionCode">
-            <span v-if="code !== codeRepo.import" :key="code" @click="handleCommand(code)">{{ actionTextConfig[code] || code }}</span>
+            <span v-if="code !== codeRepo.import" :key="code" :class="code + '-button'" @click="handleCommand(code)">{{ actionTextConfig[code] || code }}</span>
           </template>
-          <span v-if="actionCode.indexOf('import') !== -1">
-            <el-dropdown placement="bottom-start" type="primary" style="margin: 0 10px;">
-              <span style="display: inline-block;height: 36px; line-height: 36px; font-size: 16px;color: #333;">导入<i class="el-icon-arrow-down el-icon--right" /></span>
+          <span v-if="actionCode.indexOf('import') !== -1" class="import-button">
+            <el-dropdown placement="bottom-start" type="primary">
+              <span class="import-button-inner">导入<i class="el-icon-arrow-down el-icon--right" /></span>
               <el-dropdown-menu slot="dropdown" class="handleExcel">
                 <el-dropdown-item @command="上传文件">
                   <el-upload
                     class="upload-demo"
-                    action=""
+                    :action="importAction"
                     :auto-upload="true"
                     :show-file-list="false"
                     :http-request="uploadFile"
-                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                    :accept="importConfig.importAccept"
                   >
                     <span size="small">上传文件</span>
                   </el-upload>
@@ -156,6 +156,13 @@ export default {
       type: String,
       default: ''
     },
+    // 导入配置上传action,接受的文件类型
+    // importAction, importAccept
+    importConfig: {
+      type: Object,
+      default: () => ({})
+    },
+    // 操作是否需要校验
     validate: {
       type: Boolean,
       default: true
@@ -218,6 +225,9 @@ export default {
   computed: {
     calcHeight: function() {
       return this.tableHeight
+    },
+    importAction: function() {
+      return process.env.VUE_APP_BASE_API + this.$props.importConfig.action
     }
   },
   created() {
@@ -336,6 +346,7 @@ export default {
       // 地址使用本地的地址 -- 需要切换
       // window.location = getUrlConcatToken("http://localhost:8080/template/budgetTemplate.xlsx");
       // window.location = getUrlConcatToken('http://ads-ui.qa.aukeyit.com/template/bmsBudgetTemplate.xlsx')
+      window.location = process.env.VUE_APP_BASE_API + '/paymentReport/download'
     },
     initHeight() {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop

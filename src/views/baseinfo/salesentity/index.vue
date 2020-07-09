@@ -41,7 +41,7 @@ export default {
     return {
       formOptions,
       columns,
-      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export, actionCode.disable, actionCode.enable],
+      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.disable, actionCode.enable, actionCode.export, actionCode.import],
       dialogVisible: false,
       editStatus: actionCode.add,
       selectIds: '',

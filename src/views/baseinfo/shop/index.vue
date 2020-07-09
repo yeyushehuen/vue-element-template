@@ -79,13 +79,13 @@ export default {
         actionCode.add,
         actionCode.update,
         actionCode.delete,
-        actionCode.import,
-        actionCode.export,
         actionCode.disable,
         actionCode.enable,
         actionCode.translate,
         actionCode.view,
-        actionCode.manualReport
+        actionCode.manualReport,
+        actionCode.export,
+        actionCode.import
       ],
       selectOption: {
         areaDropdown: [],

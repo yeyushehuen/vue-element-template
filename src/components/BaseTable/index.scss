@@ -11,6 +11,10 @@
     box-shadow: 0 0 4px 2px #f0f0f0;
   }
 
+  // .base-table-pagination-wrapper {
+  //   box-shadow: 0 2px 4px 2px #f0f0f0;
+  // }
+
   // 搜索区域
   .base-table-search-form-wrapper {
     margin-bottom: 6px;
@@ -104,14 +108,17 @@
       }
     }
     .base-table-action-wrapper {
+      font-size: 14px;
+      color: #666;
       margin-bottom: 8px;
       background: rgb(240,240,240);
-      background: linear-gradient(0deg, #f6f7f9 0%, #c5dcfb87 50%, #f6f7f9 100%);
+      background: linear-gradient(0deg, #f0f0f0 0%, #f0f0f0 50%, #f4f4f4 75%, #f6f7f9 100%);
       >span{
         cursor: pointer;
         padding: 0 16px;
         display: inline-block;
         height: 36px;
+        color: #1890ff;
         line-height: 36px;
 
         &+span{
@@ -119,13 +126,21 @@
         }
 
         &:hover{
+          color: #358fff;
           background: rgb(240,240,240);
-          background: linear-gradient(0deg, #f6f7f9 0%, #c5dcfb 50%, #f6f7f9 100%);
+          background: linear-gradient(0deg, #f6f7f9 0%, #c5dcfb87 50%, #f6f7f9 100%);
         }
-
-        .import-button{
+        &.export-button{
+          margin-right: -4px;
+        }
+        &.import-button{
+          padding: 0;
+        }
+        .import-button-inner{
+          color: #358fff;
           height: 36px;
           line-height: 36px;
+          padding: 0 16px;
         }
       }
     }

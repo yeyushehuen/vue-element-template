@@ -23,11 +23,11 @@ export default {
         actionCode.add,
         actionCode.update,
         actionCode.delete,
-        actionCode.import,
-        actionCode.export,
         actionCode.disable,
         actionCode.enable,
-        actionCode.translate
+        actionCode.translate,
+        actionCode.export,
+        actionCode.import
       ],
       actionTextConfig
     }

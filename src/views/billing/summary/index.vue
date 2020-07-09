@@ -32,7 +32,7 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, actionCode.import, actionCode.export],
+      actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, actionCode.export, actionCode.import],
       selectIds: '',
       dialogVisible: false,
       actionTextConfig,

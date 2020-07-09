@@ -5,7 +5,7 @@
         {{ scope.$index }}
       </template>
     </base-table>
-    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`货币管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`汇率管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="rateForm" size="small" label-position="left" :model="rateForm" :rules="rules" label-width="80px">
         <el-form-item label="原币" prop="originCurrency">
           <el-select v-model="rateForm.originCurrency" style="width: 100%" placeholder="请选择原币">
@@ -20,8 +20,8 @@
         <el-form-item label="汇率" prop="exchangeRate">
           <el-input v-model="rateForm.exchangeRate" placeholder="请填写汇率，最多6位小数" />
         </el-form-item>
-        <el-form-item label="生效时间" prop="effectTime">
-          <el-date-picker v-model="rateForm.effectTime" value-format="yyyy-MM-dd HH:mm:ss" type="date" />
+        <el-form-item style="width: 100%;" label="生效时间" prop="effectTime">
+          <el-date-picker v-model="rateForm.effectTime" placeholder="请选择生效时间" style="width: 100%;" value-format="yyyy-MM-dd HH:mm:ss" type="date" />
         </el-form-item>
       </el-form>
       <span slot="footer">
@@ -48,7 +48,7 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export],
+      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.export, actionCode.import],
       dialogVisible: false,
       editStatus: actionCode.add,
       selectIds: '',

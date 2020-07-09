@@ -100,7 +100,7 @@
       </el-form-item>
     </div>
     <div class="search-button">
-      <el-form-item label>
+      <el-form-item v-show="showMoreBtn" label>
         <i
           class="el-icon-d-arrow-right"
           :style="isHide ? 'transform: rotate(90deg)' : 'transform: rotate(-90deg)'"
@@ -222,6 +222,14 @@ export default {
       const sliceLength = lg ? 4 : (md ? 3 : (sm ? 1 : 2))
 
       return this.isHide ? forms.slice(0, sliceLength) : forms
+    },
+    showMoreBtn() {
+      const wth = window.innerWidth
+      const sm = wth <= 1000
+      const md = (wth > 1000 && wth <= 1400)
+      const lg = wth > 1400
+      const sliceLength = lg ? 4 : (md ? 3 : (sm ? 1 : 2))
+      return sliceLength < this.forms.length
     }
   },
   methods: {

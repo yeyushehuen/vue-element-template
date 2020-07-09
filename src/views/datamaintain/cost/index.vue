@@ -5,7 +5,7 @@
         {{ scope.$index }}
       </template>
     </base-table>
-    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`货币管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`成本数据 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="skuCostForm" class="flex-form-wrapper" size="small" label-position="left" :model="skuCostForm" :rules="rules" label-width="80px">
         <el-form-item label="期间" prop="period">
           <el-date-picker v-model="skuCostForm.period" value-format="yyyy-MM" type="month" />
@@ -50,7 +50,7 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.import, actionCode.export],
+      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.export, actionCode.import],
       dialogVisible: false,
       editStatus: actionCode.add,
       selectIds: '',
