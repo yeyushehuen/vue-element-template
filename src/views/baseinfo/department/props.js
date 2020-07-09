@@ -1,3 +1,5 @@
+import { stateConvert } from "@/utils";
+
 export default {
   formOptions: {
     inline: true,
@@ -31,7 +33,8 @@ export default {
     },
     {
       prop: 'domainLegal',
-      label: '是否实体中心'
+      label: '是否实体中心',
+      render: (row) => stateConvert(row && row.state, false)
     },
     {
       prop: 'createUser',
@@ -47,7 +50,8 @@ export default {
     },
     {
       prop: 'state',
-      label: '状态'
+      label: '状态',
+      render: (row) => stateConvert(row && row.state)
     },
     {
       prop: 'operate',

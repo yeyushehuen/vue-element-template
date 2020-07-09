@@ -1,3 +1,5 @@
+import { stateConvert } from "@/utils";
+
 export default {
   formOptions: {
     inline: true,
@@ -23,7 +25,8 @@ export default {
     },
     {
       prop: 'score',
-      label: '状态'
+      label: '状态',
+      render: (row) => stateConvert(row && row.state)
     },
     {
       prop: 'desc',

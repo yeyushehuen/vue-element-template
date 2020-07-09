@@ -5,9 +5,9 @@
 @import './sidebar.scss';
 @import './btn.scss';
 html{
-  @include scrollBar;
+  // @include scrollBar;
 
-  overflow-y: scroll;
+  // overflow-y: scroll;
 }
 body {
   height: 100%;

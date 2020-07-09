@@ -1,4 +1,5 @@
 import { deptDropdown, areaDropdown, leDropdown } from '@/api/common'
+import { replaceSpecificChar, stateConvert } from '@/utils'
 
 const deptSelectConfig = {
   itemType: 'select',
@@ -73,21 +74,22 @@ export default {
     }, {
       prop: 'sellerId',
       label: 'Seller ID',
+      render: (row) => replaceSpecificChar(row && row.sellerId) || '-',
       width: 150
     }, {
       prop: 'token',
       label: 'Token',
-      render: () => '************',
+      render: (row) => replaceSpecificChar(row && row.token) || '-',
       width: 150
     }, {
       prop: 'secretKey',
       label: 'secretKey',
-      render: () => '************',
+      render: (row) => replaceSpecificChar(row && row.secretKey) || '-',
       width: 150
     }, {
       prop: 'awsAccesskeyId',
       label: 'awsAccessKeyId',
-      render: () => '************',
+      render: (row) => replaceSpecificChar(row && row.awsAccesskeyId) || '-',
       width: 150
     }, {
       prop: 'principal',
@@ -95,7 +97,8 @@ export default {
       width: 150
     }, {
       prop: 'state',
-      label: '状态'
+      label: '状态',
+      render: (row) => stateConvert(row && row.state)
     }, {
       prop: 'createUser',
       label: '创建人'

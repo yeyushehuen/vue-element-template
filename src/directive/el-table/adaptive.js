@@ -7,8 +7,8 @@ import { addResizeListener, removeResizeListener } from 'element-ui/src/utils/re
  * bottomOffset: 30(default)   // The height of the table from the bottom of the page.
  */
 
-const doResize = (el, binding, vnode) => {
-  const { componentInstance: $table } = vnode
+const doResize = async(el, binding, vnode) => {
+  const { componentInstance: $table } = await vnode
 
   const { value } = binding
 
@@ -20,20 +20,24 @@ const doResize = (el, binding, vnode) => {
   if (!$table) return
 
   const height = window.innerHeight - el.getBoundingClientRect().top - bottomOffset
-  $table.layout.setHeight(height)
-  $table.doLayout()
+  setTimeout(function() {
+    $table.layout.setHeight(height)
+    $table.doLayout()
+  }, 1)
 }
 
 export default {
   bind(el, binding, vnode) {
-    el.resizeListener = () => {
-      doResize(el, binding, vnode)
+    el.resizeListener = async() => {
+      await doResize(el, binding, vnode)
     }
     // parameter 1 is must be "Element" type
     addResizeListener(window.document.body, el.resizeListener)
+    addResizeListener(el, el.resizeListener)
   },
-  inserted(el, binding, vnode) {
-    doResize(el, binding, vnode)
+  // 绑定默认高度
+  async inserted(el, binding, vnode) {
+    await doResize(el, binding, vnode)
   },
   unbind(el) {
     removeResizeListener(window.document.body, el.resizeListener)

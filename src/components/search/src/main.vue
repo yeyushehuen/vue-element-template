@@ -25,6 +25,7 @@
           :disabled="form.disabled"
           :placeholder="form.placeholder || '请输入' + form.label"
           :style="itemStyle + (form.itemWidth ? `width: ${form.itemWidth}px;` : '')"
+          @keyup.enter.native="searchHandler()"
         />
         <el-select
           v-else-if="form.itemType === 'select'"

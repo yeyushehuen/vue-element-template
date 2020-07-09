@@ -430,3 +430,45 @@ export function monthRangeFormat(values, name) {
 
   return values
 }
+
+/**
+ * 替换指定位置的字符为指定字符或*号
+ * @param {*} str 原始字符串
+ * @param {*} startIndex 起始位置
+ * @param {*} length 替换长度
+ * @param {*} maskChar 指定要替换为的字符
+ */
+export function replaceSpecificChar(str, startIndex = 4, endIndex = 4, maskChar = '*') {
+  if (!str) {
+    return str
+  }
+  if (typeof (str) !== 'string') {
+    return str
+  }
+  if (str.length < 9) {
+    return str
+  }
+  const regex = new RegExp(`\\w{${startIndex}}(.*)\\w{${endIndex}}`)
+  const matchResult = str.match(regex)[1]
+  return str.replace(matchResult, Array(9).join(maskChar))
+}
+
+/** 状态转换，type=true,转换为启用禁用，false，转换为是否实体中心 */
+const legalEnum = {
+  Y: '是',
+  N: '否'
+}
+const stateEnum = {
+  Y: '启用',
+  N: '禁用'
+}
+export function stateConvert(state, type = true) {
+  if (validatenull(state)) {
+    return '-'
+  }
+  if (type) {
+    return stateEnum[state]
+  }
+
+  return legalEnum[state]
+}

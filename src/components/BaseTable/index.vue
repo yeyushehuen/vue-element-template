@@ -1,11 +1,12 @@
 <template>
-  <div style="margin: 4px" class="emm-base-table-root">
-    <div v-if="formOptions" class="base-table-search-form-wrapper">
+  <div ref="baseTableWrapper" class="emm-base-table-root">
+    <div v-if="formOptions" ref="searchForm" class="base-table-search-form-wrapper">
       <search-form
-        ref="searchForm"
+
         v-bind="formOptions"
         class="base-table-search-form"
         :submit-handler="searchHandler"
+        :reset-btn-callback="resetHandler"
         :submit-loading="false"
         @higherSearchChange="higherSearchChange"
       />
@@ -75,11 +76,11 @@
           <!-- <el-button slot="reference" style="float: right; margin-bottom: 8px;" @click="visible = !visible">自定义字段</el-button></el-button> -->
         </el-popover>
       </div>
-      <!-- 吸顶例子 -->
-      <!-- <div id="boxFixed" class="box_fixed" :class="{'is_fixed' : isFixed}">666</div> -->
       <el-table
         ref="multipleTable"
         v-loading="listLoading"
+        v-el-height-adaptive-table="{bottomOffset: 76}"
+        height="100px"
         size="mini"
         border
         fit
@@ -89,6 +90,12 @@
         v-bind="tableConfig"
         @selection-change="handleSelectionChange"
       >
+        <template slot="empty">
+          <div>
+            <img :src="emptySVG" height="150" alt="暂无数据">
+            <div style="text-align: center;font-size:16px;margin-top:-41px">暂无数据<i class="el-icon-chat-dot-round" /></div>
+          </div>
+        </template>
         <el-table-column type="selection" align="center" width="41" />
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
@@ -96,7 +103,7 @@
               <slot :name="col.slotName" :row="scope.row" :$index="scope.$index" />
             </span>
             <span v-else-if="col.render">{{ col.render(scope.row) }}</span>
-            <span v-else>{{ scope.row[col.prop] }}</span>
+            <span v-else>{{ scope.row[col.prop] || (scope.row[col.prop] == 0 ? 0 : '-') }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -119,6 +126,8 @@
 
 <script>
 import request from '@/utils/request'
+import elHeightAdaptiveTable from '@/directive/el-table' // base on element-uiel-height-adaptive-table
+import emptySVG from '@/assets/empty.svg'
 import { deleteNullProps, randomStr, deepClone } from '@/utils'
 import searchForm from '@/components/search/src/main'
 import CustomColumn from './components/CustomColumn'
@@ -151,6 +160,7 @@ async function fetchList(api, query, columns) {
 export default {
   name: 'BaseTable',
   components: { searchForm, CustomColumn },
+  directives: { elHeightAdaptiveTable },
   props: {
     api: {
       type: String,
@@ -207,7 +217,7 @@ export default {
   data() {
     return {
       pagination: { ...paginationConfig },
-      tableHeight: '100vh',
+      emptySVG: emptySVG + '?' + +new Date(),
       hideHigherSearch: false,
       listLoading: true,
       dialogVisible: false,
@@ -223,9 +233,6 @@ export default {
     }
   },
   computed: {
-    calcHeight: function() {
-      return this.tableHeight
-    },
     importAction: function() {
       return process.env.VUE_APP_BASE_API + this.$props.importConfig.action
     }
@@ -233,21 +240,14 @@ export default {
   created() {
     this.getList()
     this.showColumns = deepClone(this.$props.columns)
-    // window.addEventListener('scroll', this.initHeight)
-    // this.$nextTick(() => {
-    //   this.offsetTop = document.querySelector('#boxFixed').offsetTop
-    // })
   },
   mounted() {
-    // const windowHeight = document.querySelector('div.sidebar-container')
-    // this.tableHeight = windowHeight && windowHeight.clientHeight - 214
   },
   destroyed() {
-    // window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
     handleSelectionChange(val, ...rest) {
-      console.log('handleSelectionChange', val, rest)
+      // console.log('handleSelectionChange', val, rest)
     },
     getQueryParams() {
       const { currentPage, pageSize } = this.pagination || {}
@@ -268,19 +268,14 @@ export default {
       this.paginationChange()
     },
     higherSearchChange(status) {
-      this.hideHigherSearch = status || false
-      const siderContainer = document.querySelector('div.scrollbar-wrapper.el-scrollbar__wrap')
-      const formContainer = document.querySelector('div.base-table-search-form-wrapper')
-      const windowHeight = siderContainer.clientHeight
-      const formHeight = formContainer.clientHeight
-      this.tableHeight = windowHeight - formHeight - 157
+      const _this = this
+      _this.hideHigherSearch = status || false
     },
     getList() {
       this.listLoading = true
       // 所有的查询参数都在这里获取
       const query = this.getQueryParams()
       fetchList(this.api, query, this.columns).then(response => {
-        console.log('response', response)
         const { list, total } = this.getResponse(response)
         this.list = list
         if (mock) {
@@ -297,6 +292,10 @@ export default {
     searchHandler(values) {
       this.pagination.currentPage = 1
       this.searchQuery = deleteNullProps(values) || {}
+      this.getList()
+    },
+    resetHandler() {
+      this.searchQuery = {}
       this.getList()
     },
     callback() {
@@ -347,10 +346,6 @@ export default {
       // window.location = getUrlConcatToken("http://localhost:8080/template/budgetTemplate.xlsx");
       // window.location = getUrlConcatToken('http://ads-ui.qa.aukeyit.com/template/bmsBudgetTemplate.xlsx')
       window.location = process.env.VUE_APP_BASE_API + '/paymentReport/download'
-    },
-    initHeight() {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      this.isFixed = scrollTop > this.offsetTop
     }
   }
 }

@@ -27,10 +27,12 @@ $nav-height: 41px;
 .app-main {
   /* 50= navbar  50  */
   // min-height: calc(100vh - 50px);
-  min-height: calc(100% - #{$nav-height});
+  // min-height: calc(100% - #{$nav-height});
   width: 100%;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
+  overflow: auto;
+  padding: 12px;
 
   // margin: 16px;
 
@@ -45,7 +47,7 @@ $nav-height: 41px;
   .app-main {
     /* 84 = navbar + tags-view = 50 + 34 */
     // min-height: calc(100vh - 84px);
-    min-height: calc(100% - #{$nav-height});
+    // min-height: calc(100% - #{$nav-height});
   }
 
   .fixed-header+.app-main {

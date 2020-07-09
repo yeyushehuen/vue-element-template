@@ -1,3 +1,5 @@
+import { stateConvert } from "@/utils";
+
 export default {
   formOptions: {
     inline: true,
@@ -25,7 +27,8 @@ export default {
     },
     {
       prop: 'state',
-      label: '状态'
+      label: '状态',
+      render: (row) => stateConvert(row && row.state)
     },
     {
       prop: 'createUser',
