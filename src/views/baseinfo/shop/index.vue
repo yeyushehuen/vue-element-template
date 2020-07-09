@@ -167,7 +167,7 @@ export default {
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.shopForm).forEach(key => {
-        _this.shopForm[key] = defaultData[key] || 'defaultData'
+        _this.shopForm[key] = defaultData[key] + '' || 'defaultData'
       })
     },
     async deleteHandler(selectIds) {
@@ -181,7 +181,6 @@ export default {
     },
     async updateHandler(selectIds) {
       const res = await getAccountById(selectIds[0])
-      console.log('res', res)
       if (res && res.code === 200) {
         this.setFormVal(res.data)
       }
