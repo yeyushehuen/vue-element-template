@@ -90,7 +90,8 @@ export default {
       // height: 49px;
       .el-scrollbar__view{
         border-bottom: 1px solid #d8dce5;
-        background: #f0f0f0;
+        // background: #f0f0f0;
+        background: linear-gradient(0deg, #f0f0f0 0%, #f0f0f0 50%, #f4f4f4 75%, #f6f7f9 100%);
       }
     }
   }

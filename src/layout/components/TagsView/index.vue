@@ -204,10 +204,6 @@ $appBg: #f0f0f0;
 $navActiveBg: mix(#f0f2f5, #fff, 60%);
 
 .tags-view-container {
-
-  // .el-scrollbar__view{
-  //     background: linear-gradient(0deg,#f0f0f0,#ddd 50%,#f6f7f9) !important;
-  //   }
   // height: 40px;
   width: 100%;
   // background: #fff;
