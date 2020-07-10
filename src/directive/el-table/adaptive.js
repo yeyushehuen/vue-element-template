@@ -36,8 +36,8 @@ export default {
     addResizeListener(el, el.resizeListener)
   },
   // 绑定默认高度
-  async inserted(el, binding, vnode) {
-    await doResize(el, binding, vnode)
+  inserted(el, binding, vnode) {
+    doResize(el, binding, vnode)
   },
   unbind(el) {
     removeResizeListener(window.document.body, el.resizeListener)
