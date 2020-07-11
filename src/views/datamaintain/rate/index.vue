@@ -2,7 +2,7 @@
   <div>
     <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/exchangeRate/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
-        {{ scope.$index }}
+        <span>-</span>
       </template>
     </base-table>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`汇率管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">

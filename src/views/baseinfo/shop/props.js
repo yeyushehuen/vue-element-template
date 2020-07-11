@@ -20,6 +20,25 @@ const legalSelectConfig = {
   selectResultHandler: (item) => ({ value: item.id, label: item.legalName })
 }
 
+const types = {
+  Y: 'primary',
+  N: 'danger'
+}
+
+export function stateRender(h, row) {
+  if (!h || !row) {
+    return h('span', '-')
+  }
+  const state = row.state
+  return h('span', [
+    h('el-badge', {
+      props: { 'is-dot': true, 'type': types[state] },
+      style: { 'vertical-align': '-.5em', 'margin-right': '4px' }
+    }),
+    h('span', stateConvert(state))
+  ])
+}
+
 export default {
   formOptions: {
     inline: true,
@@ -74,22 +93,22 @@ export default {
     }, {
       prop: 'sellerId',
       label: 'Seller ID',
-      render: (row) => replaceSpecificChar(row && row.sellerId) || '-',
+      formatter: (row) => replaceSpecificChar(row && row.sellerId) || '-',
       width: 150
     }, {
       prop: 'token',
       label: 'Token',
-      render: (row) => replaceSpecificChar(row && row.token) || '-',
+      formatter: (row) => replaceSpecificChar(row && row.token) || '-',
       width: 150
     }, {
       prop: 'secretKey',
       label: 'secretKey',
-      render: (row) => replaceSpecificChar(row && row.secretKey) || '-',
+      formatter: (row) => replaceSpecificChar(row && row.secretKey) || '-',
       width: 150
     }, {
       prop: 'awsAccesskeyId',
       label: 'awsAccessKeyId',
-      render: (row) => replaceSpecificChar(row && row.awsAccesskeyId) || '-',
+      formatter: (row) => replaceSpecificChar(row && row.awsAccesskeyId) || '-',
       width: 150
     }, {
       prop: 'principal',
@@ -98,7 +117,7 @@ export default {
     }, {
       prop: 'state',
       label: '状态',
-      render: (row) => stateConvert(row && row.state)
+      render: stateRender
     }, {
       prop: 'createUser',
       label: '创建人'

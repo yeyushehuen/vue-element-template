@@ -2,7 +2,7 @@
   <div>
     <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/legalEntity/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
-        {{ scope.$index }}
+        <span>-</span>
       </template>
     </base-table>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`销售主体 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
@@ -95,11 +95,16 @@ export default {
     exportHandler() {
       // todo 导出逻辑
     },
-    disableHandler() {
-      // todo 禁用逻辑
-    },
-    enableHandler() {
-      // todo 启用逻辑
+    stateHandler(selectIds) {
+      const _this = this
+      const stateCode = {
+        disable: 'N',
+        enable: 'Y'
+      }
+      updateLegalEntity({ id: selectIds.join(','), data: { state: stateCode[_this.editStatus] || 'Y' }}).then(res => {
+        _this.$message.success(successText[_this.editStatus])
+        _this.actionCallback()
+      })
     },
     actionHandler(type, { selectIds, selectRows, callback }) {
       const _this = this
@@ -125,10 +130,10 @@ export default {
           _this.exportHandler()
           break
         case actionCode.enable:
-          _this.enableHandler()
+          _this.stateHandler(selectIds)
           break
         case actionCode.disable:
-          _this.disableHandler()
+          _this.stateHandler(selectIds)
           break
         default:
           break

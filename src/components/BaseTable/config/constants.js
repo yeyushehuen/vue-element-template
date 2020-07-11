@@ -70,3 +70,9 @@ export const successText = {
   reconciliation: 'reconciliation',
   summary: 'summary'
 }
+
+/** 状态映射 */
+export const stateCode = {
+  disable: 'N',
+  enable: 'N'
+}

@@ -1,4 +1,5 @@
-import { stateConvert } from "@/utils";
+import { stateConvert } from '@/utils'
+import { stateRender } from '../shop/props'
 
 export default {
   formOptions: {
@@ -34,7 +35,7 @@ export default {
     {
       prop: 'domainLegal',
       label: '是否实体中心',
-      render: (row) => stateConvert(row && row.state, false)
+      formatter: (row) => stateConvert(row && row.state, false)
     },
     {
       prop: 'createUser',
@@ -51,7 +52,8 @@ export default {
     {
       prop: 'state',
       label: '状态',
-      render: (row) => stateConvert(row && row.state)
+      // formatter: (row) => stateConvert(row && row.state)
+      render: stateRender
     },
     {
       prop: 'operate',

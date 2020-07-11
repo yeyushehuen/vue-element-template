@@ -93,7 +93,7 @@
         <template slot="empty">
           <div>
             <img :src="emptySVG" height="150" alt="暂无数据">
-            <div style="text-align: center;font-size:16px;margin-top:-41px">暂无数据<i class="el-icon-chat-dot-round" /></div>
+            <div style="text-align: center;font-size:16px;margin-top:-41px">暂无数据</div>
           </div>
         </template>
         <el-table-column type="selection" align="center" width="41" />
@@ -102,7 +102,8 @@
             <span v-if="col.slotName">
               <slot :name="col.slotName" :row="scope.row" :$index="scope.$index" />
             </span>
-            <span v-else-if="col.render">{{ col.render(scope.row) }}</span>
+            <span v-else-if="col.formatter">{{ col.formatter(scope.row) }}</span>
+            <ex-slot v-else-if="col.render" :render="col.render" :row="scope.row" :index="scope.$index" :column="col" />
             <span v-else>{{ scope.row[col.prop] || (scope.row[col.prop] == 0 ? 0 : '-') }}</span>
           </template>
         </el-table-column>
@@ -156,10 +157,31 @@ async function fetchList(api, query, columns) {
     params: { ...rest, offset, limit }
   })
 }
+// 自定义内容的组件
+const exSlot = {
+  functional: true,
+  props: {
+    row: Object,
+    render: Function,
+    index: Number,
+    column: {
+      type: Object,
+      default: null
+    }
+  },
+  render: (h, data) => {
+    const params = {
+      row: data.props.row,
+      index: data.props.index
+    }
+    if (data.props.column) params.column = data.props.column
+    return data.props.render(h, params.row)
+  }
+}
 
 export default {
   name: 'BaseTable',
-  components: { searchForm, CustomColumn },
+  components: { searchForm, CustomColumn, exSlot },
   directives: { elHeightAdaptiveTable },
   props: {
     api: {

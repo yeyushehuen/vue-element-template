@@ -2,7 +2,7 @@
   <div>
     <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/account/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
-        {{ scope.$index }}
+        <span>-</span>
       </template>
     </base-table>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`店铺管理 - ${actionTextConfig[editStatus]}`" width="800px" :visible.sync="dialogVisible" :before-close="handleClose">
@@ -191,11 +191,16 @@ export default {
     exportHandler() {
       // todo 导出逻辑
     },
-    disableHandler() {
-      // todo 禁用逻辑
-    },
-    enableHandler() {
-      // todo 启用逻辑
+    stateHandler(selectIds) {
+      const _this = this
+      const stateCode = {
+        disable: 'N',
+        enable: 'Y'
+      }
+      updateAccount({ id: selectIds.join(','), data: { state: stateCode[_this.editStatus] || 'Y' }}).then(res => {
+        _this.$message.success(successText[_this.editStatus])
+        _this.actionCallback()
+      })
     },
     viewHandler() {
       // todo 一键查看逻辑
@@ -227,10 +232,10 @@ export default {
           _this.exportHandler()
           break
         case actionCode.enable:
-          _this.enableHandler()
+          _this.stateHandler(selectIds)
           break
         case actionCode.disable:
-          _this.disableHandler()
+          _this.stateHandler(selectIds)
           break
         case actionCode.view:
           _this.viewHandler()

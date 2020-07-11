@@ -1,4 +1,5 @@
 import { areaDropdown, deptDropdown } from '@/api/common'
+import { stateRender } from '@/views/baseinfo/shop/props'
 
 const deptSelectConfig = {
   params: {},
@@ -97,6 +98,7 @@ export default {
     {
       prop: 'verifyState',
       label: '审核状态',
+      render: stateRender,
       width: 120
     },
     {
