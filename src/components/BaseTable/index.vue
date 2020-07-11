@@ -41,10 +41,9 @@
                   <el-upload
                     class="upload-demo"
                     :action="importAction"
-                    :auto-upload="true"
                     :show-file-list="false"
-                    :http-request="uploadFile"
-                    :accept="importConfig.importAccept"
+                    multiple
+                    :accept="importConfig.accept"
                   >
                     <span size="small">上传文件</span>
                   </el-upload>
@@ -189,7 +188,7 @@ export default {
       default: ''
     },
     // 导入配置上传action,接受的文件类型
-    // importAction, importAccept
+    // action, accept, template
     importConfig: {
       type: Object,
       default: () => ({})
@@ -289,9 +288,12 @@ export default {
       this.pagination.currentPage = currentPage
       this.paginationChange()
     },
-    higherSearchChange(status) {
+    higherSearchChange(status, params) {
       const _this = this
       _this.hideHigherSearch = status || false
+      if (!status) {
+        _this.searchQuery = params || {}
+      }
     },
     getList() {
       this.listLoading = true
@@ -349,7 +351,7 @@ export default {
         return false
       }
       const selection = this.getSelection()
-      this.$emit('dispatch', command, { ...selection, callback: _this.callback })
+      this.$emit('dispatch', command, { ...selection, callback: _this.callback, query: _this.searchQuery })
     },
     getSelection() {
       const selectRows = this.$refs.multipleTable.selection || []
@@ -367,7 +369,7 @@ export default {
       // 地址使用本地的地址 -- 需要切换
       // window.location = getUrlConcatToken("http://localhost:8080/template/budgetTemplate.xlsx");
       // window.location = getUrlConcatToken('http://ads-ui.qa.aukeyit.com/template/bmsBudgetTemplate.xlsx')
-      window.location = process.env.VUE_APP_BASE_API + '/paymentReport/download'
+      window.location = process.env.VUE_APP_BASE_API + this.$props.importConfig.template
     }
   }
 }

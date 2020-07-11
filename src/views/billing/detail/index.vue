@@ -45,7 +45,8 @@ export default {
       actionCallback: () => {},
       importConfig: {
         action: '/paymentReport/upload',
-        importAccept: '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
+        template: '/paymentReport/downloadTemp',
+        accept: ''
       }
     }
   },
@@ -53,23 +54,18 @@ export default {
   },
   methods: {
     async auditHandler(selectIds) {
-      // todo审核
       paymentReportVerify(selectIds)
     },
     async reviewsHandler(selectIds) {
-      // todo反审核
       paymentReportUnverify(selectIds)
     },
     async clearHandler(selectIds) {
       // todo清除
     },
-    importHandler() {
-      // todo 导入逻辑
-    },
     exportHandler() {
-      // todo 导出逻辑
+      // todo 导出逻辑 /paymentReport/export
     },
-    actionHandler(type, { selectIds, selectRows, callback }) {
+    actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
@@ -84,11 +80,8 @@ export default {
         case actionCode.clear:
           _this.clearHandler(selectIds)
           break
-        case actionCode.import:
-          _this.importHandler()
-          break
         case actionCode.export:
-          _this.exportHandler()
+          _this.exportHandler(selectIds, query)
           break
         default:
           break

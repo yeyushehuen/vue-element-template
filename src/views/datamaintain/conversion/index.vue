@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/typeChange/list" @dispatch="actionHandler">
+    <base-table :import-config="importConfig" :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/typeChange/list" @dispatch="actionHandler">
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -37,6 +37,7 @@ import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { addTypeConversion, updateTypeConversion, getTypeConversionById, deleteTypeConversion } from '../../../api/dataMaintain'
+import { downLoadFile } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -77,6 +78,11 @@ export default {
         areaId: [
           { required: true, message: '请选择国家', trigger: 'blur' }
         ]
+      },
+      importConfig: {
+        action: '/typeChange/import',
+        template: '/typeChange/downloadTemp',
+        accept: ''
       }
     }
   },
@@ -103,13 +109,11 @@ export default {
         this.setFormVal(res.data)
       }
     },
-    importHandler() {
-      // todo 导入逻辑
+    exportHandler(selectIds, query) {
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      downLoadFile('/typeChange/export', params)
     },
-    exportHandler() {
-      // todo 导出逻辑
-    },
-    actionHandler(type, { selectIds, selectRows, callback }) {
+    actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
@@ -130,7 +134,7 @@ export default {
           _this.importHandler()
           break
         case actionCode.export:
-          _this.exportHandler()
+          _this.exportHandler(selectIds, query)
           break
         default:
           break

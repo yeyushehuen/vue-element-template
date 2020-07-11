@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/skuCost/list" @dispatch="actionHandler">
+    <base-table :import-config="importConfig" :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/skuCost/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         <span>-</span>
       </template>
@@ -39,6 +39,7 @@ import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { deleteSkuCost, addSkuCost, updateSkuCost, getSkuCostById } from '@/api/dataMaintain'
+import { downLoadFile } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 const commonRules = { pattern: /^\d+(\.\d{1,6})?$/, message: '只能填写数字，最多6位小数' }
@@ -87,6 +88,11 @@ export default {
           { required: true, message: '请填写自发货运费', trigger: 'blur' },
           commonRules
         ]
+      },
+      importConfig: {
+        action: '/skuCost/import',
+        template: '/skuCost/downloadTemp',
+        accept: ''
       }
     }
   },
@@ -115,13 +121,11 @@ export default {
         this.setFormVal(res.data)
       }
     },
-    importHandler() {
-      // todo 导入逻辑
+    exportHandler(selectIds, query) {
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      downLoadFile('/skuCost/export', params)
     },
-    exportHandler() {
-      // todo 导出逻辑
-    },
-    actionHandler(type, { selectIds, selectRows, callback }) {
+    actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
@@ -138,11 +142,8 @@ export default {
         case actionCode.delete:
           _this.deleteHandler(selectIds)
           break
-        case actionCode.import:
-          _this.importHandler()
-          break
         case actionCode.export:
-          _this.exportHandler()
+          _this.exportHandler(selectIds, query)
           break
         default:
           break

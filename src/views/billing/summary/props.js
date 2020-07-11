@@ -32,13 +32,13 @@ export default {
   },
   columns: [
     { label: '期间', props: '1' },
-    { label: '部门', props: '2', width: 150 },
-    { label: '国家', props: '3', width: 150 },
-    { label: '店铺名称', props: '4', width: 150 },
-    { label: '币别', props: '5', width: 150 },
-    { label: '汇率', props: '6', width: 150 },
-    { label: '业务类型', props: '7', width: 150 },
-    { label: '原币金额', props: '8', width: 150 },
-    { label: '本币金额', props: '9', width: 150 }
+    { label: '部门', props: '2' },
+    { label: '国家', props: '3' },
+    { label: '店铺名称', props: '4' },
+    { label: '币别', props: '5' },
+    { label: '汇率', props: '6' },
+    { label: '业务类型', props: '7' },
+    { label: '原币金额', props: '8' },
+    { label: '本币金额', props: '9' }
   ]
 }

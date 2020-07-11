@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/dept/list" @dispatch="actionHandler">
+    <base-table :import-config="importConfig" :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/dept/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         <span>-</span>
       </template>
@@ -31,18 +31,24 @@
         <el-button size="small" type="primary" @click="submitForm('depForm')">保存</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="转移" class="base-dialog-wrapper" width="520px" destroy-on-close :visible.sync="translateVisible" :before-close="handleClose">
+      <dept-tree />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
-import tableConfig from './props.js'
+import DeptTree from '@/views/baseinfo/department/DeptTree'
 import { addDept, deleteDept, getDeptById, updateDept } from '@/api/baseInfo'
+import tableConfig from './props.js'
+import { downLoadFile } from '../../../utils'
 const { formOptions, columns } = tableConfig
+
 export default {
   name: 'Department',
-  components: { BaseTable },
+  components: { BaseTable, DeptTree },
   data() {
     return {
       formOptions,
@@ -58,6 +64,7 @@ export default {
         actionCode.import
       ],
       dialogVisible: false,
+      translateVisible: false,
       actionCallback: () => {},
       editStatus: actionCode.add,
       selectIds: '',
@@ -81,6 +88,11 @@ export default {
         state: [
           { required: true, message: '请选择状态', trigger: 'blur' }
         ]
+      },
+      importConfig: {
+        action: '/dept/import',
+        template: '/dept/downloadTemp',
+        accept: ''
       }
     }
   },
@@ -106,14 +118,12 @@ export default {
         this.setFormVal(res.data)
       }
     },
-    importHandler() {
-      // todo 导入逻辑
-    },
-    exportHandler() {
-      // todo 导出逻辑
+    exportHandler(selectIds, query) {
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      downLoadFile('/dept/export', params)
     },
     translateHandler() {
-      // todo 转移逻辑
+      this.translateVisible = true
     },
     stateHandler(selectIds) {
       const _this = this
@@ -126,7 +136,7 @@ export default {
         _this.actionCallback()
       })
     },
-    actionHandler(type, { selectIds, selectRows, callback }) {
+    actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
@@ -143,11 +153,8 @@ export default {
         case actionCode.delete:
           _this.deleteHandler(selectIds)
           break
-        case actionCode.import:
-          _this.importHandler()
-          break
         case actionCode.export:
-          _this.exportHandler()
+          _this.exportHandler(selectIds, query)
           break
         case actionCode.enable:
           _this.stateHandler(selectIds)
@@ -156,7 +163,7 @@ export default {
           _this.stateHandler(selectIds)
           break
         case actionCode.translate:
-          _this.translateHandler()
+          _this.translateHandler(selectIds)
           break
         default:
           break

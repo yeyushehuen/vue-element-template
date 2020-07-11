@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/legalEntity/list" @dispatch="actionHandler">
+    <base-table :import-config="importConfig" :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/legalEntity/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         <span>-</span>
       </template>
@@ -33,6 +33,7 @@ import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { addLegalEntity, deleteLegalEntity, getLegalEntityById, updateLegalEntity } from '@/api/baseInfo'
+import { downLoadFile } from '../../../utils'
 const { formOptions, columns } = tableConfig
 export default {
   name: 'SalesEntity',
@@ -63,6 +64,11 @@ export default {
         state: [
           { required: true, message: '请选择状态', trigger: 'blur' }
         ]
+      },
+      importConfig: {
+        action: '/legalEntity/import',
+        template: '/legalEntity/downloadTemp',
+        accept: ''
       }
     }
   },
@@ -89,11 +95,9 @@ export default {
         this.setFormVal(res.data)
       }
     },
-    importHandler() {
-      // todo 导入逻辑
-    },
-    exportHandler() {
-      // todo 导出逻辑
+    exportHandler(selectIds, query) {
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      downLoadFile('/legalEntity/export', params)
     },
     stateHandler(selectIds) {
       const _this = this
@@ -106,7 +110,7 @@ export default {
         _this.actionCallback()
       })
     },
-    actionHandler(type, { selectIds, selectRows, callback }) {
+    actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
@@ -123,11 +127,8 @@ export default {
         case actionCode.delete:
           _this.deleteHandler(selectIds)
           break
-        case actionCode.import:
-          _this.importHandler()
-          break
         case actionCode.export:
-          _this.exportHandler()
+          _this.exportHandler(selectIds, query)
           break
         case actionCode.enable:
           _this.stateHandler(selectIds)

@@ -32,7 +32,7 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, actionCode.export, actionCode.import],
+      actionCode: [actionCode.setUp, actionCode.checkOut, actionCode.export],
       selectIds: '',
       dialogVisible: false,
       actionTextConfig,
@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     exportHandler() {
-      // todo 导出
+      // todo 导出 //export
     },
     setUpHandler() {
       // todo 结账
@@ -52,7 +52,7 @@ export default {
       this.dialogVisible = true
       // todo 反结账
     },
-    actionHandler(type, { selectIds, selectRows, callback }) {
+    actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.actionCallback = callback
       switch (type) {
@@ -63,7 +63,7 @@ export default {
           _this.checkOutHandler()
           break
         case actionCode.export: // 导出
-          _this.exportHandler()
+          _this.exportHandler(selectIds, query)
           break
         default:
           break

@@ -80,7 +80,7 @@ export default {
         this.setFormVal(res.data)
       }
     },
-    actionHandler(type, { selectIds, selectRows, callback }) {
+    actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback

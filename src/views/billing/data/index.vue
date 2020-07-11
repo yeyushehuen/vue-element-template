@@ -26,16 +26,17 @@ export default {
     }
   },
   methods: {
-    exportHandler() {
-      // todo 导出逻辑
+    exportHandler(selectIds, query) {
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      // downLoadFile('/account/export', params)
     },
     reconciliationHandler() {
-      // todo 导出逻辑
+      // todo 导出逻辑 /paymentAnalysis/export
     },
     summaryHandler() {
       // todo 导出逻辑
     },
-    actionHandler(type, { selectIds, selectRows, callback }) {
+    actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.actionCallback = callback
       switch (type) {
@@ -46,7 +47,7 @@ export default {
           _this.summaryHandler()
           break
         case actionCode.export: // 导出
-          _this.exportHandler()
+          _this.exportHandler(selectIds, query)
           break
         default:
           break

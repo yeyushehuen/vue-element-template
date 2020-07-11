@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/skuRelation/list" @dispatch="actionHandler">
+    <base-table :import-config="importConfig" :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/skuRelation/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         <span>-</span>
       </template>
@@ -39,6 +39,7 @@ import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { deleteSkuRelation, addSkuRelation, updateSkuRelation, getSkuRelationById } from '@/api/dataMaintain'
+import { downLoadFile } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -81,6 +82,11 @@ export default {
         productName: [
           { required: true, message: '请填写产品名', trigger: 'blur' }
         ]
+      },
+      importConfig: {
+        action: '/skuRelation/import',
+        template: '/skuRelation/downloadTemp',
+        accept: ''
       }
     }
   },
@@ -109,13 +115,11 @@ export default {
         this.setFormVal(res.data)
       }
     },
-    importHandler() {
-      // todo 导入逻辑
+    exportHandler(selectIds, query) {
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      downLoadFile('/skuRelation/export', params)
     },
-    exportHandler() {
-      // todo 导出逻辑
-    },
-    actionHandler(type, { selectIds, selectRows, callback }) {
+    actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
@@ -132,11 +136,8 @@ export default {
         case actionCode.delete:
           _this.deleteHandler(selectIds)
           break
-        case actionCode.import:
-          _this.importHandler()
-          break
         case actionCode.export:
-          _this.exportHandler()
+          _this.exportHandler(selectIds, query)
           break
         default:
           break

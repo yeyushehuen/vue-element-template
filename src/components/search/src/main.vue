@@ -240,27 +240,11 @@ export default {
         Object.prototype.toString.call(value) === '[object Array]'
       )
     },
-    renderItem(itemIndex) {
-      const { isHide, sm, md, lg } = this.showItem
-      let res = false
-      if (sm) {
-        res = itemIndex > 1
-      }
-      if (md) {
-        res = itemIndex > 2
-      }
-      if (lg) {
-        res = itemIndex > 3
-      }
-
-      return isHide ? res : false
-    },
     searchHandler() {
       this.getParams((error, params) => {
         if (!error) {
           const { submitHandler } = this
           if (submitHandler) {
-            console.log('submitHandler', params)
             submitHandler(params)
           } else {
             throw new Error('Need to set attribute: submitHandler !')
@@ -275,17 +259,12 @@ export default {
       this.$refs['form'].validate(valid => {
         if (valid) {
           // const { params, datePrefix, format } = this
-          const { params, format } = this
+          const { params, format, computedForms } = this
+          console.log('computedForms', computedForms)
           const formattedForm = {}
-          Object.keys(params).forEach(v => {
-            // if (v.indexOf(datePrefix) === -1) {
-            //   formattedForm[v] = format[v]
-            //     ? format[v](params[v], v)
-            //     : params[v]
-            // }
+          computedForms.forEach(({ prop: v }) => {
             if (typeof format[v] === 'function') {
               const formatedValues = format[v](params[v], v)
-              // formattedForm[v] = formatedValues
               Object.keys(formatedValues).forEach(key => {
                 formattedForm[key] = formatedValues[key]
               })
@@ -293,6 +272,18 @@ export default {
               formattedForm[v] = params[v]
             }
           })
+          // 注释掉，只获取显示的表单参数
+          // Object.keys(params).forEach(v => {
+          //   if (typeof format[v] === 'function') {
+          //     const formatedValues = format[v](params[v], v)
+          //     // formattedForm[v] = formatedValues
+          //     Object.keys(formatedValues).forEach(key => {
+          //       formattedForm[key] = formatedValues[key]
+          //     })
+          //   } else {
+          //     formattedForm[v] = params[v]
+          //   }
+          // })
           if (callback) callback(null, formattedForm)
         } else {
           if (callback) callback(new Error())
@@ -359,9 +350,11 @@ export default {
     },
     higherSearchTrigger() {
       this.isHide = !this.isHide
-      setTimeout(() => {
-        this.$emit('higherSearchChange', this.isHide)
-      }, 2)
+      this.getParams((error, params) => {
+        if (!error) {
+          this.$emit('higherSearchChange', this.isHide, params)
+        }
+      })
     }
   }
 }
