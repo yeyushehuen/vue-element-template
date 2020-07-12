@@ -70,12 +70,16 @@ export default {
     position: absolute;
     bottom: 43px;
     cursor: pointer;
-    right: 1px;
+    right: 2px;
     padding: 0px 12px !important;
     // border: 1px solid #fff;
     transition: background .3s;
-    background-color: #000;
-    box-shadow: 0 0 4px 1px #1b1b1b;
+    background-color: #1b1b1b;
+    // box-shadow: 0 0 2px 2px #000;
     -webkit-tap-highlight-color:transparent;
+
+    &:hover {
+      background: #2c303a
+    }
   }
 </style>

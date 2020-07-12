@@ -10,8 +10,12 @@
   }
 
   .base-table-pagination-wrapper {
-    padding: 8px 12px;
+    padding: 6px 12px !important;
+    border-top: none;
     box-shadow: 0 1px 0 0 #f0f0f0;
+  }
+  .base-table-wrapper{
+    border-bottom: 1px solid #f4f4f4;
   }
 
   // 搜索区域
@@ -116,9 +120,13 @@
         cursor: pointer;
         padding: 0 16px;
         display: inline-block;
-        height: 36px;
         color: #1890ff;
+        height: 36px;
         line-height: 36px;
+        @media screen  and (max-width: 1368px) {
+          height: 28px;
+          line-height: 28px;
+        }
 
         &+span{
           border-left: 1px solid #ddd;
@@ -140,6 +148,11 @@
           height: 36px;
           line-height: 36px;
           padding: 0 16px;
+          display: inline-block;
+          @media screen  and (max-width: 1368px) {
+            height: 28px;
+            line-height: 28px;
+          }
         }
       }
     }

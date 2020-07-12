@@ -1,5 +1,5 @@
 import { deptDropdown, areaDropdown, leDropdown } from '@/api/common'
-import { replaceSpecificChar, stateConvert } from '@/utils'
+import { stateConvert } from '@/utils'
 
 const deptSelectConfig = {
   itemType: 'select',
@@ -93,22 +93,26 @@ export default {
     }, {
       prop: 'sellerId',
       label: 'Seller ID',
-      formatter: (row) => replaceSpecificChar(row && row.sellerId) || '-',
+      slotName: 'sellerId',
+      // formatter: (row) => replaceSpecificChar(row && row.sellerId) || '-',
       width: 150
     }, {
       prop: 'token',
       label: 'Token',
-      formatter: (row) => replaceSpecificChar(row && row.token) || '-',
+      slotName: 'token',
+      // formatter: (row) => replaceSpecificChar(row && row.token) || '-',
       width: 150
     }, {
       prop: 'secretKey',
       label: 'secretKey',
-      formatter: (row) => replaceSpecificChar(row && row.secretKey) || '-',
+      slotName: 'secretKey',
+      // formatter: (row) => replaceSpecificChar(row && row.secretKey) || '-',
       width: 150
     }, {
       prop: 'awsAccesskeyId',
       label: 'awsAccessKeyId',
-      formatter: (row) => replaceSpecificChar(row && row.awsAccesskeyId) || '-',
+      slotName: 'awsAccesskeyId',
+      // formatter: (row) => replaceSpecificChar(row && row.awsAccesskeyId) || '-',
       width: 150
     }, {
       prop: 'principal',

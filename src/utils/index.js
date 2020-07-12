@@ -483,16 +483,17 @@ function toUrlParams(params) {
     return ''
   }
 
-  const concatPrams = Object.keys(params).reduce((res, curKey, idx) => {
+  const concatParams = Object.keys(params).reduce((res, curKey, idx) => {
     if (idx === 0) {
       res += `${curKey}=${params[curKey]}`
     } else {
       res += `&${curKey}=${params[curKey]}`
     }
     return res
-  }, '?')
+  }, '')
 
-  return window.encodeURIComponent(concatPrams)
+  return window.encodeURIComponent(concatParams)
+  // return concatParams
 }
 
 /**
@@ -503,7 +504,7 @@ function toUrlParams(params) {
 export function downLoadFile(api, query) {
   try {
     const a = document.createElement('a')
-    a.href = process.env.VUE_APP_BASE_API + api + toUrlParams(query)
+    a.href = process.env.VUE_APP_BASE_API + api + '?' + toUrlParams(query)
     const event = document.createEvent('MouseEvents')
     event.initEvent('click', true, true)
     a.dispatchEvent(event)

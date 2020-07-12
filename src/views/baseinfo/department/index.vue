@@ -1,10 +1,11 @@
 <template>
   <div>
-    <base-table :import-config="importConfig" :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/dept/list" @dispatch="actionHandler">
+    <base-table :command-validator="commandValidator" :import-config="importConfig" :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/dept/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
         <span>-</span>
       </template>
     </base-table>
+    <!-- 新增，编辑 -->
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`组织管理 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="depForm" class="flex-form-wrapper" size="small" label-position="left" :model="depForm" :rules="rules" label-width="80px">
         <el-form-item label="编码" prop="code">
@@ -31,6 +32,7 @@
         <el-button size="small" type="primary" @click="submitForm('depForm')">保存</el-button>
       </span>
     </el-dialog>
+    <!-- 转移功能 -->
     <el-dialog title="转移" class="base-dialog-wrapper" width="520px" destroy-on-close :visible.sync="translateVisible" :before-close="handleClose">
       <dept-tree />
     </el-dialog>
@@ -42,8 +44,9 @@ import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import DeptTree from '@/views/baseinfo/department/DeptTree'
 import { addDept, deleteDept, getDeptById, updateDept } from '@/api/baseInfo'
+import { downLoadFile } from '@/utils'
 import tableConfig from './props.js'
-import { downLoadFile } from '../../../utils'
+
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -196,6 +199,18 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
       this.dialogVisible = false
+    },
+    commandValidator({ selectIds, selectRows }) {
+      if (selectIds.length > 1) {
+        this.$message.warning('最多只能选择一条数据')
+        return false
+      }
+      const isLegal = selectRows[0].domainLegal === 'Y'
+      if (!isLegal) {
+        this.$message.warning('非实体中心，不能进行转移')
+        return false
+      }
+      return true
     }
   }
 }

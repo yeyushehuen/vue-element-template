@@ -1,8 +1,24 @@
 <template>
   <div>
-    <base-table :import-config="importConfig" :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/account/list" @dispatch="actionHandler">
-      <template slot="operate" slot-scope="scope">
+    <base-table :crossness="crossness" :import-config="importConfig" :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/account/list" @dispatch="actionHandler">
+      <template slot="operate">
         <span>-</span>
+      </template>
+      <template slot="sellerId" slot-scope="scope">
+        <span v-if="crossness">{{ replaceSpecificChar(scope.row.sellerId) || '-' }}</span>
+        <span v-else>{{ scope.row.sellerId }}</span>
+      </template>
+      <template slot="token" slot-scope="scope">
+        <span v-if="crossness">{{ replaceSpecificChar(scope.row.token) || '-' }}</span>
+        <span v-else>{{ scope.row.token }}</span>
+      </template>
+      <template slot="secretKey" slot-scope="scope">
+        <span v-if="crossness">{{ replaceSpecificChar(scope.row.secretKey) || '-' }}</span>
+        <span v-else>{{ scope.row.secretKey }}</span>
+      </template>
+      <template slot="awsAccesskeyId" slot-scope="scope">
+        <span v-if="crossness">{{ replaceSpecificChar(scope.row.awsAccesskeyId) || '-' }}</span>
+        <span v-else>{{ scope.row.awsAccesskeyId }}</span>
       </template>
     </base-table>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`店铺管理 - ${actionTextConfig[editStatus]}`" width="800px" :visible.sync="dialogVisible" :before-close="handleClose">
@@ -55,6 +71,22 @@
         <el-button size="small" type="primary" @click="submitForm('shopForm')">保存</el-button>
       </span>
     </el-dialog>
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="手动生成报表记录" width="520px" :visible.sync="manualReportRangeVisible" :before-close="handleClose">
+      <div>
+        <span style="margin-right: 8px;">生成时间</span>
+        <el-date-picker
+          v-model="manualReportRange"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        />
+      </div>
+      <span slot="footer">
+        <el-button size="small">取消</el-button>
+        <el-button size="small" type="primary">生成</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -64,7 +96,7 @@ import tableConfig from './props.js'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import { addAccount, deleteAccount, getAccountById, updateAccount } from '@/api/baseInfo'
 import { areaDropdown, deptDropdown, leDropdown } from '@/api/common'
-import { toSelectOption, downLoadFile } from '../../../utils'
+import { toSelectOption, downLoadFile, replaceSpecificChar } from '@/utils'
 
 const { formOptions, columns } = tableConfig
 
@@ -81,7 +113,6 @@ export default {
         actionCode.delete,
         actionCode.disable,
         actionCode.enable,
-        actionCode.translate,
         actionCode.view,
         actionCode.manualReport,
         actionCode.export,
@@ -93,9 +124,12 @@ export default {
         leDropdown: []
       },
       dialogVisible: false,
+      manualReportRangeVisible: false,
+      crossness: true,
       editStatus: actionCode.add,
       selectIds: '',
       actionTextConfig,
+      manualReportRange: '',
       actionCallback: () => {},
       shopForm: {
         name: '',
@@ -161,6 +195,7 @@ export default {
     this.getSelectData()
   },
   methods: {
+    replaceSpecificChar: replaceSpecificChar,
     async getSelectData() {
       const areaDropdownSelect = await areaDropdown()
       this.selectOption.areaDropdown = toSelectOption(areaDropdownSelect.data, 'id', 'country')
@@ -206,10 +241,10 @@ export default {
       })
     },
     viewHandler() {
-      // todo 一键查看逻辑
+      this.crossness = !this.crossness
     },
     reportHandler() {
-      // todo 手动生成报表记录
+      this.manualReportRangeVisible = true
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this

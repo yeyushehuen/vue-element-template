@@ -1,8 +1,8 @@
 <template>
   <div>
     <base-table :import-config="importConfig" :form-options="formOptions" :columns="columns" :action-code="actionCode" api="/typeChange/list" @dispatch="actionHandler">
-      <template slot="name" slot-scope="scope">
-        {{ scope.$index }}
+      <template slot="operate" slot-scope="scope">
+        <span>-</span>
       </template>
     </base-table>
 

@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: 'yunren',
+      title: '还没有名字哦😯',
       logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }
@@ -57,8 +57,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       vertical-align: middle;
       margin-right: 12px;
     }

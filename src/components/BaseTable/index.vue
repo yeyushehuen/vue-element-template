@@ -2,7 +2,6 @@
   <div ref="baseTableWrapper" class="emm-base-table-root">
     <div v-if="formOptions" ref="searchForm" class="base-table-search-form-wrapper">
       <search-form
-
         v-bind="formOptions"
         class="base-table-search-form"
         :submit-handler="searchHandler"
@@ -31,7 +30,7 @@
 
         <div class="base-table-action-wrapper">
           <template v-for="(code) in actionCode">
-            <span v-if="code !== codeRepo.import" :key="code" :class="code + '-button'" @click="handleCommand(code)">{{ actionTextConfig[code] || code }}</span>
+            <span v-if="code !== codeRepo.import" :key="code" :class="code + '-button'" @click="handleCommand(code)">{{ renderCodeText(code) }}</span>
           </template>
           <span v-if="actionCode.indexOf('import') !== -1" class="import-button">
             <el-dropdown placement="bottom-start" type="primary">
@@ -42,8 +41,10 @@
                     class="upload-demo"
                     :action="importAction"
                     :show-file-list="false"
-                    multiple
                     :accept="importConfig.accept"
+                    :on-success="uploadExcelSuccess"
+                    :on-error="uploadExcelError"
+                    :on-progress="uploadExcelProgress"
                   >
                     <span size="small">上传文件</span>
                   </el-upload>
@@ -92,7 +93,7 @@
         <template slot="empty">
           <div>
             <img :src="emptySVG" height="150" alt="暂无数据">
-            <div style="text-align: center;font-size:16px;margin-top:-41px">暂无数据</div>
+            <div style="text-align: center;font-size:14px;margin-top:-41px">暂无数据</div>
           </div>
         </template>
         <el-table-column type="selection" align="center" width="41" />
@@ -128,10 +129,10 @@
 import request from '@/utils/request'
 import elHeightAdaptiveTable from '@/directive/el-table' // base on element-uiel-height-adaptive-table
 import emptySVG from '@/assets/empty.svg'
-import { deleteNullProps, randomStr, deepClone } from '@/utils'
+import { deleteNullProps, randomStr, deepClone, downLoadFile } from '@/utils'
 import searchForm from '@/components/search/src/main'
 import CustomColumn from './components/CustomColumn'
-import { paginationConfig, actionTextConfig, actionCode as codeRepo } from './config/constants'
+import { paginationConfig, actionTextConfig, actionCode as codeRepo, actionCode } from './config/constants'
 
 const mock = false
 
@@ -198,6 +199,11 @@ export default {
       type: Boolean,
       default: true
     },
+    // 自定义校验函数
+    commandValidator: {
+      type: Function,
+      default: () => true
+    },
     // 表头数据
     columns: {
       type: Array,
@@ -233,6 +239,10 @@ export default {
     actionCode: {
       type: Array,
       default: () => []
+    },
+    crossness: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -267,6 +277,13 @@ export default {
   destroyed() {
   },
   methods: {
+    renderCodeText(code) {
+      const { crossness } = this.$props
+      if (code === actionCode.view && !crossness) {
+        return actionTextConfig['unView'] || code
+      }
+      return actionTextConfig[code] || code
+    },
     handleSelectionChange(val, ...rest) {
       // console.log('handleSelectionChange', val, rest)
     },
@@ -339,18 +356,28 @@ export default {
         return false
       }
       if (command === codeRepo.update && selectLen > 1) {
-        this.$message('最多只能选择一条数据')
+        this.$message.warning('最多只能选择一条数据')
         return false
       }
 
       return true
     },
+    // 导出不需要必填校验
     handleCommand(command) {
       const _this = this
-      if (_this.$props.validate && !this.selectValidate(command)) {
+      const selection = _this.getSelection()
+      if (!_this.commandValidator(selection)) {
+        return false
+      } else if (
+        command !== codeRepo.export && // 导出无需校验勾选
+        command !== codeRepo.view && // 一键查看
+        // command !== codeRepo.translate && // 一键查看
+        command !== codeRepo.manualReport && // 手动生成报表记录
+        _this.$props.validate && // validate为false时，无需校验勾选
+        !this.selectValidate(command)
+      ) {
         return false
       }
-      const selection = this.getSelection()
       this.$emit('dispatch', command, { ...selection, callback: _this.callback, query: _this.searchQuery })
     },
     getSelection() {
@@ -364,12 +391,20 @@ export default {
     handleClose(done) {
       done()
     },
-    uploadFile() {},
     handleDownTemplate() {
-      // 地址使用本地的地址 -- 需要切换
-      // window.location = getUrlConcatToken("http://localhost:8080/template/budgetTemplate.xlsx");
-      // window.location = getUrlConcatToken('http://ads-ui.qa.aukeyit.com/template/bmsBudgetTemplate.xlsx')
-      window.location = process.env.VUE_APP_BASE_API + this.$props.importConfig.template
+      downLoadFile(this.$props.importConfig.template)
+    },
+    uploadExcelSuccess(response) {
+      console.log('uploadExcelSuccess', response)
+      if (response && response.code !== 200) {
+        this.$message.error(response.message)
+      }
+    },
+    uploadExcelError(error) {
+      console.log('uploadExcelError', error)
+    },
+    uploadExcelProgress(event) {
+      console.log('uploadExcelProgress', event)
     }
   }
 }
@@ -399,27 +434,5 @@ export default {
       background: #4A9FF9;
     }
   }
-  // &.done {
-  //   .board-column-header {
-  //     background: #2ac06d;
-  //   }
-  // }
 }
-
-// .box_fixed{
-//     width: 500px;
-//     height: 40px;
-//     border: 2px dashed pink;
-//     border-radius: 20px;
-//     margin: 0 auto;
-//     line-height: 40px;
-//     background: #eee;
-//   }
-//   .is_fixed{
-//     position: fixed;
-//     top: 0;
-//     left: 50%;
-//     margin-left: -250px;
-//     z-index: 999;
-//   }
 </style>

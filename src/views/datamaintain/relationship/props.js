@@ -13,48 +13,41 @@ export default {
   columns: [
     {
       prop: 'period',
-      label: '期间',
-      width: 150
+      label: '期间'
     },
     {
       prop: 'asin',
-      label: 'ASIN',
-      width: 150
+      label: 'ASIN'
     },
     {
       prop: 'sellerSku',
-      label: 'Seller Sku',
-      width: 150
+      label: 'Seller Sku'
     },
     {
       prop: 'fnSku',
-      label: 'FNSku',
-      width: 150
+      label: 'FNSku'
     },
     {
       prop: 'companySku',
-      label: '公司型号',
-      width: 150
+      label: '公司型号'
     },
     {
       prop: 'productName',
-      label: '产品名称',
-      width: 150
+      label: '产品名称'
     },
     {
       prop: 'createUser',
-      label: '创建人',
-      width: 150
+      label: '创建人'
     },
     {
       prop: 'createTime',
-      label: '创建时间',
-      width: 150
+      label: '创建时间'
     },
     {
       prop: 'operate',
       label: '操作',
-      slotName: 'operate'
+      slotName: 'operate',
+      width: 150
     }
   ]
 }
