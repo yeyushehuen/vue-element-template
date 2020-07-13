@@ -78,6 +78,7 @@ export default {
       prop: 'paymentState',
       label: '账单状态',
       width: 120,
+      align: 'center',
       slotName: 'paymentState'
     },
     {

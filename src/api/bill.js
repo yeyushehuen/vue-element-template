@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
 /** ******************** 账单详情 *********************/
-/** 账单审核 */
-export function paymentReportVerify({ data } = {}) {
+/** 审核 */
+export function paymentReportVerify(data) {
   return request({
     url: '/paymentReport/verify',
     method: 'post',
@@ -10,9 +10,17 @@ export function paymentReportVerify({ data } = {}) {
   })
 }
 /** 反审核 */
-export function paymentReportUnverify({ data } = {}) {
+export function paymentReportUnverify(data) {
   return request({
     url: '/paymentReport/unverify',
+    method: 'post',
+    data
+  })
+}
+/** 清除 */
+export function paymentReportClear(data) {
+  return request({
+    url: '/paymentReport/clear',
     method: 'post',
     data
   })
@@ -21,8 +29,9 @@ export function paymentReportUnverify({ data } = {}) {
 /** ******************** 数据详情 *********************/
 /** 重算 */
 export function billDataReconciliation({ data } = {}) {
+  debugger
   return request({
-    url: '/paymentAnalysis/reconciliation',
+    url: '/paymentAnalysis/reinit',
     method: 'post',
     data
   })

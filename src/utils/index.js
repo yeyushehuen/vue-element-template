@@ -500,33 +500,54 @@ function toUrlParams(params) {
  * 导出Excel公用方法
  * @param api 导出接口
  * @param query 导出查询参数
+ * @param http:true原生下载，false：http下载
  */
-export function downLoadFile(api, query, fileName) {
-  // try {
-  //   const a = document.createElement('a')
-  //   a.href = process.env.VUE_APP_BASE_API + api + '?' + toUrlParams(query)
-  //   const event = document.createEvent('MouseEvents')
-  //   event.initEvent('click', true, true)
-  //   a.dispatchEvent(event)
-  // } catch (error) {
-  //   console.log(error)
+export function downLoadFile(api, query, fileName, http = false) {
+  // if (http) {
+  //   try {
+  //     const a = document.createElement('a')
+  //     const clearHref = process.env.VUE_APP_BASE_API + api + '?' + toUrlParams(query)
+  //     a.href = clearHref.replace(/\/\//, '/')
+  //     debugger
+  //     const event = document.createEvent('MouseEvents')
+  //     event.initEvent('click', true, true)
+  //     a.dispatchEvent(event)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  //   return true
+  // } else {
+  //   request({
+  //     url: api,
+  //     method: 'get',
+  //     responseType: 'blob',
+  //     params: query
+  //   }).then(function(response) {
+  //     var blob = new Blob([response.data || ''])
+  //     var downloadElement = document.createElement('a')
+  //     var href = window.URL.createObjectURL(blob) // 创建下载的链接
+  //     downloadElement.href = href
+  //     downloadElement.download = fileName + '.csv' // 下载后文件名
+  //     document.body.appendChild(downloadElement)
+  //     downloadElement.click() // 点击下载
+  //     document.body.removeChild(downloadElement) // 下载完成移除元素
+  //     window.URL.revokeObjectURL(href) // 释放掉blob对象
+  //   }).catch(function(error) {
+  //     console.log(error)
+  //   })
   // }
-  request({
-    url: api,
-    method: 'get',
-    responseType: 'blob',
-    params: query
-  }).then(function(response) {
-    var blob = new Blob([response.data || ''])
-    var downloadElement = document.createElement('a')
-    var href = window.URL.createObjectURL(blob) // 创建下载的链接
-    downloadElement.href = href
-    downloadElement.download = fileName + '.csv' // 下载后文件名
-    document.body.appendChild(downloadElement)
-    downloadElement.click() // 点击下载
-    document.body.removeChild(downloadElement) // 下载完成移除元素
-    window.URL.revokeObjectURL(href) // 释放掉blob对象
-  }).catch(function(error) {
+  if (!api) {
+    return false
+  }
+  const subAPI = `${api}`.startsWith('/') ? `${api}`.substring(1) : api
+  try {
+    const a = document.createElement('a')
+    a.href = process.env.VUE_APP_BASE_API + subAPI + '?' + toUrlParams(query)
+    debugger
+    const event = document.createEvent('MouseEvents')
+    event.initEvent('click', true, true)
+    a.dispatchEvent(event)
+  } catch (error) {
     console.log(error)
-  })
+  }
 }

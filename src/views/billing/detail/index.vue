@@ -2,7 +2,7 @@
   <div style="position: relative;">
     <base-table :action-code="actionCode" :import-config="importConfig" :form-options="formOptions" :columns="columns" api="/paymentReport/list" @dispatch="actionHandler">
       <template slot="billingDetails" slot-scope="scope">
-        <i class="el-icon-info" @click="showDetail" />
+        <i class="el-icon-connection" @click="showDetail(scope.row)" />
       </template>
       <template slot="fileUpload" slot-scope="scope">
         <i class="el-icon-download" />
@@ -16,7 +16,7 @@
           :http-request="uploadFile"
           accept=".csv"
         >
-          <i class="el-icon-upload" />
+          <i class="el-icon-upload2" />
         </el-upload>
       </template>
     </base-table>
@@ -27,7 +27,8 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { paymentReportUnverify, paymentReportVerify } from '../../../api/bill'
+import { paymentReportUnverify, paymentReportVerify, paymentReportClear } from '../../../api/bill'
+import { downLoadFile } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -38,14 +39,13 @@ export default {
       formOptions: formOptions,
       columns: columns,
       actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, actionCode.export, actionCode.import],
-      innerDrawer: false,
       editStatus: actionCode.add,
       selectIds: '',
       actionTextConfig,
       actionCallback: () => {},
       importConfig: {
         action: '/paymentReport/upload',
-        template: '/paymentReport/export',
+        template: '',
         accept: ''
       }
     }
@@ -53,17 +53,28 @@ export default {
   mounted() {
   },
   methods: {
+    callback(response) {
+      if (response && response.code !== 200) {
+        this.$message.error(response.message)
+      } else {
+        this.$message.success(response.message)
+      }
+    },
     async auditHandler(selectIds) {
-      paymentReportVerify(selectIds)
+      const response = await paymentReportVerify({ id: selectIds.join(',') })
+      this.callback(response)
     },
     async reviewsHandler(selectIds) {
-      paymentReportUnverify(selectIds)
+      const response = await paymentReportUnverify({ id: selectIds.join(',') })
+      this.callback(response)
     },
     async clearHandler(selectIds) {
-      // todo清除
+      const response = await paymentReportClear({ id: selectIds.join(',') })
+      this.callback(response)
     },
-    exportHandler() {
-      // todo 导出逻辑 /paymentReport/export
+    exportHandler(selectIds, query) {
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      downLoadFile('/paymentReport/export', params, '数据详情', true)
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
@@ -86,8 +97,13 @@ export default {
           break
       }
     },
-    showDetail() {
-      this.innerDrawer = true
+    showDetail(row) {
+      this.$router.push({
+        // 你要跳转的地址
+        path: '/billing/data',
+        query: { id: row.id }
+      })
+      this.$router.push({ path: '/billing/data', query: { id: row.id }})
     },
     uploadFile() {}
   }
@@ -95,7 +111,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-icon-upload,.el-icon-info,.el-icon-download{
+.el-icon-upload2,.el-icon-connection,.el-icon-download{
   font-size: 20px;
   color: #1890ff;
   vertical-align: bottom;

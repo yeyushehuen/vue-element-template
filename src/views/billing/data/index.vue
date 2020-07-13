@@ -11,6 +11,7 @@ import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { billDataReconciliation, billDataSummary } from '../../../api/bill'
+import { downLoadFile } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -28,21 +29,28 @@ export default {
     }
   },
   methods: {
+    callback(response) {
+      if (response && response.code !== 200) {
+        this.$message.error(response.message)
+      } else {
+        this.$message.success(response.message)
+      }
+    },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      // downLoadFile('/account/export', params, '数据详情')
+      downLoadFile('/paymentAnalysis/export', params, '数据详情', true)
     },
-    // TODO 重算
-    reconciliationHandler(selectIds, query) {
-      billDataReconciliation({
-        data: query
+    async reconciliationHandler(selectIds, query) {
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      const response = await billDataReconciliation({
+        data: params
       })
+      this.callback(response)
     },
-    // TODO 汇总
-    summaryHandler(selectIds, query) {
-      billDataSummary({
-        data: query
-      })
+    async summaryHandler(selectIds, query) {
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      const response = await billDataSummary({ data: params })
+      this.callback(response)
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
@@ -62,13 +70,14 @@ export default {
           break
       }
     },
-    commandValidator({ selectIds, selectRows, query }) {
+    commandValidator({ selectIds, selectRows, query, command }) {
       query = query || {}
       const _this = this
       if (selectIds.length < 1 && !query.period) {
-        _this.$message.warning('请勾选数据或按区间查询后再进行重算')
+        _this.$message.warning(command === actionCode.export ? '请勾选数据或执行间查询' : '请勾选数据或按区间查询后再进行重算')
         return false
       }
+      return true
     }
   }
 }

@@ -200,7 +200,10 @@ export default {
       this.$refs[formName].resetFields()
       this.dialogVisible = false
     },
-    commandValidator({ selectIds, selectRows }) {
+    commandValidator({ selectIds, selectRows, command }) {
+      if (command === actionCode.export) {
+        return true
+      }
       if (selectIds.length < 1) {
         this.$message.warning('最少选择一条数据')
         return false

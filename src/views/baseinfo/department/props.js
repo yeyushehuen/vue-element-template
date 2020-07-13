@@ -35,7 +35,7 @@ export default {
     {
       prop: 'domainLegal',
       label: '是否实体中心',
-      formatter: (row) => stateConvert(row && row.state, false)
+      formatter: (row) => stateConvert(row && row.domainLegal, false)
     },
     {
       prop: 'createUser',

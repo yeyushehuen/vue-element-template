@@ -1,4 +1,4 @@
-import { monthRangeFormat } from '@/utils'
+import { monthRangeFormat, parseTime } from '@/utils'
 import { deptDropdown, areaDropdown } from '@/api/common'
 
 const deptSelectConfig = {
@@ -14,13 +14,18 @@ const countrySelectConfig = {
   selectResultHandler: (item) => ({ value: item.id, label: item.country })
 }
 
+const periodFormat = (value, key) => {
+  const formatVal = parseTime(value, '{y}-{m}')
+  return { [key]: formatVal }
+}
+
 export default {
   formOptions: {
     inline: true,
     submitBtnText: '查询',
     forms: [
       { prop: 'orderId', label: '订单号' },
-      { prop: 'period', label: '期间', itemType: 'month' },
+      { prop: 'period', label: '期间', itemType: 'month', format: periodFormat },
       { prop: 'mobile', label: '账单时间', itemType: 'monthrange', format: monthRangeFormat },
       { prop: 'countryId', label: '国家', itemType: 'select', ...countrySelectConfig, selectOptions: { multiple: true }},
       {

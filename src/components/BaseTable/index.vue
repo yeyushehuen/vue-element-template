@@ -1,7 +1,8 @@
 <template>
   <div ref="baseTableWrapper" class="emm-base-table-root">
-    <div v-if="formOptions" ref="searchForm" class="base-table-search-form-wrapper">
+    <div v-if="formOptions" class="base-table-search-form-wrapper">
       <search-form
+        ref="searchForm"
         v-bind="formOptions"
         class="base-table-search-form"
         :submit-handler="searchHandler"
@@ -34,7 +35,7 @@
                     <span size="small">上传文件</span>
                   </el-upload>
                 </el-dropdown-item>
-                <el-dropdown-item @command="下载模板" @click.native="handleDownTemplate">下载模板</el-dropdown-item>
+                <el-dropdown-item v-if="!!importConfig.template" @command="下载模板" @click.native="handleDownTemplate">下载模板</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </span>
@@ -171,7 +172,7 @@ export default {
     // 自定义校验函数
     commandValidator: {
       type: Function,
-      default: () => true
+      default: null
     },
     // 表头数据
     columns: {
@@ -236,7 +237,9 @@ export default {
   },
   computed: {
     importAction: function() {
-      return process.env.VUE_APP_BASE_API + this.$props.importConfig.action
+      const api = this.$props.importConfig.action || ''
+      const subAPI = api.startsWith('/') ? api.substring(1) : api
+      return process.env.VUE_APP_BASE_API + subAPI
     }
   },
   created() {
@@ -258,12 +261,12 @@ export default {
     handleSelectionChange(val, ...rest) {
       // console.log('handleSelectionChange', val, rest)
     },
-    getQueryParams() {
+    getQueryParams(urlParams) {
       const { currentPage, pageSize } = this.pagination || {}
       const constantParams = this.params || {}
       const searchValues = this.searchQuery || {}
 
-      return { currentPage, pageSize, ...constantParams, ...searchValues }
+      return { currentPage, pageSize, ...constantParams, ...searchValues, ...urlParams }
     },
     paginationChange() {
       this.getList()
@@ -293,7 +296,8 @@ export default {
     getList() {
       this.listLoading = true
       // 所有的查询参数都在这里获取
-      const query = this.getQueryParams()
+      const urlParams = this.$route.query || {}
+      const query = this.getQueryParams(urlParams)
       fetchList(this.api, query, this.columns).then(response => {
         const { list, total } = this.getResponse(response)
         this.list = list
@@ -328,7 +332,7 @@ export default {
       const selectLen = selection.selectIds.length
       if (selectLen < 1) {
         this.$message({
-          message: '请选择要操作的数据',
+          message: '最少选择一条数据',
           type: 'warning'
         })
         return false
@@ -344,13 +348,15 @@ export default {
     handleCommand(command) {
       const _this = this
       const selection = _this.getSelection()
-      if (!_this.commandValidator({ ...selection, query: _this.searchQuery })) {
-        return false
+      if (_this.commandValidator) {
+        if (!_this.commandValidator({ ...selection, query: _this.searchQuery, command })) {
+          return false
+        }
       } else if (
         command !== codeRepo.export && // 导出无需校验勾选
-        command !== codeRepo.view && // 一键查看
+        command !== codeRepo.view && // 一键查看无需校验
         // command !== codeRepo.translate && // 一键查看
-        command !== codeRepo.manualReport && // 手动生成报表记录
+        command !== codeRepo.manualReport && // 手动生成报表记录无需校验
         _this.$props.validate && // validate为false时，无需校验勾选
         !this.commandValidate(command)
       ) {
@@ -370,31 +376,33 @@ export default {
       done()
     },
     handleDownTemplate() {
-      // downLoadFile(this.$props.importConfig.template)
-      const api = this.$props.importConfig.template
+      downLoadFile(this.$props.importConfig.template)
+      // const api = this.$props.importConfig.template
 
-      request({
-        url: api,
-        method: 'get',
-        responseType: 'blob'
-      }).then(function(response) {
-        var blob = new Blob([response.data])
-        var downloadElement = document.createElement('a')
-        var href = window.URL.createObjectURL(blob) // 创建下载的链接
-        downloadElement.href = href
-        downloadElement.download = '导入模板.csv' // 下载后文件名
-        document.body.appendChild(downloadElement)
-        downloadElement.click() // 点击下载
-        document.body.removeChild(downloadElement) // 下载完成移除元素
-        window.URL.revokeObjectURL(href) // 释放掉blob对象
-      }).catch(function(error) {
-        console.log(error)
-      })
+      // request({
+      //   url: api,
+      //   method: 'get',
+      //   responseType: 'blob'
+      // }).then(function(response) {
+      //   var blob = new Blob([response.data])
+      //   var downloadElement = document.createElement('a')
+      //   var href = window.URL.createObjectURL(blob) // 创建下载的链接
+      //   downloadElement.href = href
+      //   downloadElement.download = '导入模板.csv' // 下载后文件名
+      //   document.body.appendChild(downloadElement)
+      //   downloadElement.click() // 点击下载
+      //   document.body.removeChild(downloadElement) // 下载完成移除元素
+      //   window.URL.revokeObjectURL(href) // 释放掉blob对象
+      // }).catch(function(error) {
+      //   console.log(error)
+      // })
     },
     uploadExcelSuccess(response) {
       console.log('uploadExcelSuccess', response)
       if (response && response.code !== 200) {
         this.$message.error(response.message)
+      } else {
+        this.$message.success(response.message)
       }
     },
     uploadExcelError(error) {

@@ -14,7 +14,8 @@ export default {
     submitBtnText: '查询',
     forms: [
       { prop: 'province', label: '州属' },
-      { prop: 'countryId', label: '国家', itemType: 'select', ...areaSelectConfig },
+      // { prop: 'countryId', label: '国家', itemType: 'select', ...areaSelectConfig },
+      { prop: 'country', label: '国家' },
       { prop: 'nameShort', label: '简称' }
     ]
   },

@@ -262,7 +262,6 @@ export default {
         if (valid) {
           // const { params, datePrefix, format } = this
           const { params, format, computedForms } = this
-          console.log('computedForms', computedForms)
           const formattedForm = {}
           computedForms.forEach(({ prop: v }) => {
             if (typeof format[v] === 'function') {
