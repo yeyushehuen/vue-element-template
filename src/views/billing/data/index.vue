@@ -30,7 +30,7 @@ export default {
   methods: {
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      // downLoadFile('/account/export', params)
+      // downLoadFile('/account/export', params, '数据详情')
     },
     // TODO 重算
     reconciliationHandler(selectIds, query) {

@@ -111,7 +111,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/typeChange/export', params)
+      downLoadFile('/typeChange/export', params, '类型转换')
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this

@@ -123,7 +123,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/skuCost/export', params)
+      downLoadFile('/skuCost/export', params, '成本数据')
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this

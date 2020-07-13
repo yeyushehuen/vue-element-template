@@ -123,7 +123,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/dept/export', params)
+      downLoadFile('/dept/export', params, '部门')
     },
     translateHandler() {
       this.translateVisible = true

@@ -97,7 +97,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/legalEntity/export', params)
+      downLoadFile('/legalEntity/export', params, '销售主体')
     },
     stateHandler(selectIds) {
       const _this = this

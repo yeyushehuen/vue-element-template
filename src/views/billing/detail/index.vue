@@ -45,7 +45,7 @@ export default {
       actionCallback: () => {},
       importConfig: {
         action: '/paymentReport/upload',
-        template: '/paymentReport/downloadTemp',
+        template: '/paymentReport/export',
         accept: ''
       }
     }

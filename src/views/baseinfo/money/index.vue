@@ -88,7 +88,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/currency/export', params)
+      downLoadFile('/currency/export', params, '货币')
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this

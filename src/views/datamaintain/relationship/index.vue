@@ -117,7 +117,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/skuRelation/export', params)
+      downLoadFile('/skuRelation/export', params, 'SellerSku关系维护')
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this

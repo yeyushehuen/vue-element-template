@@ -370,27 +370,26 @@ export default {
       done()
     },
     handleDownTemplate() {
-      downLoadFile(this.$props.importConfig.template)
-      // const _this = this
-      // const api = this.$props.importConfig.template
+      // downLoadFile(this.$props.importConfig.template)
+      const api = this.$props.importConfig.template
 
-      // request({
-      //   url: api,
-      //   method: 'get',
-      //   responseType: 'blob'
-      // }).then(function(response) {
-      //   var blob = new Blob([response.data])
-      //   var downloadElement = document.createElement('a')
-      //   var href = window.URL.createObjectURL(blob) // 创建下载的链接
-      //   downloadElement.href = href
-      //   downloadElement.download = '用户数据.xlsx' // 下载后文件名
-      //   document.body.appendChild(downloadElement)
-      //   downloadElement.click() // 点击下载
-      //   document.body.removeChild(downloadElement) // 下载完成移除元素
-      //   window.URL.revokeObjectURL(href) // 释放掉blob对象
-      // }).catch(function(error) {
-      //   console.log(error)
-      // })
+      request({
+        url: api,
+        method: 'get',
+        responseType: 'blob'
+      }).then(function(response) {
+        var blob = new Blob([response.data])
+        var downloadElement = document.createElement('a')
+        var href = window.URL.createObjectURL(blob) // 创建下载的链接
+        downloadElement.href = href
+        downloadElement.download = '导入模板.csv' // 下载后文件名
+        document.body.appendChild(downloadElement)
+        downloadElement.click() // 点击下载
+        document.body.removeChild(downloadElement) // 下载完成移除元素
+        window.URL.revokeObjectURL(href) // 释放掉blob对象
+      }).catch(function(error) {
+        console.log(error)
+      })
     },
     uploadExcelSuccess(response) {
       console.log('uploadExcelSuccess', response)

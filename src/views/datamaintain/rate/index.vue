@@ -118,7 +118,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/exchangeRate/export', params)
+      downLoadFile('/exchangeRate/export', params, '汇率数据')
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this

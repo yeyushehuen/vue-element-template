@@ -87,6 +87,8 @@
     }
     .el-table__header th {
       background-color: #f6f7f9;
+      color: #000;
+      font-weight: normal;
     }
     .el-table__body-wrapper {
       &::-webkit-scrollbar {

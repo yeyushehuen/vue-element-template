@@ -1,7 +1,7 @@
 /**
  * Created by PanJiaChen on 16/11/18.
  */
-
+import request from '@/utils/request'
 import { validatenull, isObject, isArray, getDataType } from './validate'
 
 /**
@@ -501,14 +501,32 @@ function toUrlParams(params) {
  * @param api 导出接口
  * @param query 导出查询参数
  */
-export function downLoadFile(api, query) {
-  try {
-    const a = document.createElement('a')
-    a.href = process.env.VUE_APP_BASE_API + api + '?' + toUrlParams(query)
-    const event = document.createEvent('MouseEvents')
-    event.initEvent('click', true, true)
-    a.dispatchEvent(event)
-  } catch (error) {
+export function downLoadFile(api, query, fileName) {
+  // try {
+  //   const a = document.createElement('a')
+  //   a.href = process.env.VUE_APP_BASE_API + api + '?' + toUrlParams(query)
+  //   const event = document.createEvent('MouseEvents')
+  //   event.initEvent('click', true, true)
+  //   a.dispatchEvent(event)
+  // } catch (error) {
+  //   console.log(error)
+  // }
+  request({
+    url: api,
+    method: 'get',
+    responseType: 'blob',
+    params: query
+  }).then(function(response) {
+    var blob = new Blob([response.data || ''])
+    var downloadElement = document.createElement('a')
+    var href = window.URL.createObjectURL(blob) // 创建下载的链接
+    downloadElement.href = href
+    downloadElement.download = fileName + '.csv' // 下载后文件名
+    document.body.appendChild(downloadElement)
+    downloadElement.click() // 点击下载
+    document.body.removeChild(downloadElement) // 下载完成移除元素
+    window.URL.revokeObjectURL(href) // 释放掉blob对象
+  }).catch(function(error) {
     console.log(error)
-  }
+  })
 }

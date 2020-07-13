@@ -114,7 +114,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/area/export', params)
+      downLoadFile('/area/export', params, '区域')
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this

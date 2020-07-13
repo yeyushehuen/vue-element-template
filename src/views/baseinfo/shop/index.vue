@@ -227,7 +227,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/account/export', params)
+      downLoadFile('/account/export', params, '店铺')
     },
     stateHandler(selectIds) {
       const _this = this
