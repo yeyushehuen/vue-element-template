@@ -118,9 +118,11 @@
       .custome-columns{
         height: 32px;
         line-height: 32px;
-        .el-icon-setting{
-          color: #1890ff;
-          cursor: normal;
+        ::v-deep{
+          .el-icon-setting{
+            color: #1890ff;
+            cursor: normal;
+          }
         }
       }
     }
