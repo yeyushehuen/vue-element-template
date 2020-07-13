@@ -1,4 +1,4 @@
-import { deptDropdown, areaDropdown, leDropdown, } from '@/api/common'
+import { deptDropdown, areaDropdown } from '@/api/common'
 
 const deptSelectConfig = {
   itemType: 'select',
@@ -12,11 +12,6 @@ const countrySelectConfig = {
   selectResultField: 'data',
   selectResultHandler: (item) => ({ value: item.id, label: item.country })
 }
-// const legalSelectConfig = {
-//   itemType: 'select',
-//   selectFetch: leDropdown,
-//   selectResultField: 'data'
-// }
 
 export default {
   formOptions: {
@@ -31,13 +26,13 @@ export default {
     ]
   },
   columns: [
-    { label: '期间', props: '1' },
-    { label: '部门', props: '2' },
-    { label: '国家', props: '3' },
+    { label: '期间', props: 'period' },
+    { label: '部门', props: 'departmentId' },
+    { label: '国家', props: 'accountId' },
     { label: '店铺名称', props: '4' },
-    { label: '币别', props: '5' },
+    { label: '币别', props: 'currency' },
     { label: '汇率', props: '6' },
-    { label: '业务类型', props: '7' },
+    { label: '业务类型', props: 'type' },
     { label: '原币金额', props: '8' },
     { label: '本币金额', props: '9' }
   ]

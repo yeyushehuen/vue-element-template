@@ -201,11 +201,15 @@ export default {
       this.dialogVisible = false
     },
     commandValidator({ selectIds, selectRows }) {
+      if (selectIds.length < 1) {
+        this.$message.warning('最少选择一条数据')
+        return false
+      }
       if (selectIds.length > 1) {
         this.$message.warning('最多只能选择一条数据')
         return false
       }
-      const isLegal = selectRows[0].domainLegal === 'Y'
+      const isLegal = selectRows[0] ? selectRows[0].domainLegal === 'Y' : false
       if (!isLegal) {
         this.$message.warning('非实体中心，不能进行转移')
         return false

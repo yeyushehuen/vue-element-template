@@ -99,6 +99,9 @@
   flex: 0 0 auto;
 }
 .base-dialog-wrapper{
+  .el-dialog{
+    margin-top: 40px !important;
+  }
   .el-dialog__footer{
     background-color: #f4f4f4;
     padding: 8px 16px;

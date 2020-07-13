@@ -14,7 +14,7 @@
           :auto-upload="true"
           :show-file-list="false"
           :http-request="uploadFile"
-          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+          accept=".csv"
         >
           <i class="el-icon-upload" />
         </el-upload>
@@ -70,12 +70,11 @@ export default {
       _this.editStatus = type
       _this.actionCallback = callback
       switch (type) {
-        case actionCode.add: // todo审核
-          _this.auditHandler()
+        case actionCode.audit:
+          _this.auditHandler(selectIds)
           break
-        case actionCode.reviews: // todo反审核
+        case actionCode.reviews:
           _this.reviewsHandler(selectIds)
-          _this.selectIds = selectIds.join(',')
           break
         case actionCode.clear:
           _this.clearHandler(selectIds)

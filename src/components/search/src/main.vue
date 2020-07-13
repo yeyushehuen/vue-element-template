@@ -31,10 +31,12 @@
           v-else-if="form.itemType === 'select'"
           v-model="params[form.modelValue]"
           filterable
+          collapse-tags
           :size="form.size ? form.size : size"
           :disabled="form.disabled"
           :placeholder="form.placeholder || '请选择' + form.label"
           :style="itemStyle + (form.itemWidth ? `width: ${form.itemWidth}px;` : '')"
+          v-bind="form.selectOptions || {}"
         >
           <el-option
             v-for="(option, optionIndex) in form.options"

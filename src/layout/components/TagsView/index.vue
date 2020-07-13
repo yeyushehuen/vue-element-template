@@ -204,11 +204,7 @@ $appBg: #f0f0f0;
 $navActiveBg: mix(#f0f2f5, #fff, 60%);
 
 .tags-view-container {
-  // height: 40px;
   width: 100%;
-  // background: #fff;
-  // border-bottom: 1px solid #d8dce5;
-  // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
@@ -221,8 +217,6 @@ $navActiveBg: mix(#f0f2f5, #fff, 60%);
       background: $appBg;
       padding: 0 8px;
       font-size: 12px;
-      // margin-left: 5px;
-      // margin-top: 4px;
       &:first-of-type {
         margin-left: 15px;
       }
@@ -252,6 +246,11 @@ $navActiveBg: mix(#f0f2f5, #fff, 60%);
       text-align: center;
       border-top: none;
       border-bottom: none;
+
+      @media screen and (max-width: 1368px) {
+        height: 32px;
+      line-height: 32px;
+      }
     }
   }
   .contextmenu {

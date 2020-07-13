@@ -1,14 +1,19 @@
+import { areaDropdown } from '@/api/common'
+
+const areaSelectConfig = {
+  params: {},
+  itemType: 'select',
+  selectFetch: areaDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.country })
+}
+
 export default {
   formOptions: {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'areaId', label: '国家', itemType: 'select',
-        options: [
-          { value: 0, label: '中国' },
-          { value: 1, label: '俄罗斯' }
-        ]
-      },
+      { prop: 'countryId', label: '国家', itemType: 'select', ...areaSelectConfig },
       { prop: 'type', label: 'Type' },
       { prop: 'convertType', label: '转换类型' }
     ]

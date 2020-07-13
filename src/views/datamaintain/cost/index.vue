@@ -51,7 +51,7 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.export, actionCode.import],
+      actionCode: [/* actionCode.add, */actionCode.update, actionCode.delete, actionCode.export, actionCode.import],
       dialogVisible: false,
       editStatus: actionCode.add,
       selectIds: '',
@@ -114,11 +114,11 @@ export default {
         this.$message.error('删除失败')
       }
     },
-    async updateHandler(selectIds) {
+    async updateHandler(selectIds, record) {
       const res = await getSkuCostById(selectIds[0])
-      console.log('res', res)
       if (res && res.code === 200) {
-        this.setFormVal(res.data)
+        const resData = res.data || {}
+        this.setFormVal({ ...resData, period: record.period })
       }
     },
     exportHandler(selectIds, query) {
@@ -131,12 +131,12 @@ export default {
       _this.actionCallback = callback
       switch (type) {
         case actionCode.add: // 新增
-          _this.dialogVisible = true
+          // _this.dialogVisible = true
           // _this.resetForm('skuCostForm')
           break
         case actionCode.update: // 修改
           _this.dialogVisible = true
-          _this.updateHandler(selectIds)
+          _this.updateHandler(selectIds, selectRows[0] || {})
           _this.selectIds = selectIds.join(',')
           break
         case actionCode.delete:

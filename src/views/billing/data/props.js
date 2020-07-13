@@ -1,47 +1,36 @@
 import { monthRangeFormat } from '@/utils'
+import { deptDropdown, areaDropdown } from '@/api/common'
+
+const deptSelectConfig = {
+  itemType: 'select',
+  selectFetch: deptDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+}
+const countrySelectConfig = {
+  itemType: 'select',
+  selectFetch: areaDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.country })
+}
 
 export default {
   formOptions: {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'name', label: '订单号' },
+      { prop: 'orderId', label: '订单号' },
       { prop: 'name', label: '期间', itemType: 'month' },
       { prop: 'mobile', label: '账单时间', itemType: 'monthrange', format: monthRangeFormat },
+      { prop: 'countryId', label: '国家', itemType: 'select', ...countrySelectConfig, selectOptions: { multiple: true }},
       {
-        prop: 'mobile', label: '国家', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
+        prop: 'testProps', label: '店铺', itemType: 'select', options: [] },
       {
-        prop: 'testProps', label: '店铺', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
+        prop: 'mobilasdfe', label: '部门', itemType: 'select', ...deptSelectConfig },
       {
-        prop: 'mobilasdfe', label: '部门', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      {
-        prop: 'sex', label: '数据类型', itemType: 'select',
-        options: [
-          { value: '', label: 'All' },
-          { value: 0, label: 'Male' },
-          { value: 1, label: 'Female' }
-        ]
-      },
-      { prop: 'sex', label: '账单类型' },
-      { prop: 'sex', label: '转换类型' }
+        prop: 'dataType', label: '数据类型' },
+      { prop: 'billType', label: '账单类型' },
+      { prop: 'changeType', label: '转换类型' }
     ]
   },
   columns: [
@@ -86,7 +75,7 @@ export default {
     { prop: '38', width: 150, label: '运费收入(原币)' },
     { prop: '39', width: 150, label: '销售折扣(原币)' },
     { prop: '40', width: 150, label: '退款金额(原币)' },
-    { prop: '41', width: 150, label: '亚马逊物料赔偿(原币)' },
+    { prop: '41', width: 160, label: '亚马逊物料赔偿(原币)' },
     { prop: '42', width: 150, label: '手续费(原币)' },
     { prop: '43', width: 150, label: 'fba运费(原币)' },
     { prop: '44', width: 150, label: 'fba仓租(原币)' },
@@ -103,7 +92,7 @@ export default {
     { prop: '55', width: 150, label: '运费收入(本位币)' },
     { prop: '56', width: 150, label: '销售折扣(本位币)' },
     { prop: '57', width: 150, label: '退款金额(本位币)' },
-    { prop: '58', width: 150, label: '亚马逊物料赔偿(本位币)' },
+    { prop: '58', width: 160, label: '亚马逊物料赔偿(本位币)' },
     { prop: '59', width: 150, label: '手续费(本位币)' },
     { prop: '60', width: 150, label: 'fba运费(本位币)' },
     { prop: '61', width: 150, label: 'fba仓租(本位币)' },

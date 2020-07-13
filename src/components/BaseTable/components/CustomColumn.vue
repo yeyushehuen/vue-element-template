@@ -1,18 +1,22 @@
 <template>
-  <div class="board-column">
-    <div class="board-column-header">
+  <div>
+    <!-- <div class="board-column-header">
       {{ headerText }}
-    </div>
+    </div> -->
     <draggable
       :list="list"
       v-bind="$attrs"
-      class="board-column-content"
       :set-data="setData"
+      class="custom-columns"
     >
-      <div v-for="element in list" :key="element.prop" class="board-item">
-        {{ element.label }}
-      </div>
+      <el-tag v-for="element in list" :key="element.prop" class="column-tag">
+        <el-checkbox v-model="checkModel[element.prop]">{{ element.label }}</el-checkbox>
+      </el-tag>
     </draggable>
+    <div class="footer">
+      <el-button size="small" @click="reset">重置</el-button>
+      <el-button size="small" type="primary" @click="confirm">确定</el-button>
+    </div>
   </div>
 </template>
 
@@ -25,21 +29,26 @@ export default {
     draggable
   },
   props: {
-    headerText: {
-      type: String,
-      default: 'Header'
-    },
-    options: {
-      type: Object,
-      default() {
-        return {}
-      }
-    },
     list: {
       type: Array,
       default() {
         return []
       }
+    },
+    showColumns: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  data() {
+    const checkModel = {}
+    this.$props.showColumns.forEach(item => {
+      checkModel[item.prop] = true
+    })
+    return {
+      checkModel
     }
   },
   methods: {
@@ -47,53 +56,54 @@ export default {
       // to avoid Firefox bug
       // Detail see : https://github.com/RubaXa/Sortable/issues/1012
       dataTransfer.setData('Text', '')
+    },
+    confirm() {
+      const _this = this
+      const showColumn = _this.$props.list.filter(item => _this.checkModel[item.prop])
+      _this.$emit('changeShowColumns', showColumn)
+    },
+    reset() {
+      const checkModel = {}
+      this.$props.list.forEach(item => {
+        checkModel[item.prop] = true
+      })
+      this.checkModel = checkModel
+      this.$emit('changeShowColumns', [], true)
     }
   }
 }
 </script>
+
 <style lang="scss" scoped>
-.board-column {
-  min-width: 300px;
-  min-height: 100px;
-  height: auto;
-  overflow: hidden;
-  background: #f0f0f0;
-  border-radius: 3px;
+.custom-columns{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
-  .board-column-header {
-    height: 50px;
-    line-height: 50px;
-    overflow: hidden;
-    padding: 0 20px;
-    text-align: center;
-    background: #333;
-    color: #fff;
-    border-radius: 3px 3px 0 0;
-  }
+  .column-tag{
+    width: 100%*(1/5)-1%;
+    margin-bottom: 4px;
 
-  .board-column-content {
-    height: auto;
-    overflow: hidden;
-    border: 10px solid transparent;
-    min-height: 60px;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    align-items: center;
+    &:not(:nth-child(5n)){
+      margin-right:5%/(5-1);
+    }
+    &:last-child{
+      margin-right: auto;
+    }
 
-    .board-item {
-      cursor: pointer;
-      width: 100%;
-      height: 40px;
-      margin: 4px 0;
-      background-color: #fff;
-      text-align: left;
-      line-height: 32px;
-      padding: 5px 10px;
-      box-sizing: border-box;
-      box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
+    ::v-deep{
+      .el-checkbox{
+        width: 100%;
+      }
     }
   }
 }
-</style>
 
+.footer{
+  text-align: right;
+  margin: -12px -16px;
+  padding: 8px 16px;
+  background: #f4f4f4;
+  margin-top: 16px;
+}
+</style>

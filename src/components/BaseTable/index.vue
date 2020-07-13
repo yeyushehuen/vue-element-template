@@ -13,21 +13,6 @@
 
     <div class="base-table-wrapper">
       <div>
-        <!-- <el-dropdown v-if="actionCode && actionCode.length > 0" placement="bottom-start" class="base-table-action-wrapper" @command="handleCommand">
-          <el-button>
-            功能菜单<i class="el-icon-arrow-down el-icon--right" />
-          </el-button>
-          <el-dropdown-menu slot="dropdown" style="min-width: 116px">
-            <template v-for="(code, index) in actionCode">
-              <el-dropdown-item
-                v-if="code !== codeRepo.import"
-                :key="index"
-                :command="code"
-              >{{ actionTextConfig[code] || code }}</el-dropdown-item>
-            </template>
-          </el-dropdown-menu>
-        </el-dropdown> -->
-
         <div class="base-table-action-wrapper">
           <template v-for="(code) in actionCode">
             <span v-if="code !== codeRepo.import" :key="code" :class="code + '-button'" @click="handleCommand(code)">{{ renderCodeText(code) }}</span>
@@ -53,31 +38,15 @@
               </el-dropdown-menu>
             </el-dropdown>
           </span>
+          <div class="custome-columns" @click="showDialog"><i class="el-icon-setting" /></div>
         </div>
         <!-- 自定义字段例子 -->
-        <!-- <el-button @click="showDialog">大窗口自定义字段</el-button>
-        <el-dialog title="自定义字段" class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" width="666px" :visible.sync="dialogVisible" :before-close="handleClose">
-          <div class="board">
-            <CustomColumn :key="1" :list="hiddenColumns" :group="group" class="kanban todo" header-text="隐藏字段" />
-            <CustomColumn :key="2" :list="showColumns" :group="group" class="kanban working" header-text="显示的字段" />
-          </div>
-        </el-dialog> -->
-        <!-- 自定义字段例子 -->
-        <el-popover
-          v-model="visible"
-          placement="bottom"
-          width="666"
-          trigger="hover"
-        >
-          <div class="board">
-            <CustomColumn :key="1" :list="hiddenColumns" :group="group" class="kanban todo" header-text="隐藏字段" />
-            <CustomColumn :key="2" :list="showColumns" :group="group" class="kanban working" header-text="显示的字段" />
-          </div>
-          <!-- <el-button slot="reference" style="float: right; margin-bottom: 8px;" @click="visible = !visible">自定义字段</el-button></el-button> -->
-        </el-popover>
+        <el-dialog title="自定义字段" class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" width="1000px" :visible.sync="dialogVisible" :before-close="handleClose">
+          <CustomColumn :list="originColumns" :show-columns="showColumns" :group="group" @changeShowColumns="changeShowColumns" />
+        </el-dialog>
       </div>
       <el-table
-        ref="multipleTable"
+        ref="baseTable"
         v-loading="listLoading"
         v-el-height-adaptive-table="{bottomOffset: 76}"
         height="100px"
@@ -96,7 +65,7 @@
             <div style="text-align: center;font-size:14px;margin-top:-41px">暂无数据</div>
           </div>
         </template>
-        <el-table-column type="selection" align="center" width="41" />
+        <el-table-column type="selection" width="41" />
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">
@@ -246,6 +215,7 @@ export default {
     }
   },
   data() {
+    const originColumns = deepClone(this.$props.columns)
     return {
       pagination: { ...paginationConfig },
       emptySVG: emptySVG + '?' + +new Date(),
@@ -260,6 +230,7 @@ export default {
       actionTextConfig,
       hiddenColumns: [],
       showColumns: [],
+      originColumns,
       group: 'mission'
     }
   },
@@ -309,8 +280,15 @@ export default {
       const _this = this
       _this.hideHigherSearch = status || false
       if (!status) {
-        _this.searchQuery = params || {}
+        _this.searchQuery = deleteNullProps(params) || {}
       }
+      _this.$nextTick(() => {
+        const el = _this.$refs.baseTable.$el
+        const height = window.innerHeight - el.getBoundingClientRect().top - 76
+        console.log('height', height)
+        _this.$refs.baseTable.layout.setHeight(height)
+        _this.$refs.baseTable.doLayout()
+      })
     },
     getList() {
       this.listLoading = true
@@ -342,7 +320,7 @@ export default {
     callback() {
       this.getList()
     },
-    selectValidate(command) {
+    commandValidate(command) {
       if (command === codeRepo.add) {
         return true
       }
@@ -366,7 +344,7 @@ export default {
     handleCommand(command) {
       const _this = this
       const selection = _this.getSelection()
-      if (!_this.commandValidator(selection)) {
+      if (!_this.commandValidator({ ...selection, query: _this.searchQuery })) {
         return false
       } else if (
         command !== codeRepo.export && // 导出无需校验勾选
@@ -374,14 +352,14 @@ export default {
         // command !== codeRepo.translate && // 一键查看
         command !== codeRepo.manualReport && // 手动生成报表记录
         _this.$props.validate && // validate为false时，无需校验勾选
-        !this.selectValidate(command)
+        !this.commandValidate(command)
       ) {
         return false
       }
       this.$emit('dispatch', command, { ...selection, callback: _this.callback, query: _this.searchQuery })
     },
     getSelection() {
-      const selectRows = this.$refs.multipleTable.selection || []
+      const selectRows = this.$refs.baseTable.selection || []
       const selectIds = selectRows.map(row => row.id)
       return { selectIds, selectRows }
     },
@@ -393,6 +371,26 @@ export default {
     },
     handleDownTemplate() {
       downLoadFile(this.$props.importConfig.template)
+      // const _this = this
+      // const api = this.$props.importConfig.template
+
+      // request({
+      //   url: api,
+      //   method: 'get',
+      //   responseType: 'blob'
+      // }).then(function(response) {
+      //   var blob = new Blob([response.data])
+      //   var downloadElement = document.createElement('a')
+      //   var href = window.URL.createObjectURL(blob) // 创建下载的链接
+      //   downloadElement.href = href
+      //   downloadElement.download = '用户数据.xlsx' // 下载后文件名
+      //   document.body.appendChild(downloadElement)
+      //   downloadElement.click() // 点击下载
+      //   document.body.removeChild(downloadElement) // 下载完成移除元素
+      //   window.URL.revokeObjectURL(href) // 释放掉blob对象
+      // }).catch(function(error) {
+      //   console.log(error)
+      // })
     },
     uploadExcelSuccess(response) {
       console.log('uploadExcelSuccess', response)
@@ -405,6 +403,14 @@ export default {
     },
     uploadExcelProgress(event) {
       console.log('uploadExcelProgress', event)
+    },
+    changeShowColumns(curColumns, reset = false) {
+      this.showColumns = curColumns
+      this.dialogVisible = false
+      if (reset) {
+        this.showColumns = this.$props.columns.map(item => item)
+        this.originColumns = this.$props.columns.map(item => item)
+      }
     }
   }
 }
@@ -413,26 +419,4 @@ export default {
 <style lang="scss">
 @import "./index.scss";
 
-.board {
-  // width: 1000px;
-  // margin-left: 20px;
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
-  align-items: flex-start;
-  max-height: 400px;
-  overflow-y: auto;
-}
-.kanban {
-  &.todo {
-    .board-column-header {
-      background: RGB(25, 25, 25);
-    }
-  }
-  &.working {
-    .board-column-header {
-      background: #4A9FF9;
-    }
-  }
-}
 </style>

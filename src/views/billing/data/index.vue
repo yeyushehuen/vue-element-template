@@ -1,5 +1,5 @@
 <template>
-  <base-table :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
+  <base-table :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
     <template slot="name" slot-scope="scope">
       {{ scope.$index }}
     </template>
@@ -10,6 +10,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
+import { billDataReconciliation, billDataSummary } from '../../../api/bill'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -22,6 +23,7 @@ export default {
       actionCode: [actionCode.reconciliation, actionCode.summary, actionCode.export],
       selectIds: '',
       actionTextConfig,
+      actionType: '',
       actionCallback: () => {}
     }
   },
@@ -30,27 +32,42 @@ export default {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
       // downLoadFile('/account/export', params)
     },
-    reconciliationHandler() {
-      // todo 导出逻辑 /paymentAnalysis/export
+    // TODO 重算
+    reconciliationHandler(selectIds, query) {
+      billDataReconciliation({
+        data: query
+      })
     },
-    summaryHandler() {
-      // todo 导出逻辑
+    // TODO 汇总
+    summaryHandler(selectIds, query) {
+      billDataSummary({
+        data: query
+      })
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.actionCallback = callback
+      _this.actionType = type
       switch (type) {
         case actionCode.reconciliation: // 重算
-          _this.reconciliationHandler()
+          _this.reconciliationHandler(selectIds, query)
           break
         case actionCode.summary: // 汇总
-          _this.summaryHandler()
+          _this.summaryHandler(selectIds, query)
           break
         case actionCode.export: // 导出
           _this.exportHandler(selectIds, query)
           break
         default:
           break
+      }
+    },
+    commandValidator({ selectIds, selectRows, query }) {
+      query = query || {}
+      const _this = this
+      if (selectIds.length < 1 && !query.period) {
+        _this.$message.warning('请勾选数据或按区间查询后再进行重算')
+        return false
       }
     }
   }
