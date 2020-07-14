@@ -31,6 +31,7 @@
           v-else-if="form.itemType === 'select'"
           v-model="params[form.modelValue]"
           filterable
+          clearable
           collapse-tags
           :size="form.size ? form.size : size"
           :disabled="form.disabled"

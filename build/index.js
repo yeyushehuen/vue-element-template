@@ -21,6 +21,9 @@ if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
     serveStatic('./dist', {
       index: ['index.html', '/']
     })
+    // serveStatic('./output', {
+    //   index: ['index.html', '/']
+    // })
   )
 
   app.listen(port, function () {

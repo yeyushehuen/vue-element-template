@@ -201,14 +201,14 @@ export default {
       this.dialogVisible = false
     },
     commandValidator({ selectIds, selectRows, command }) {
-      if (command === actionCode.export) {
+      if (command === actionCode.export || command === actionCode.add) {
         return true
       }
       if (selectIds.length < 1) {
         this.$message.warning('最少选择一条数据')
         return false
       }
-      if (selectIds.length > 1) {
+      if (command === actionCode.edit && selectIds.length > 1) {
         this.$message.warning('最多只能选择一条数据')
         return false
       }

@@ -29,3 +29,34 @@ export function leDropdown() {
     method: 'get'
   })
 }
+
+/** 店铺下拉框 */
+export function accountDropdown() {
+  return request({
+    url: '/basic/accountDropdown',
+    method: 'get'
+  })
+}
+/** 报表类型下拉框 */
+export function reportTypeDropdown() {
+  return request({
+    url: '/basic/reportTypeDropdown',
+    method: 'get'
+  })
+}
+/** 修改汇率取值方式 */
+export function editExRage(data) {
+  return request({
+    url: '/basic/editExRage',
+    method: 'put',
+    data
+  })
+}
+/** 修改成本取值方式 */
+export function editSkuCost(data) {
+  return request({
+    url: '/basic/editSkuCost',
+    method: 'put',
+    data
+  })
+}

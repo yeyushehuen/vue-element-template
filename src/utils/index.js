@@ -1,7 +1,7 @@
 /**
  * Created by PanJiaChen on 16/11/18.
  */
-import request from '@/utils/request'
+// import request from '@/utils/request'
 import { validatenull, isObject, isArray, getDataType } from './validate'
 
 /**

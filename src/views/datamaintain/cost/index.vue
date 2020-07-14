@@ -31,6 +31,17 @@
         <el-button size="small" type="primary" @click="submitForm('skuCostForm')">保存</el-button>
       </span>
     </el-dialog>
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="成本取值方式" width="600px" :visible.sync="valueMethodModal" :before-close="handleClose">
+      <div>
+        <el-radio v-model="typeId" label="1" border>Seller SKU + 公司型号</el-radio>
+        <el-radio v-model="typeId" label="2" border>Seller SKU</el-radio>
+        <el-radio v-model="typeId" label="3" border>公司型号</el-radio>
+      </div>
+      <span slot="footer">
+        <el-button size="small" @click="valueMethodModal = false">取消</el-button>
+        <el-button size="small" type="primary" @click="saveValueType">保存</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -40,6 +51,7 @@ import { actionCode, actionTextConfig, successText } from '@/components/BaseTabl
 import tableConfig from './props.js'
 import { deleteSkuCost, addSkuCost, updateSkuCost, getSkuCostById } from '@/api/dataMaintain'
 import { downLoadFile } from '../../../utils'
+import { editSkuCost } from '../../../api/common'
 const { formOptions, columns } = tableConfig
 
 const commonRules = { pattern: /^\d+(\.\d{1,6})?$/, message: '只能填写数字，最多6位小数' }
@@ -51,9 +63,11 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [/* actionCode.add, */actionCode.update, actionCode.delete, actionCode.export, actionCode.import],
+      actionCode: [/* actionCode.add, */actionCode.update, actionCode.delete, actionCode.valueMethod, actionCode.export, actionCode.import],
       dialogVisible: false,
       editStatus: actionCode.add,
+      typeId: '',
+      valueMethodModal: false,
       selectIds: '',
       actionTextConfig,
       actionCallback: () => {},
@@ -121,6 +135,21 @@ export default {
         this.setFormVal({ ...resData, period: record.period })
       }
     },
+    // 修改取值方式
+    async saveValueType() {
+      if (!this.typeId) {
+        this.$message.warning('请选择取值方式')
+        return false
+      }
+      const res = await editSkuCost({ id: this.typeId })
+      if (res && res.code === 200) {
+        this.valueMethodModal = false
+        this.actionCallback()
+        this.$message.success('修改成功')
+      } else {
+        this.$message.error('修改失败')
+      }
+    },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
       downLoadFile('/skuCost/export', params, '成本数据')
@@ -144,6 +173,9 @@ export default {
           break
         case actionCode.export:
           _this.exportHandler(selectIds, query)
+          break
+        case actionCode.valueMethod:
+          _this.valueMethodModal = true
           break
         default:
           break

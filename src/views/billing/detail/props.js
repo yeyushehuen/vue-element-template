@@ -1,4 +1,4 @@
-import { areaDropdown, deptDropdown } from '@/api/common'
+import { areaDropdown, deptDropdown, accountDropdown, reportTypeDropdown } from '@/api/common'
 import { stateRender } from '@/views/baseinfo/shop/props'
 
 const deptSelectConfig = {
@@ -8,7 +8,6 @@ const deptSelectConfig = {
   selectResultField: 'data',
   selectResultHandler: (item) => ({ value: item.id, label: item.name })
 }
-
 const areaSelectConfig = {
   params: {},
   itemType: 'select',
@@ -16,13 +15,19 @@ const areaSelectConfig = {
   selectResultField: 'data',
   selectResultHandler: (item) => ({ value: item.id, label: item.country })
 }
-
 const accountSelectConfig = {
-  // params: {},
-  itemType: 'select'
-  // selectFetch: areaDropdown,
-  // selectResultField: 'data',
-  // selectResultHandler: (item) => ({ value: item.id, label: item.name })
+  params: {},
+  itemType: 'select',
+  selectFetch: accountDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+}
+const reportTypeSelectConfig = {
+  params: {},
+  itemType: 'select',
+  selectFetch: reportTypeDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.reportName })
 }
 
 export default {
@@ -34,7 +39,7 @@ export default {
       { prop: 'countryId', label: '国家', itemType: 'select', ...areaSelectConfig },
       { prop: 'accountId', label: '店铺', ...accountSelectConfig },
       { prop: 'deptId', label: '部门', ...deptSelectConfig },
-      { prop: 'reportTypeId', label: '报表类型', itemType: 'select' },
+      { prop: 'reportTypeId', label: '报表类型', ...reportTypeSelectConfig },
       { prop: 'paymentState', label: '账单状态' },
       {
         prop: 'verifyState', label: '审核状态', itemType: 'select',

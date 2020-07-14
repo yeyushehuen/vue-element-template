@@ -5,20 +5,24 @@
         <i class="el-icon-connection" @click="showDetail(scope.row)" />
       </template>
       <template slot="fileUpload" slot-scope="scope">
-        <i class="el-icon-download" />
+        <i v-if="canDownload[scope.row.paymentState]" class="el-icon-download" @click="exportHandler([scope.row.id])" />
+        <span v-else>-</span>
       </template>
       <template slot="paymentState" slot-scope="scope">
+        <span v-if="canDownload[scope.row.paymentState]">{{ billState[scope.row.paymentState] }}</span>
         <el-upload
+          v-else
           class="upload-demo"
           :action="uploadExcelAction"
           :show-file-list="false"
-          accept=".csv,.zip"
+          accept=""
+          :data="{id: scope.row.id}"
           :on-success="uploadExcelSuccess"
           :on-error="uploadExcelError"
           :on-progress="uploadExcelProgress"
           :before-upload="beforeUpload"
         >
-          <i class="el-icon-upload2" />
+          <i class="el-icon-upload2" /><span>{{ billState[scope.row.paymentState] || '未传账单' }}</span>
         </el-upload>
       </template>
     </base-table>
@@ -49,6 +53,18 @@ export default {
         action: '/paymentReport/upload',
         template: '',
         accept: ''
+      },
+      canDownload: {
+        success: true,
+        fail: false,
+        clear: false,
+        none: false
+      },
+      billState: {
+        success: '上传成功',
+        fail: '上传失败',
+        clear: '手动清除',
+        none: '未传账单'
       }
     }
   },

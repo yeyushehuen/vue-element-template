@@ -1,5 +1,5 @@
 import { monthRangeFormat, parseTime } from '@/utils'
-import { deptDropdown, areaDropdown } from '@/api/common'
+import { deptDropdown, areaDropdown, accountDropdown } from '@/api/common'
 
 const deptSelectConfig = {
   itemType: 'select',
@@ -13,7 +13,13 @@ const countrySelectConfig = {
   selectResultField: 'data',
   selectResultHandler: (item) => ({ value: item.id, label: item.country })
 }
-
+const accountSelectConfig = {
+  params: {},
+  itemType: 'select',
+  selectFetch: accountDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+}
 const periodFormat = (value, key) => {
   const formatVal = parseTime(value, '{y}-{m}')
   return { [key]: formatVal }
@@ -28,8 +34,7 @@ export default {
       { prop: 'period', label: '期间', itemType: 'month', format: periodFormat },
       { prop: 'mobile', label: '账单时间', itemType: 'monthrange', format: monthRangeFormat },
       { prop: 'countryId', label: '国家', itemType: 'select', ...countrySelectConfig, selectOptions: { multiple: true }},
-      {
-        prop: 'accountId', label: '店铺', itemType: 'select', options: [] },
+      { prop: 'accountId', label: '店铺', ...accountSelectConfig },
       {
         prop: 'departmentId', label: '部门', itemType: 'select', ...deptSelectConfig },
       {

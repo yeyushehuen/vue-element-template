@@ -1,8 +1,15 @@
-import { deptDropdown, areaDropdown } from '@/api/common'
+import { deptDropdown, areaDropdown, accountDropdown } from '@/api/common'
 
 const deptSelectConfig = {
   itemType: 'select',
   selectFetch: deptDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+}
+const accountSelectConfig = {
+  params: {},
+  itemType: 'select',
+  selectFetch: accountDropdown,
   selectResultField: 'data',
   selectResultHandler: (item) => ({ value: item.id, label: item.name })
 }
@@ -20,7 +27,7 @@ export default {
     forms: [
       { prop: 'period', label: '期间', itemType: 'month' },
       { prop: 'country', label: '国家', ...countrySelectConfig },
-      { prop: 'accountId', label: '店铺' },
+      { prop: 'accountId', label: '店铺', ...accountSelectConfig },
       { prop: 'deptId', label: '部门', ...deptSelectConfig },
       { prop: 'type', label: '业务类型' }
     ]

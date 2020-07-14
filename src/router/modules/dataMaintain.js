@@ -17,18 +17,18 @@ const dataMaintainRouter = {
     {
       path: 'conversion',
       component: () => import('@/views/datamaintain/conversion'),
-      name: 'type类型转换',
+      name: '类型转换',
       meta: {
-        title: 'type类型转换'
+        title: '类型转换'
         // roles: ['admin'] // or you can only set roles in sub nav
       }
     },
     {
       path: 'relationship',
       component: () => import('@/views/datamaintain/relationship'),
-      name: 'Seller Sku 关系维护',
+      name: '关系维护',
       meta: {
-        title: 'Seller Sku 关系维护'
+        title: '关系维护'
       }
     },
     {

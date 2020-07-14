@@ -19,8 +19,7 @@
         </el-form-item>
         <el-form-item label="国家" prop="areaId">
           <el-select v-model="convertTypeForm.areaId" style="width: 100%" placeholder="请选择国家">
-            <el-option label="中国" :value="1" />
-            <el-option label="俄罗斯" :value="2" />
+            <el-option v-for="option in selectOption.areaDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -34,10 +33,11 @@
 
 <script>
 import BaseTable from '@/components/BaseTable'
+import { areaDropdown } from '@/api/common'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { addTypeConversion, updateTypeConversion, getTypeConversionById, deleteTypeConversion } from '../../../api/dataMaintain'
-import { downLoadFile } from '../../../utils'
+import { downLoadFile, toSelectOption } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -54,6 +54,9 @@ export default {
         actionCode.export,
         actionCode.import
       ],
+      selectOption: {
+        areaDropdown: []
+      },
       dialogVisible: false,
       editStatus: actionCode.add,
       selectIds: '',
@@ -86,7 +89,14 @@ export default {
       }
     }
   },
+  mounted() {
+    this.getSelectData()
+  },
   methods: {
+    async getSelectData() {
+      const areaDropdownSelect = await areaDropdown()
+      this.selectOption.areaDropdown = toSelectOption(areaDropdownSelect.data, 'id', 'country')
+    },
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.convertTypeForm).forEach(key => {

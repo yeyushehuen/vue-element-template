@@ -27,6 +27,7 @@ export const actionTextConfig = {
   setUp: '结账',
   reconciliation: '重算',
   summary: '汇总',
+  valueMethod: '修改取值方式',
   checkOut: '反结账'
 }
 
@@ -49,7 +50,8 @@ export const actionCode = {
   setUp: 'setUp',
   checkOut: 'checkOut',
   reconciliation: 'reconciliation',
-  summary: 'summary'
+  summary: 'summary',
+  valueMethod: 'valueMethod'
 }
 
 /** 动作操作成功之后对应的提示信息 */
@@ -69,5 +71,6 @@ export const successText = {
   setUp: 'setUp',
   checkOut: 'checkOut',
   reconciliation: 'reconciliation',
-  summary: 'summary'
+  summary: 'summary',
+  valueMethod: '取值方式'
 }

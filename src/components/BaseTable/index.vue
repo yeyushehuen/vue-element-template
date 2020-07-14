@@ -355,6 +355,7 @@ export default {
       } else if (
         command !== codeRepo.export && // 导出无需校验勾选
         command !== codeRepo.view && // 一键查看无需校验
+        command !== codeRepo.valueMethod && // 取值方式无需校验
         // command !== codeRepo.translate && // 一键查看
         command !== codeRepo.manualReport && // 手动生成报表记录无需校验
         _this.$props.validate && // validate为false时，无需校验勾选

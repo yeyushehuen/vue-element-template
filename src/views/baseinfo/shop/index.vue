@@ -39,8 +39,8 @@
             <el-option v-for="option in selectOption.leDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="销售国家" prop="sellerCountry">
-          <el-select v-model="shopForm.sellerCountry" style="width: 100%" placeholder="请选择销售国家">
+        <el-form-item label="销售国家" prop="sellerAreaId">
+          <el-select v-model="shopForm.sellerAreaId" style="width: 100%" placeholder="请选择销售国家">
             <el-option v-for="option in selectOption.areaDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
@@ -83,8 +83,8 @@
         />
       </div>
       <span slot="footer">
-        <el-button size="small">取消</el-button>
-        <el-button size="small" type="primary">生成</el-button>
+        <el-button size="small" @click="manualReportRangeVisible = false">取消</el-button>
+        <el-button size="small" type="primary" @click="generateReportRecord">生成</el-button>
       </span>
     </el-dialog>
   </div>
@@ -129,14 +129,14 @@ export default {
       editStatus: actionCode.add,
       selectIds: '',
       actionTextConfig,
-      manualReportRange: '',
+      manualReportRange: [],
       actionCallback: () => {},
       shopForm: {
         name: '',
         nameShort: '',
         deptId: '',
         sellerLegalId: null,
-        sellerCountry: null,
+        sellerAreaId: null,
         principal: '',
         sellerID: '',
         token: '',
@@ -157,7 +157,7 @@ export default {
         sellerLegalId: [
           { required: true, message: '请选择销售主体', tirgger: 'blur' }
         ],
-        sellerCountry: [
+        sellerAreaId: [
           { required: true, message: '请选择国家', tirgger: 'blur' }
         ],
         principal: [
@@ -203,6 +203,13 @@ export default {
       this.selectOption.deptDropdown = toSelectOption(deptDropdownSelect.data, 'id', 'name')
       const leDropdownSelect = await leDropdown()
       this.selectOption.leDropdown = toSelectOption(leDropdownSelect.data, 'id', 'legalName')
+    },
+    generateReportRecord() {
+      console.log()
+      if (this.manualReportRange.length < 2) {
+        this.$message.warning('请选择区间')
+        return false
+      }
     },
     setFormVal(defaultData = {}) {
       const _this = this

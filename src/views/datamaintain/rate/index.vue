@@ -29,6 +29,17 @@
         <el-button size="small" type="primary" @click="submitForm('rateForm')">保存</el-button>
       </span>
     </el-dialog>
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="汇率取值方式" width="600px" :visible.sync="valueMethodModal" :before-close="handleClose">
+      <div>
+        <el-radio v-model="typeId" label="1" border>月初第一天</el-radio>
+        <el-radio v-model="typeId" label="2" border>月末倒数第二天</el-radio>
+        <el-radio v-model="typeId" label="3" border>月末最后一天</el-radio>
+      </div>
+      <span slot="footer">
+        <el-button size="small" @click="valueMethodModal = false">取消</el-button>
+        <el-button size="small" type="primary" @click="saveValueType">保存</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -36,7 +47,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { currencyDropdown } from '@/api/common'
+import { currencyDropdown, editExRage } from '@/api/common'
 import { toSelectOption, downLoadFile } from '@/utils'
 import { deleteExchangeRate, addExchangeRate, updateExchangeRate, getExchangeRateById } from '@/api/dataMaintain'
 const { formOptions, columns } = tableConfig
@@ -48,10 +59,12 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.export, actionCode.import],
+      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.valueMethod, actionCode.export, actionCode.import],
       dialogVisible: false,
+      valueMethodModal: false,
       editStatus: actionCode.add,
       selectIds: '',
+      typeId: '',
       actionTextConfig,
       selectOption: {
         currencyDropdown: []
@@ -116,6 +129,21 @@ export default {
         this.setFormVal(res.data)
       }
     },
+    // 修改取值方式
+    async saveValueType() {
+      if (!this.typeId) {
+        this.$message.warning('请选择取值方式')
+        return false
+      }
+      const res = await editExRage({ id: this.typeId })
+      if (res && res.code === 200) {
+        this.valueMethodModal = false
+        this.actionCallback()
+        this.$message.success('修改成功')
+      } else {
+        this.$message.error('修改失败')
+      }
+    },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
       downLoadFile('/exchangeRate/export', params, '汇率数据')
@@ -139,6 +167,9 @@ export default {
           break
         case actionCode.export:
           _this.exportHandler(selectIds, query)
+          break
+        case actionCode.valueMethod:
+          _this.valueMethodModal = true
           break
         default:
           break
