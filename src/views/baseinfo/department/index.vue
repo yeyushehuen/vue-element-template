@@ -212,10 +212,12 @@ export default {
         this.$message.warning('最多只能选择一条数据')
         return false
       }
-      const isLegal = selectRows[0] ? selectRows[0].domainLegal === 'Y' : false
-      if (!isLegal) {
-        this.$message.warning('非实体中心，不能进行转移')
-        return false
+      if (command === actionCode.translate) { // 转移逻辑
+        const isLegal = selectRows[0] ? selectRows[0].domainLegal === 'Y' : false
+        if (!isLegal) {
+          this.$message.warning('非实体中心，不能进行转移')
+          return false
+        }
       }
       return true
     }

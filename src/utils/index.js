@@ -539,10 +539,11 @@ export function downLoadFile(api, query, fileName, http = false) {
   if (!api) {
     return false
   }
-  const subAPI = `${api}`.startsWith('/') ? `${api}`.substring(1) : api
+  // const subAPI = `${api}`.startsWith('/') ? `${api}`.substring(1) : api
+  debugger
   try {
     const a = document.createElement('a')
-    a.href = process.env.VUE_APP_BASE_API + subAPI + '?' + toUrlParams(query)
+    a.href = process.env.VUE_APP_BASE_API + api + '?' + toUrlParams(query)
     debugger
     const event = document.createEvent('MouseEvents')
     event.initEvent('click', true, true)

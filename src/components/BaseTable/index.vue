@@ -238,8 +238,8 @@ export default {
   computed: {
     importAction: function() {
       const api = this.$props.importConfig.action || ''
-      const subAPI = api.startsWith('/') ? api.substring(1) : api
-      return process.env.VUE_APP_BASE_API + subAPI
+      // const subAPI = api.startsWith('/') ? api.substring(1) : api
+      return process.env.VUE_APP_BASE_API + api
     }
   },
   created() {
@@ -398,7 +398,6 @@ export default {
       // })
     },
     uploadExcelSuccess(response) {
-      console.log('uploadExcelSuccess', response)
       if (response && response.code !== 200) {
         this.$message.error(response.message)
       } else {

@@ -10,11 +10,13 @@
       <template slot="paymentState" slot-scope="scope">
         <el-upload
           class="upload-demo"
-          action=""
-          :auto-upload="true"
+          :action="uploadExcelAction"
           :show-file-list="false"
-          :http-request="uploadFile"
-          accept=".csv"
+          accept=".csv,.zip"
+          :on-success="uploadExcelSuccess"
+          :on-error="uploadExcelError"
+          :on-progress="uploadExcelProgress"
+          :before-upload="beforeUpload"
         >
           <i class="el-icon-upload2" />
         </el-upload>
@@ -48,6 +50,11 @@ export default {
         template: '',
         accept: ''
       }
+    }
+  },
+  computed: {
+    uploadExcelAction() {
+      return process.env.VUE_APP_BASE_API + '/paymentReport/upload'
     }
   },
   mounted() {
@@ -105,7 +112,32 @@ export default {
       })
       this.$router.push({ path: '/billing/data', query: { id: row.id }})
     },
-    uploadFile() {}
+    uploadExcelSuccess(response) {
+      if (response && response.code !== 200) {
+        this.$message.error(response.message)
+      } else {
+        this.$message.success(response.message)
+      }
+    },
+    uploadExcelError(error) {
+      console.log('uploadExcelError', error)
+    },
+    uploadExcelProgress(event) {
+      console.log('uploadExcelProgress', event)
+    },
+    beforeUpload(file) {
+      // const isJPG = file.type === 'image/jpeg'
+      // const isLt2M = file.size / 1024 / 1024 < 2
+      // this.$message.success(file.type)
+
+      // if (!isJPG) {
+      //   this.$message.error('上传头像图片只能是 JPG 格式!')
+      // }
+      // if (!isLt2M) {
+      //   this.$message.error('上传头像图片大小不能超过 2MB!')
+      // }
+      return true
+    }
   }
 }
 </script>
