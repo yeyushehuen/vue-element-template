@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     uploadExcelAction() {
-      return process.env.VUE_APP_BASE_API + '/paymentReport/upload'
+      return process.env.VUE_APP_BASE_API + '/paymentReport/simpleUpload'
     }
   },
   mounted() {
@@ -97,7 +97,7 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/paymentReport/export', params, '数据详情', true)
+      downLoadFile('/paymentReport/simpleExport', params, '数据详情', true)
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
