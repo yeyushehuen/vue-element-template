@@ -55,16 +55,16 @@ export default {
         accept: ''
       },
       canDownload: {
-        success: true,
-        fail: false,
-        clear: false,
-        none: false
+        SUCCESS: true,
+        FAIL: false,
+        CLEAR: false,
+        NONE: false
       },
       billState: {
-        success: '上传成功',
-        fail: '上传失败',
-        clear: '手动清除',
-        none: '未传账单'
+        SUCCESS: '上传成功',
+        FAIL: '上传失败',
+        CLEAR: '清除',
+        NONE: '未传账单'
       }
     }
   },

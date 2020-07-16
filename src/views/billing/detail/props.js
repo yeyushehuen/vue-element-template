@@ -1,5 +1,4 @@
 import { areaDropdown, deptDropdown, accountDropdown, reportTypeDropdown } from '@/api/common'
-import { stateRender } from '@/views/baseinfo/shop/props'
 
 const deptSelectConfig = {
   params: {},
@@ -29,6 +28,29 @@ const reportTypeSelectConfig = {
   selectResultField: 'data',
   selectResultHandler: (item) => ({ value: item.id, label: item.reportName })
 }
+const verifyStateText = {
+  WAITING: '待审核',
+  SUCCESS: '已审核',
+  CLEAR: '反审核'
+}
+const badgeType = {
+  WAITING: 'primary',
+  SUCCESS: 'success',
+  CLEAR: 'info'
+}
+export function stateRender(h, row) {
+  if (!h || !row) {
+    return h('span', '-')
+  }
+  const state = row.verifyState
+  return h('span', [
+    h('el-badge', {
+      props: { 'is-dot': true, 'type': badgeType[state] },
+      style: { 'vertical-align': '-.5em', 'margin-right': '4px' }
+    }),
+    h('span', verifyStateText[state])
+  ])
+}
 
 export default {
   formOptions: {
@@ -40,13 +62,22 @@ export default {
       { prop: 'accountId', label: '店铺', ...accountSelectConfig },
       { prop: 'deptId', label: '部门', ...deptSelectConfig },
       { prop: 'reportTypeId', label: '报表类型', ...reportTypeSelectConfig },
-      { prop: 'paymentState', label: '账单状态' },
+      { prop: 'paymentState', label: '账单状态', itemType: 'select',
+        options: [
+          { value: '', label: '全部' },
+          { value: 'NONE', label: '未上传' },
+          { value: 'SUCCESS', label: '上传成功' },
+          { value: 'FAIL', label: '上传失败' },
+          { value: 'CLEAR', label: '清除' }
+        ]
+      },
       {
         prop: 'verifyState', label: '审核状态', itemType: 'select',
         options: [
           { value: '', label: '全部' },
-          { value: 'Y', label: '通过' },
-          { value: 'N', label: '驳回' }
+          { value: 'SUCCESS', label: '已审核' },
+          { value: 'WAITING', label: '待审核' },
+          { value: 'CLEAR', label: '反审核' }
         ]
       }
     ]

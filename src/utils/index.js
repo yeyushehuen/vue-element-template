@@ -552,3 +552,19 @@ export function downLoadFile(api, query, fileName, http = false) {
     console.log(error)
   }
 }
+
+/**
+ * @author song
+ * @description 格式化小数，默认四舍五入
+ * @param {*} num 输入值
+ * @param {*} v 保留位数，默认为2
+ */
+export const decimal = (num, decimalLen = 2) => {
+  if (validatenull(num) || decimalLen <= 0) return num
+
+  if (Number.isNaN(+num)) {
+    return num
+  }
+
+  return parseFloat(Math.round(num * 100) / 100).toFixed(decimalLen)
+}
