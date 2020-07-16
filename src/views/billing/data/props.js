@@ -50,7 +50,7 @@ export default {
     { prop: 'period', width: 150, label: '期间' },
     { prop: 'originDate', width: 150, label: '当地时间' },
     { prop: 'unifyDate', width: 150, label: '转换时间' },
-    { prop: '7', width: 150, label: '结算号' },
+    { prop: 'settlementId', width: 150, label: '结算号' },
     { prop: 'type', width: 150, label: '类型' },
     { prop: 'orderId', width: 150, label: '订单号' },
     { prop: 'sellerSku', width: 150, label: 'Seller SKU' },

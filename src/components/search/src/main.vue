@@ -236,6 +236,9 @@ export default {
       return sliceLength < this.forms.length
     }
   },
+  mounted() {
+    this.$emit('getSearhRef', this.getFormatedParams)
+  },
   methods: {
     isArray(value) {
       return (
@@ -258,22 +261,28 @@ export default {
     getParamFuzzy() {
       return this.fuzzyOps
     },
+    getFormatedParams() {
+      const { params, format, computedForms } = this
+      const formattedForm = {}
+      computedForms.forEach(({ prop: v }) => {
+        if (typeof format[v] === 'function') {
+          const formatedValues = format[v](params[v], v)
+          Object.keys(formatedValues).forEach(key => {
+            formattedForm[key] = formatedValues[key]
+          })
+        } else {
+          formattedForm[v] = params[v]
+        }
+      })
+
+      return formattedForm
+    },
     getParams(callback) {
-      this.$refs['form'].validate(valid => {
+      const _this = this
+      _this.$refs['form'].validate(valid => {
         if (valid) {
           // const { params, datePrefix, format } = this
-          const { params, format, computedForms } = this
-          const formattedForm = {}
-          computedForms.forEach(({ prop: v }) => {
-            if (typeof format[v] === 'function') {
-              const formatedValues = format[v](params[v], v)
-              Object.keys(formatedValues).forEach(key => {
-                formattedForm[key] = formatedValues[key]
-              })
-            } else {
-              formattedForm[v] = params[v]
-            }
-          })
+          const formattedForm = _this.getFormatedParams()
           // 注释掉，只获取显示的表单参数
           // Object.keys(params).forEach(v => {
           //   if (typeof format[v] === 'function') {
@@ -354,7 +363,7 @@ export default {
       this.isHide = !this.isHide
       this.getParams((error, params) => {
         if (!error) {
-          this.$emit('higherSearchChange', this.isHide, params)
+          this.$emit('higherSearchChange', this.isHide)
         }
       })
     }

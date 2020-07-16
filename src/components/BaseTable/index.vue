@@ -9,6 +9,7 @@
         :reset-btn-callback="resetHandler"
         :submit-loading="false"
         @higherSearchChange="higherSearchChange"
+        @getSearhRef="getSearhRef"
       />
     </div>
 
@@ -152,7 +153,7 @@ const exSlot = {
 export default {
   name: 'BaseTable',
   components: { searchForm, CustomColumn, exSlot },
-  directives: { elHeightAdaptiveTable },
+  directives: { elHeightAdaptiveTable }, // v-el-height-adaptive-table="{bottomOffset: 76}"  // height="100px"
   props: {
     api: {
       type: String,
@@ -216,16 +217,19 @@ export default {
     }
   },
   data() {
+    // const height = window.innerHeight - 245
     const originColumns = deepClone(this.$props.columns)
     return {
       pagination: { ...paginationConfig },
       emptySVG: emptySVG + '?' + +new Date(),
       hideHigherSearch: false,
       listLoading: true,
+      // tableHeight: height || null,
       dialogVisible: false,
       visible: false,
       isFixed: false,
       list: null,
+      searchRef: null,
       searchQuery: {},
       codeRepo: codeRepo,
       actionTextConfig,
@@ -247,8 +251,10 @@ export default {
     this.showColumns = deepClone(this.$props.columns)
   },
   mounted() {
+    document.querySelector('section.app-main').classList.add('base-table-scope')
   },
   destroyed() {
+    document.querySelector('section.app-main').classList.remove('base-table-scope')
   },
   methods: {
     renderCodeText(code) {
@@ -279,16 +285,12 @@ export default {
       this.pagination.currentPage = currentPage
       this.paginationChange()
     },
-    higherSearchChange(status, params) {
+    higherSearchChange(status) {
       const _this = this
       _this.hideHigherSearch = status || false
-      if (!status) {
-        _this.searchQuery = deleteNullProps(params) || {}
-      }
       _this.$nextTick(() => {
         const el = _this.$refs.baseTable.$el
-        const height = window.innerHeight - el.getBoundingClientRect().top - 76
-        console.log('height', height)
+        const height = window.innerHeight - el.getBoundingClientRect().top - 85
         _this.$refs.baseTable.layout.setHeight(height)
         _this.$refs.baseTable.doLayout()
       })
@@ -347,9 +349,13 @@ export default {
     // 导出不需要必填校验
     handleCommand(command) {
       const _this = this
+      let query = {}
+      if (typeof _this.searchRef === 'function') {
+        query = deleteNullProps(_this.searchRef())
+      }
       const selection = _this.getSelection()
       if (_this.commandValidator) {
-        if (!_this.commandValidator({ ...selection, query: _this.searchQuery, command })) {
+        if (!_this.commandValidator({ ...selection, query, command })) {
           return false
         }
       } else if (
@@ -363,7 +369,7 @@ export default {
       ) {
         return false
       }
-      this.$emit('dispatch', command, { ...selection, callback: _this.callback, query: _this.searchQuery })
+      this.$emit('dispatch', command, { ...selection, callback: _this.callback, query })
     },
     getSelection() {
       const selectRows = this.$refs.baseTable.selection || []
@@ -418,6 +424,9 @@ export default {
         this.showColumns = this.$props.columns.map(item => item)
         this.originColumns = this.$props.columns.map(item => item)
       }
+    },
+    getSearhRef(ref) {
+      this.searchRef = ref
     }
   }
 }

@@ -25,17 +25,24 @@ export default {
 <style lang="scss" scoped>
 $nav-height: 41px;
 .app-main {
-  /* 50= navbar  50  */
-  // min-height: calc(100vh - 50px);
-  // min-height: calc(100% - #{$nav-height});
   width: 100%;
   position: relative;
-  // overflow: hidden;
   overflow: auto;
   padding: 12px;
+  &.base-table-scope{
+    scrollbar-width: none;
+    &::-webkit-scrollbar-track-piece {
+      background: #f0f0f0;
+    }
 
-  // margin: 16px;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
 
+    &::-webkit-scrollbar-thumb {
+      background: #cfd1d4;
+    }
+  }
 }
 
 .fixed-header+.app-main {

@@ -566,5 +566,7 @@ export const decimal = (num, decimalLen = 2) => {
     return num
   }
 
-  return parseFloat(Math.round(num * 100) / 100).toFixed(decimalLen)
+  const scale = Math.pow(10, decimalLen)
+
+  return parseFloat(Math.round(num * scale) / scale).toFixed(decimalLen)
 }
