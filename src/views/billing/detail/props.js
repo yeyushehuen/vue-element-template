@@ -96,7 +96,7 @@ export default {
       width: 120
     },
     {
-      prop: 'deptId',
+      prop: 'deptName',
       label: '部门',
       width: 120
     },
@@ -106,7 +106,7 @@ export default {
       width: 120
     },
     {
-      prop: 'accountId',
+      prop: 'accountName',
       label: '店铺名称'
       // width: 120
     },
