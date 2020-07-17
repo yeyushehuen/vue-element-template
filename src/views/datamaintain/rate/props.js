@@ -1,5 +1,5 @@
 import { currencyDropdown } from '@/api/common'
-import { dateRangeFormat, decimal } from '@/utils'
+import { dateRangeFormat, numberFormat } from '@/utils'
 
 const currencySelectConfig = {
   params: {},
@@ -29,7 +29,7 @@ export default {
     {
       prop: 'exchangeRate',
       label: '汇率',
-      formatter: (row) => decimal(row.exchangeRate || 0, 6)
+      formatter: (row) => numberFormat(row.exchangeRate || 0, 6)
     },
     {
       prop: 'effectTime',

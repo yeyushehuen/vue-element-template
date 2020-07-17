@@ -2,7 +2,7 @@
  * Created by PanJiaChen on 16/11/18.
  */
 // import request from '@/utils/request'
-import { validatenull, isObject, isArray, getDataType } from './validate'
+import { getDataType, isArray, isObject, validatenull } from './validate'
 
 /**
  * Parse the time to string
@@ -555,18 +555,18 @@ export function downLoadFile(api, query, fileName, http = false) {
 
 /**
  * @author song
- * @description 格式化小数，默认四舍五入
+ * @description 数字格式化方法
  * @param {*} num 输入值
  * @param {*} v 保留位数，默认为2
  */
-export const decimal = (num, decimalLen = 2) => {
+export const numberFormat = (num, decimalLen = 2, options) => {
   if (validatenull(num) || decimalLen <= 0) return num
 
   if (Number.isNaN(+num)) {
     return num
   }
 
-  const scale = Math.pow(10, decimalLen)
-
-  return parseFloat(Math.round(num * scale) / scale).toFixed(decimalLen)
+  // 默认的格式化配置
+  const defaultOption = { maximumFractionDigits: decimalLen, minimumFractionDigits: decimalLen }
+  return new Intl.NumberFormat(undefined, Object.assign({}, defaultOption, options)).format(num)
 }
