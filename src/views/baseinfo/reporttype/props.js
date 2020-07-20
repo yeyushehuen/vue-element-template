@@ -1,10 +1,19 @@
+import { stateRender } from '../shop/props'
+
 export default {
   formOptions: {
     inline: true,
     submitBtnText: '查询',
     forms: [
       { prop: 'reportName', label: '报表类型' },
-      { prop: 'createUser', label: '创建人' }
+      { prop: 'username', label: '创建人' },
+      { prop: 'state', label: '状态', itemType: 'select',
+        options: [
+          { value: '', label: '全部' },
+          { value: 'Y', label: '启用' },
+          { value: 'N', label: '禁用' }
+        ]
+      }
     ]
   },
   columns: [
@@ -17,7 +26,13 @@ export default {
       label: '文件格式'
     },
     {
-      prop: 'createUser',
+      prop: 'state',
+      label: '状态',
+      // formatter: (row) => stateConvert(row && row.state)
+      render: stateRender
+    },
+    {
+      prop: 'username',
       label: '创建人'
     },
     {

@@ -1,4 +1,5 @@
 import { areaDropdown } from '@/api/common'
+import { stateRender } from '../shop/props'
 
 const areaSelectConfig = {
   params: {},
@@ -16,7 +17,14 @@ export default {
       { prop: 'province', label: '州属' },
       // { prop: 'countryId', label: '国家', itemType: 'select', ...areaSelectConfig },
       { prop: 'country', label: '国家' },
-      { prop: 'nameShort', label: '简称' }
+      { prop: 'nameShort', label: '简称' },
+      { prop: 'state', label: '状态', itemType: 'select',
+        options: [
+          { value: '', label: '全部' },
+          { value: 'Y', label: '启用' },
+          { value: 'N', label: '禁用' }
+        ]
+      }
     ]
   },
   columns: [
@@ -37,7 +45,13 @@ export default {
       label: '货币名称'
     },
     {
-      prop: 'createUser',
+      prop: 'state',
+      label: '状态',
+      // formatter: (row) => stateConvert(row && row.state)
+      render: stateRender
+    },
+    {
+      prop: 'username',
       label: '创建人'
     },
     {

@@ -49,6 +49,10 @@ export default {
       selectIds: '',
       actionTextConfig,
       actionCallback: () => {},
+      tableConfig: {
+        'show-summary': true,
+        'sum-text': '当页合计'
+      },
       importConfig: {
         action: '/paymentReport/upload',
         template: '',
@@ -63,7 +67,7 @@ export default {
       billState: {
         SUCCESS: '上传成功',
         FAIL: '上传失败',
-        CLEAR: '清除',
+        CLEAR: '账单清除',
         NONE: '未传账单'
       }
     }
@@ -81,6 +85,7 @@ export default {
         this.$message.error(response.message)
       } else {
         this.$message.success(response.message)
+        this.actionCallback()
       }
     },
     async auditHandler(selectIds) {
@@ -133,6 +138,7 @@ export default {
         this.$message.error(response.message)
       } else {
         this.$message.success(response.message)
+        this.actionCallback()
       }
     },
     uploadExcelError(error) {

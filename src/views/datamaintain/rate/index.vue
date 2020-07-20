@@ -31,9 +31,10 @@
     </el-dialog>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="汇率取值方式" width="600px" :visible.sync="valueMethodModal" :before-close="handleClose">
       <div>
-        <el-radio v-model="typeId" label="1" border>月初第一天</el-radio>
+        <!-- <el-radio v-model="typeId" label="1" border>月初第一天</el-radio>
         <el-radio v-model="typeId" label="2" border>月末倒数第二天</el-radio>
-        <el-radio v-model="typeId" label="3" border>月末最后一天</el-radio>
+        <el-radio v-model="typeId" label="3" border>月末最后一天</el-radio> -->
+        <el-radio v-for="item in valueMethodList" :key="item.id" v-model="typeId" :label="item.id" border>{{ item.name }}</el-radio>
       </div>
       <span slot="footer">
         <el-button size="small" @click="valueMethodModal = false">取消</el-button>
@@ -47,7 +48,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { currencyDropdown, editExRage } from '@/api/common'
+import { currencyDropdown, editExRage, rateValueMethodDropdown } from '@/api/common'
 import { toSelectOption, downLoadFile } from '@/utils'
 import { deleteExchangeRate, addExchangeRate, updateExchangeRate, getExchangeRateById } from '@/api/dataMaintain'
 const { formOptions, columns } = tableConfig
@@ -66,6 +67,7 @@ export default {
       selectIds: '',
       typeId: '',
       actionTextConfig,
+      valueMethodList: [],
       selectOption: {
         currencyDropdown: []
       },
@@ -106,11 +108,25 @@ export default {
       const currencyDropdownRes = await currencyDropdown()
       const list = toSelectOption(currencyDropdownRes.data, 'code', 'name')
       this.selectOption.currencyDropdown = list
+
+      // const valueMethodData = await rateValueMethodDropdown()
+      // const tempList = valueMethodData && valueMethodData.data || []
+      // this.valueMethodList = tempList
+      // const sele = tempList.find(item => item.state === 'Y') || {}
+      // debugger
+      // this.typeId = sele.id
+    },
+    async getValueMethodList() {
+      const valueMethodData = await rateValueMethodDropdown()
+      const tempList = valueMethodData && valueMethodData.data || []
+      this.valueMethodList = tempList
+      const sele = tempList.find(item => item.state === 'Y') || {}
+      this.typeId = sele.id
     },
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.rateForm).forEach(key => {
-        _this.rateForm[key] = defaultData[key] || 'defaultData'
+        _this.rateForm[key] = defaultData[key] || ''
       })
     },
     async deleteHandler(selectIds) {
@@ -124,7 +140,6 @@ export default {
     },
     async updateHandler(selectIds) {
       const res = await getExchangeRateById(selectIds[0])
-      console.log('res', res)
       if (res && res.code === 200) {
         this.setFormVal(res.data)
       }
@@ -169,6 +184,7 @@ export default {
           _this.exportHandler(selectIds, query)
           break
         case actionCode.valueMethod:
+          _this.getValueMethodList()
           _this.valueMethodModal = true
           break
         default:

@@ -25,6 +25,18 @@
         <el-form-item label="自发货运费" label-width="100" prop="selfShipmentFee">
           <el-input v-model="skuCostForm.selfShipmentFee" placeholder="请填写自发货运费" />
         </el-form-item>
+        <el-form-item label="Seller Sku" label-width="100" prop="sellerSku">
+          <el-input v-model="skuCostForm.sellerSku" placeholder="请填写Seller Sku" />
+        </el-form-item>
+        <el-form-item label="ASIN" label-width="100" prop="asin">
+          <el-input v-model="skuCostForm.asin" placeholder="请填写ASIN" />
+        </el-form-item>
+        <el-form-item label="公司型号" label-width="100" prop="companySku">
+          <el-input v-model="skuCostForm.companySku" placeholder="请填写公司型号" />
+        </el-form-item>
+        <el-form-item label="产品名称" label-width="100" prop="productName">
+          <el-input v-model="skuCostForm.productName" placeholder="请填写产品名称" />
+        </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button size="small" @click="resetForm('skuCostForm')">取消</el-button>
@@ -33,9 +45,10 @@
     </el-dialog>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="成本取值方式" width="600px" :visible.sync="valueMethodModal" :before-close="handleClose">
       <div>
-        <el-radio v-model="typeId" label="1" border>Seller SKU + 公司型号</el-radio>
-        <el-radio v-model="typeId" label="2" border>Seller SKU</el-radio>
-        <el-radio v-model="typeId" label="3" border>公司型号</el-radio>
+        <!-- <el-radio v-model="typeId" label="1" border>Seller SKU</el-radio>
+        <el-radio v-model="typeId" label="2" border>Seller SKU + 公司型号</el-radio>
+        <el-radio v-model="typeId" label="3" border>公司型号</el-radio> -->
+        <el-radio v-for="item in valueMethodList" :key="item.id" v-model="typeId" :label="item.id" border>{{ item.name }}</el-radio>
       </div>
       <span slot="footer">
         <el-button size="small" @click="valueMethodModal = false">取消</el-button>
@@ -51,7 +64,7 @@ import { actionCode, actionTextConfig, successText } from '@/components/BaseTabl
 import tableConfig from './props.js'
 import { deleteSkuCost, addSkuCost, updateSkuCost, getSkuCostById } from '@/api/dataMaintain'
 import { downLoadFile } from '../../../utils'
-import { editSkuCost } from '../../../api/common'
+import { editSkuCost, costValueMethodDropdown } from '../../../api/common'
 const { formOptions, columns } = tableConfig
 
 const commonRules = { pattern: /^\d+(\.\d{1,6})?$/, message: '只能填写数字，最多6位小数' }
@@ -63,7 +76,7 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [/* actionCode.add, */actionCode.update, actionCode.delete, actionCode.valueMethod, actionCode.export, actionCode.import],
+      actionCode: [actionCode.add, actionCode.update, actionCode.delete, actionCode.valueMethod, actionCode.export, actionCode.import],
       dialogVisible: false,
       editStatus: actionCode.add,
       typeId: '',
@@ -71,20 +84,25 @@ export default {
       selectIds: '',
       actionTextConfig,
       actionCallback: () => {},
+      valueMethodList: [],
       skuCostForm: {
         period: '',
         category: '',
-        purchaseCost: '',
-        headTripFee: '',
-        transportFee: '',
-        selfShipmentFee: ''
+        purchaseCost: '0',
+        headTripFee: '0',
+        transportFee: '0',
+        selfShipmentFee: '0',
+        sellerSku: '',
+        asin: '',
+        companySku: '',
+        productName: ''
       },
       rules: {
         period: [
           { required: true, message: '请选择期间', trigger: 'blur' }
         ],
         category: [
-          { required: true, message: '请填写品类', trigger: 'blur' }
+          // { required: true, message: '请填写品类', trigger: 'blur' }
         ],
         purchaseCost: [
           { required: true, message: '请填写采购成本', trigger: 'blur' },
@@ -101,6 +119,18 @@ export default {
         selfShipmentFee: [
           { required: true, message: '请填写自发货运费', trigger: 'blur' },
           commonRules
+        ],
+        sellerSku: [
+          { required: true, message: '请填写Seller Sku', trigger: 'blur' },
+        ],
+        asin: [
+          // { required: true, message: '请填写asin', trigger: 'blur' },
+        ],
+        companySku: [
+          { required: true, message: '请填写公司型号', trigger: 'blur' },
+        ],
+        productName: [
+          // { required: true, message: '请填写产品名称', trigger: 'blur' },
         ]
       },
       importConfig: {
@@ -111,12 +141,20 @@ export default {
     }
   },
   mounted() {
+    // this.getSelectOption()
   },
   methods: {
+    async getValueMethodList() {
+      const valueMethodData = await costValueMethodDropdown()
+      const tempList = valueMethodData && valueMethodData.data || []
+      this.valueMethodList = tempList
+      const sele = tempList.find(item => item.state === 'Y') || {}
+      this.typeId = sele.id
+    },
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.skuCostForm).forEach(key => {
-        _this.skuCostForm[key] = defaultData[key] || 'defaultData'
+        _this.skuCostForm[key] = defaultData[key]
       })
     },
     async deleteHandler(selectIds) {
@@ -160,7 +198,7 @@ export default {
       _this.actionCallback = callback
       switch (type) {
         case actionCode.add: // 新增
-          // _this.dialogVisible = true
+          _this.dialogVisible = true
           // _this.resetForm('skuCostForm')
           break
         case actionCode.update: // 修改
@@ -175,6 +213,7 @@ export default {
           _this.exportHandler(selectIds, query)
           break
         case actionCode.valueMethod:
+          _this.getValueMethodList()
           _this.valueMethodModal = true
           break
         default:

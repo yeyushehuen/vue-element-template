@@ -60,3 +60,17 @@ export function editSkuCost(data) {
     data
   })
 }
+/** 成本取值方式下拉框 */
+export function costValueMethodDropdown() {
+  return request({
+    url: '/basic/methodSkuCost',
+    method: 'get'
+  })
+}
+/** 汇率取值方式下拉框 */
+export function rateValueMethodDropdown() {
+  return request({
+    url: '/basic/methodExRate',
+    method: 'get'
+  })
+}

@@ -1,4 +1,5 @@
 import { deptDropdown, areaDropdown, accountDropdown } from '@/api/common'
+import { periodFormat } from '../data/props'
 
 const deptSelectConfig = {
   itemType: 'select',
@@ -25,7 +26,7 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'period', label: '期间', itemType: 'month' },
+      { prop: 'period', label: '期间', itemType: 'month', format: periodFormat },
       { prop: 'country', label: '国家', ...countrySelectConfig },
       { prop: 'accountId', label: '店铺', ...accountSelectConfig },
       { prop: 'deptId', label: '部门', ...deptSelectConfig },

@@ -1,3 +1,5 @@
+import { periodFormat, textFormatter } from "@/views/billing/data/props";
+
 export default {
   formOptions: {
     inline: true,
@@ -6,8 +8,10 @@ export default {
       { prop: 'asin', label: 'Asin' },
       { prop: 'fnSku', label: 'FNSku' },
       { prop: 'sellerSku', label: 'Seller Sku' },
-      { prop: 'createUser', label: '创建人' },
-      { prop: 'productName', label: '产品名称' }
+      { prop: 'username', label: '创建人' },
+      { prop: 'productName', label: '产品名称' },
+      { prop: 'period', label: '期间', itemType: 'month', format: periodFormat },
+      { prop: 'companySku', label: '公司型号' }
     ]
   },
   columns: [
@@ -17,7 +21,8 @@ export default {
     },
     {
       prop: 'asin',
-      label: 'ASIN'
+      label: 'ASIN',
+      formatter: textFormatter('asin')
     },
     {
       prop: 'sellerSku',
@@ -25,7 +30,8 @@ export default {
     },
     {
       prop: 'fnSku',
-      label: 'FNSku'
+      label: 'FNSku',
+      formatter: textFormatter('fnSku')
     },
     {
       prop: 'companySku',
@@ -36,7 +42,7 @@ export default {
       label: '产品名称'
     },
     {
-      prop: 'createUser',
+      prop: 'username',
       label: '创建人'
     },
     {

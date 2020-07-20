@@ -1,5 +1,5 @@
 module.exports = {
-  title: '我还没有名字',
+  title: '跨境方舟',
 
   /**
    * @type {boolean} true | false

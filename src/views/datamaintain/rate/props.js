@@ -5,7 +5,7 @@ const currencySelectConfig = {
   params: {},
   selectFetch: currencyDropdown,
   selectResultField: 'data',
-  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+  selectResultHandler: (item) => ({ value: item.code, label: item.name })
 }
 
 export default {
@@ -13,7 +13,7 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'code', label: '币别', itemType: 'select', ...currencySelectConfig },
+      { prop: 'code', label: '币别', itemType: 'select', ...currencySelectConfig, selectOptions: { multiple: true }},
       { prop: 'effectTime', label: '生效时间', itemType: 'daterange', format: dateRangeFormat }
     ]
   },
@@ -36,7 +36,7 @@ export default {
       label: '生效时间'
     },
     {
-      prop: 'createUser',
+      prop: 'username',
       label: '创建人'
     },
     {

@@ -38,7 +38,7 @@ export default {
       formatter: (row) => stateConvert(row && row.domainLegal, false)
     },
     {
-      prop: 'createUser',
+      prop: 'username',
       label: '创建人'
     },
     {

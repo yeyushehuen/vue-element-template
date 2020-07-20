@@ -49,7 +49,7 @@ export default {
         prop: 'deptId', label: '销售部门', ...deptSelectConfig
       },
       {
-        prop: 'sellerCountry', label: '销售国家', ...countrySelectConfig
+        prop: 'sellerAreaId', label: '销售国家', ...countrySelectConfig
       },
       {
         prop: 'sellerLegalId', label: '销售主体', ...legalSelectConfig
@@ -123,7 +123,7 @@ export default {
       label: '状态',
       render: stateRender
     }, {
-      prop: 'createUser',
+      prop: 'username',
       label: '创建人'
     },
     {

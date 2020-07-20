@@ -34,7 +34,7 @@ export default {
       label: '任务描述'
     },
     {
-      prop: 'createUser',
+      prop: 'username',
       label: '创建人'
     },
     {

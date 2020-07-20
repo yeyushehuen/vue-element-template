@@ -32,7 +32,7 @@ export default {
       render: stateRender
     },
     {
-      prop: 'createUser',
+      prop: 'username',
       label: '创建人'
     },
     {

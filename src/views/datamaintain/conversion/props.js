@@ -13,14 +13,14 @@ export default {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'countryId', label: '国家', itemType: 'select', ...areaSelectConfig },
+      { prop: 'countryId', label: '国家', itemType: 'select', ...areaSelectConfig, selectOptions: { multiple: true }},
       { prop: 'type', label: 'Type' },
       { prop: 'convertType', label: '转换类型' }
     ]
   },
   columns: [
     {
-      prop: 'areaId',
+      prop: 'country',
       label: '国家'
     },
     // 格式化为字符串
@@ -37,7 +37,7 @@ export default {
       label: '转换类型-细分类'
     },
     {
-      prop: 'createUser',
+      prop: 'username',
       label: '创建人'
     },
     {

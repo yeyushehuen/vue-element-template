@@ -1,13 +1,15 @@
+import { periodFormat } from '@/views/billing/data/props'
+
 export default {
   formOptions: {
     inline: true,
     submitBtnText: '查询',
     forms: [
-      { prop: 'period', label: '期间', itemType: 'month' },
+      { prop: 'period', label: '期间', itemType: 'month', format: periodFormat },
       { prop: 'sellerSku', label: 'Seller Sku' },
       { prop: 'category', label: '品类' },
       { prop: 'sku', label: 'SKU' },
-      { prop: 'createUser', label: '创建人' }
+      { prop: 'username', label: '创建人' }
     ]
   },
   columns: [
@@ -34,7 +36,7 @@ export default {
     },
     {
       prop: 'productName',
-      label: '名称',
+      label: '产品名称',
       width: 150
     },
     {
@@ -63,7 +65,7 @@ export default {
       width: 150
     },
     {
-      prop: 'createUser',
+      prop: 'username',
       label: '创建人',
       width: 150
     },

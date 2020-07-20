@@ -64,10 +64,10 @@
         <template slot="empty">
           <div>
             <img :src="emptySVG" height="150" alt="暂无数据">
-            <div style="text-align: center;font-size:14px;margin-top:-41px">暂无数据</div>
+            <div style="text-align: center;font-size:14px;margin-top:-41px;">暂无数据</div>
           </div>
         </template>
-        <el-table-column type="selection" width="41" />
+        <el-table-column type="selection" :width="tableConfig['show-summary'] ? 60 : 41" />
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">

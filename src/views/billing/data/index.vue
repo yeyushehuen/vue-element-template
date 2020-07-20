@@ -11,7 +11,7 @@ import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { billDataReconciliation, billDataSummary } from '../../../api/bill'
-import { downLoadFile } from '../../../utils'
+import { downLoadFile, numberFormat } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -24,11 +24,47 @@ export default {
       actionCode: [actionCode.reconciliation, actionCode.summary, actionCode.export],
       selectIds: '',
       actionTextConfig,
+      // tableConfig: {
+      //   // 'show-summary': true,
+      //   // 'sum-text': '当页合计',
+      //   // 'summary-method': this.getSummaries
+      // },
       actionType: '',
       actionCallback: () => {}
     }
   },
   methods: {
+    getSummaries(param) {
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((column, index) => {
+        if (index === 0) { // 首列不合计
+          sums[index] = '当页合计'
+          return
+        }
+        if (column.type !== 'number') { // 非数字类型列不合计
+          sums[index] = '-'
+          return
+        }
+        const values = data ? data.map(item => Number(item[column.property])) : []
+        // if (!values.every(value => isNaN(value))) {
+        const indexSum = values.reduce((prev, curr) => {
+          const value = Number(curr)
+          if (!isNaN(value)) {
+            return prev + curr
+          } else {
+            return prev
+          }
+        }, 0)
+        sums[index] = numberFormat(indexSum)
+        // sums[index] += ' 元'
+        // } else {
+        //   sums[index] = 'N/A'
+        // }
+      })
+
+      return sums
+    },
     callback(response) {
       if (response && response.code !== 200) {
         this.$message.error(response.message)

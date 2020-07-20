@@ -271,7 +271,7 @@ export default {
             formattedForm[key] = formatedValues[key]
           })
         } else {
-          formattedForm[v] = params[v]
+          formattedForm[v] = Array.isArray(params[v]) ? params[v].join(',') : params[v]
         }
       })
 
@@ -353,9 +353,9 @@ export default {
         }
 
         if (resultHandler) {
-          this.selectOptions[dataKey] = result.map(resultHandler)
+          this.selectOptions[dataKey] = result ? result.map(resultHandler) : []
         } else {
-          this.selectOptions[dataKey] = result
+          this.selectOptions[dataKey] = result || []
         }
       })
     },
