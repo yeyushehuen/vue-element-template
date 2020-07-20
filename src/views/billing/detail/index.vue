@@ -96,7 +96,14 @@ export default {
       const response = await paymentReportUnverify({ id: selectIds.join(',') })
       this.callback(response)
     },
-    async clearHandler(selectIds) {
+    async clearHandler(selectIds, selectRows) {
+      const verifyList = selectRows.filter(row => row.verifyState === 'SUCCESS')
+      // 已审核的账单不能清除
+      if (verifyList.length > 0) {
+        this.$message.warning('不能清除已审核的账单')
+        return false
+      }
+
       const response = await paymentReportClear({ id: selectIds.join(',') })
       this.callback(response)
     },
@@ -116,7 +123,7 @@ export default {
           _this.reviewsHandler(selectIds)
           break
         case actionCode.clear:
-          _this.clearHandler(selectIds)
+          _this.clearHandler(selectIds, selectRows)
           break
         case actionCode.export:
           _this.exportHandler(selectIds, query)
