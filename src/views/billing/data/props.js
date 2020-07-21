@@ -131,7 +131,7 @@ export default {
     { prop: 'adTaxCny', width: 150, label: '广告费税费(本位币)', align: 'right', type: 'number', formatter: generateFormater('adTaxCny') },
     { prop: 'vatCny', width: 150, label: 'VAT（本位币）', align: 'right', type: 'number', formatter: generateFormater('vatCny') },
     { prop: 'transferCny', width: 150, label: '转款(本位币)', align: 'right', type: 'number', formatter: generateFormater('transferCny') },
-    { prop: 'creditCardCny', width: 150, label: '信用卡扣款(本位币)', align: 'right', type: 'number', formatter: generateFormater('transferCny') },
+    { prop: 'creditCardCny', width: 150, label: '信用卡扣款(本位币)', align: 'right', type: 'number', formatter: generateFormater('creditCardCny') },
     { prop: 'companySku', width: 150, label: '公司型号', formatter: textFormatter('companySku') },
     { prop: 'purchaseCost', width: 120, label: '采购成本', align: 'right', type: 'number', formatter: generateFormater('purchaseCost') },
     { prop: 'headTripFee', width: 120, label: '头程运费', align: 'right', type: 'number', formatter: generateFormater('headTripFee') },

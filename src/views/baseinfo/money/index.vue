@@ -13,6 +13,12 @@
         <el-form-item label="标准代码" prop="code">
           <el-input v-model="moneyForm.code" placeholder="标准代码" />
         </el-form-item>
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="moneyForm.state" style="width: 100%" placeholder="请选择状态">
+            <el-option label="启用" value="Y" />
+            <el-option label="禁用" value="N" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button size="small" @click="resetForm('moneyForm')">取消</el-button>
@@ -46,11 +52,15 @@ export default {
       actionCallback: () => {},
       moneyForm: {
         name: '',
+        state: '',
         code: ''
       },
       rules: {
         name: [
           { required: true, message: '请填写货币名称', trigger: 'blur' }
+        ],
+        state: [
+          { required: true, message: '请选择状态', trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请填写标准代码', trigger: 'blur' }
@@ -67,7 +77,7 @@ export default {
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.moneyForm).forEach(key => {
-        _this.moneyForm[key] = defaultData[key] || 'defaultData'
+        _this.moneyForm[key] = defaultData[key] || ''
       })
     },
     async deleteHandler(selectIds) {

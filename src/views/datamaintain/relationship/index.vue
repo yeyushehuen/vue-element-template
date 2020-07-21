@@ -96,7 +96,7 @@ export default {
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.skuRelationForm).forEach(key => {
-        _this.skuRelationForm[key] = defaultData[key] || 'defaultData'
+        _this.skuRelationForm[key] = defaultData[key] || ''
       })
     },
     async deleteHandler(selectIds) {

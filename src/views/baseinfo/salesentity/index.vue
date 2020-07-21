@@ -76,7 +76,7 @@ export default {
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.entityForm).forEach(key => {
-        _this.entityForm[key] = defaultData[key] || 'defaultData'
+        _this.entityForm[key] = defaultData[key] || ''
       })
     },
     async deleteHandler(selectIds) {

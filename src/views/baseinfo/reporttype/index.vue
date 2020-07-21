@@ -13,6 +13,12 @@
         <el-form-item label="文件格式" prop="suffix">
           <el-input v-model="reportForm.suffix" />
         </el-form-item>
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="reportForm.state" style="width: 100%" placeholder="请选择状态">
+            <el-option label="启用" value="Y" />
+            <el-option label="禁用" value="N" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button size="small" @click="resetForm('reportForm')">取消</el-button>
@@ -45,11 +51,15 @@ export default {
       actionCallback: () => {},
       reportForm: {
         reportName: '',
+        state: '',
         suffix: ''
       },
       rules: {
         reportName: [
           { required: true, message: '请填写报表类型', trigger: 'blur' }
+        ],
+        state: [
+          { required: true, message: '请选择状态', trigger: 'blur' }
         ],
         suffix: [
           { required: true, message: '请填写文件格式', trigger: 'blur' }
@@ -61,7 +71,7 @@ export default {
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.reportForm).forEach(key => {
-        _this.reportForm[key] = defaultData[key] || 'defaultData'
+        _this.reportForm[key] = defaultData[key] || ''
       })
     },
     async deleteHandler(selectIds) {

@@ -100,7 +100,7 @@ export default {
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.convertTypeForm).forEach(key => {
-        _this.convertTypeForm[key] = defaultData[key] || 'defaultData'
+        _this.convertTypeForm[key] = defaultData[key] || ''
       })
     },
     async deleteHandler(selectIds) {

@@ -103,7 +103,7 @@ export default {
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.depForm).forEach(key => {
-        _this.depForm[key] = defaultData[key] || 'defaultData'
+        _this.depForm[key] = defaultData[key] || ''
       })
     },
     async deleteHandler(selectIds) {

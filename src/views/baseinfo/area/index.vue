@@ -21,6 +21,12 @@
             <el-option v-for="option in selectOption.currencyDropdown" :key="option.value" :label="option.label" :value="option.value" />
           </el-select>
         </el-form-item>
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="areaForm.state" style="width: 100%" placeholder="请选择状态">
+            <el-option label="启用" value="Y" />
+            <el-option label="禁用" value="N" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button size="small" @click="resetForm('areaForm')">取消</el-button>
@@ -59,6 +65,7 @@ export default {
         province: '',
         country: '',
         nameShort: '',
+        state: '',
         currencyId: ''
       },
       rules: {
@@ -70,6 +77,9 @@ export default {
         ],
         nameShort: [
           { required: true, message: '请填写缩写', trigger: 'blur' }
+        ],
+        state: [
+          { required: true, message: '请选择状态', trigger: 'blur' }
         ],
         currencyId: [
           { required: true, message: '请选择货币', trigger: 'blur' }
@@ -93,7 +103,7 @@ export default {
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.areaForm).forEach(key => {
-        _this.areaForm[key] = defaultData[key] || 'defaultData'
+        _this.areaForm[key] = defaultData[key] || ''
       })
     },
     async deleteHandler(selectIds) {
