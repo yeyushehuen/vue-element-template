@@ -1,5 +1,5 @@
 <template>
-  <base-table :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
+  <base-table :table-config="tableConfig" :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
     <template slot="name" slot-scope="scope">
       {{ scope.$index }}
     </template>
@@ -24,11 +24,11 @@ export default {
       actionCode: [actionCode.reconciliation, actionCode.summary, actionCode.export],
       selectIds: '',
       actionTextConfig,
-      // tableConfig: {
-      //   // 'show-summary': true,
-      //   // 'sum-text': '当页合计',
-      //   // 'summary-method': this.getSummaries
-      // },
+      tableConfig: {
+        'show-summary': true,
+        'sum-text': '当页合计',
+        'summary-method': this.getSummaries
+      },
       actionType: '',
       actionCallback: () => {}
     }

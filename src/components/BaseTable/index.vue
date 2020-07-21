@@ -67,7 +67,7 @@
             <div style="text-align: center;font-size:14px;margin-top:-41px;">暂无数据</div>
           </div>
         </template>
-        <el-table-column type="selection" :width="tableConfig['show-summary'] ? 60 : 41" />
+        <el-table-column type="selection" align="center" :width="tableConfig['show-summary'] ? 75 : 41" />
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">
@@ -87,7 +87,7 @@
         :current-page.sync="pagination.currentPage"
         :page-size.sync="pagination.pageSize"
         :layout="pagination.layout"
-        :page-sizes="pagination.pageSizes"
+        :page-sizes="tableConfig['show-summary'] ? [20] : pagination.pageSizes"
         :total="pagination.total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
