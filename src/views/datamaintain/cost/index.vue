@@ -5,8 +5,9 @@
         <span>-</span>
       </template>
     </base-table>
-    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`成本数据 - ${actionTextConfig[editStatus]}`" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
-      <el-form ref="skuCostForm" class="flex-form-wrapper" size="small" label-position="left" :model="skuCostForm" :rules="rules" label-width="80px">
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`成本数据 - ${actionTextConfig[editStatus]}`" width="800px" :visible.sync="dialogVisible" :before-close="handleClose">
+      {{ skuCostForm.deptValues }}
+      <el-form ref="skuCostForm" class="cost-modal-form" size="small" label-position="right" :inline="true" :model="skuCostForm" :rules="rules">
         <el-form-item label="期间" prop="period">
           <el-date-picker v-model="skuCostForm.period" value-format="yyyy-MM" type="month" />
         </el-form-item>
@@ -37,6 +38,11 @@
         <el-form-item label="产品名称" label-width="100" prop="productName">
           <el-input v-model="skuCostForm.productName" placeholder="请填写产品名称" />
         </el-form-item>
+        <el-form-item label="销售小组" prop="deptId">
+          <el-select v-model="skuCostForm.deptValues" style="width: 100%" placeholder="请选择销售小组">
+            <el-option v-for="option in selectOption.deptDropdown" :key="option.value" :label="option.label" :value="option" :value-key="option.value" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button size="small" @click="resetForm('skuCostForm')">取消</el-button>
@@ -63,8 +69,8 @@ import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { deleteSkuCost, addSkuCost, updateSkuCost, getSkuCostById } from '@/api/dataMaintain'
-import { downLoadFile } from '../../../utils'
-import { editSkuCost, costValueMethodDropdown } from '../../../api/common'
+import { downLoadFile, toSelectOption } from '../../../utils'
+import { editSkuCost, costValueMethodDropdown, deptDropdown } from '../../../api/common'
 const { formOptions, columns } = tableConfig
 
 const commonRules = { pattern: /^\d+(\.\d{1,6})?$/, message: '只能填写数字，最多6位小数' }
@@ -85,6 +91,9 @@ export default {
       actionTextConfig,
       actionCallback: () => {},
       valueMethodList: [],
+      selectOption: {
+        deptDropdown: []
+      },
       skuCostForm: {
         period: '',
         category: '',
@@ -95,7 +104,8 @@ export default {
         sellerSku: '',
         asin: '',
         companySku: '',
-        productName: ''
+        productName: '',
+        deptValues: null
       },
       rules: {
         period: [
@@ -121,15 +131,18 @@ export default {
           commonRules
         ],
         sellerSku: [
-          { required: true, message: '请填写Seller Sku', trigger: 'blur' },
+          { required: true, message: '请填写Seller Sku', trigger: 'blur' }
         ],
         asin: [
           // { required: true, message: '请填写asin', trigger: 'blur' },
         ],
         companySku: [
-          { required: true, message: '请填写公司型号', trigger: 'blur' },
+          { required: true, message: '请填写公司型号', trigger: 'blur' }
         ],
         productName: [
+          // { required: true, message: '请填写产品名称', trigger: 'blur' },
+        ],
+        deptValues: [
           // { required: true, message: '请填写产品名称', trigger: 'blur' },
         ]
       },
@@ -151,6 +164,10 @@ export default {
       const sele = tempList.find(item => item.state === 'Y') || {}
       this.typeId = sele.id
     },
+    async getDeptList() {
+      const deptDropdownSelect = await deptDropdown()
+      this.selectOption.deptDropdown = toSelectOption(deptDropdownSelect.data, 'id', 'name')
+    },
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.skuCostForm).forEach(key => {
@@ -170,7 +187,8 @@ export default {
       const res = await getSkuCostById(selectIds[0])
       if (res && res.code === 200) {
         const resData = res.data || {}
-        this.setFormVal({ ...resData, period: record.period })
+        const { deptId, deptName, ...rest } = resData
+        this.setFormVal({ ...rest, period: record.period, deptValues: { value: deptId + '', label: deptName }})
       }
     },
     // 修改取值方式
@@ -199,10 +217,12 @@ export default {
       switch (type) {
         case actionCode.add: // 新增
           _this.dialogVisible = true
+          _this.getDeptList()
           // _this.resetForm('skuCostForm')
           break
         case actionCode.update: // 修改
           _this.dialogVisible = true
+          _this.getDeptList()
           _this.updateHandler(selectIds, selectRows[0] || {})
           _this.selectIds = selectIds.join(',')
           break
@@ -231,7 +251,11 @@ export default {
       }
       _this.$refs[formName].validate((valid) => {
         if (valid) {
-          apiRep[_this.editStatus]({ id: _this.selectIds, data: _this[formName] }).then(res => {
+          const { deptValues, ...rest } = _this[formName]
+          const { value: deptId, label: deptName } = deptValues || {}
+          const data = Object.assign(rest, { deptId, deptName })
+
+          apiRep[_this.editStatus]({ id: _this.selectIds, data }).then(res => {
             this.$message.success(successText[_this.editStatus])
             _this.actionCallback()
             _this.$refs[formName].resetFields()
@@ -254,5 +278,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.cost-modal-form{
+    display: flex;
+    padding: 0;
+    flex-wrap: wrap;
+    &>>>.el-form-item{
+      display: flex;
+      flex: 0 0 50%;
+      margin-right: 0;
+      padding-right: 12px;
+      .el-form-item__label {
+        font-weight: normal;
+        color: #333;
+        flex: 0 0 auto;
+      }
+      .el-form-item__content {
+        flex: 1 1 auto;
+        > div {
+          width: 100%;
+        }
+      }
+    }
+  }
 </style>

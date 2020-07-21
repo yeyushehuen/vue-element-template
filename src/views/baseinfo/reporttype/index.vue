@@ -51,7 +51,7 @@ export default {
       actionCallback: () => {},
       reportForm: {
         reportName: '',
-        state: '',
+        state: 'Y',
         suffix: ''
       },
       rules: {

@@ -1,4 +1,12 @@
 import { periodFormat } from '@/views/billing/data/props'
+import { deptDropdown } from '@/api/common'
+
+const deptSelectConfig = {
+  itemType: 'select',
+  selectFetch: deptDropdown,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+}
 
 export default {
   formOptions: {
@@ -9,13 +17,19 @@ export default {
       { prop: 'sellerSku', label: 'Seller Sku' },
       { prop: 'category', label: '品类' },
       { prop: 'sku', label: 'SKU' },
-      { prop: 'username', label: '创建人' }
+      { prop: 'username', label: '创建人' },
+      { prop: 'deptId', label: '销售小组', ...deptSelectConfig, selectOptions: { multiple: true }}
     ]
   },
   columns: [
     {
       prop: 'period',
       label: '期间',
+      width: 150
+    },
+    {
+      prop: 'deptName',
+      label: '销售小组',
       width: 150
     },
     // 格式化为字符串

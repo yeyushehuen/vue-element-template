@@ -65,7 +65,7 @@ export default {
         province: '',
         country: '',
         nameShort: '',
-        state: '',
+        state: 'Y',
         currencyId: ''
       },
       rules: {

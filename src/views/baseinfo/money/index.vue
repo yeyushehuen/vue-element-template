@@ -52,7 +52,7 @@ export default {
       actionCallback: () => {},
       moneyForm: {
         name: '',
-        state: '',
+        state: 'Y',
         code: ''
       },
       rules: {

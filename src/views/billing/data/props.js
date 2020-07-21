@@ -133,6 +133,7 @@ export default {
     { prop: 'transferCny', width: 150, label: '转款(本位币)', align: 'right', type: 'number', formatter: generateFormater('transferCny') },
     { prop: 'creditCardCny', width: 150, label: '信用卡扣款(本位币)', align: 'right', type: 'number', formatter: generateFormater('creditCardCny') },
     { prop: 'companySku', width: 150, label: '公司型号', formatter: textFormatter('companySku') },
+    { prop: 'deptName', width: 150, label: '销售小组', formatter: textFormatter('deptName') },
     { prop: 'purchaseCost', width: 120, label: '采购成本', align: 'right', type: 'number', formatter: generateFormater('purchaseCost') },
     { prop: 'headTripFee', width: 120, label: '头程运费', align: 'right', type: 'number', formatter: generateFormater('headTripFee') },
     { prop: 'transportFee', width: 120, label: '转运运费', align: 'right', type: 'number', formatter: generateFormater('transportFee') },
