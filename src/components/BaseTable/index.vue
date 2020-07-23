@@ -43,14 +43,14 @@
           <div class="custome-columns" @click="showDialog"><i class="el-icon-setting" /></div>
         </div>
         <!-- 自定义字段例子 -->
-        <el-dialog title="自定义字段" class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" width="1000px" :visible.sync="dialogVisible" :before-close="handleClose">
+        <el-dialog title="自定义字段" class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" width="1100px" :visible.sync="dialogVisible" :before-close="handleClose">
           <CustomColumn :list="originColumns" :show-columns="showColumns" :group="group" @changeShowColumns="changeShowColumns" />
         </el-dialog>
       </div>
       <el-table
         ref="baseTable"
         v-loading="listLoading"
-        v-el-height-adaptive-table="{bottomOffset: 76}"
+        v-el-height-adaptive-table="{bottomOffset: 140}"
         height="100px"
         size="mini"
         border
@@ -71,7 +71,7 @@
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">
-              <slot :name="col.slotName" :row="scope.row" :$index="scope.$index" />
+              <slot :name="col.slotName" :row="scope.row" :getList="getList" :$index="scope.$index" />
             </span>
             <span v-else-if="col.formatter">{{ col.formatter(scope.row) }}</span>
             <ex-slot v-else-if="col.render" :render="col.render" :row="scope.row" :index="scope.$index" :column="col" />

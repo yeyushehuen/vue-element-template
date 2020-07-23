@@ -17,7 +17,7 @@
           :show-file-list="false"
           accept=""
           :data="{id: scope.row.id}"
-          :on-success="uploadExcelSuccess"
+          :on-success="uploadExcelSuccess(scope.getList)"
           :on-error="uploadExcelError"
           :on-progress="uploadExcelProgress"
           :before-upload="beforeUpload"
@@ -88,7 +88,13 @@ export default {
         this.actionCallback()
       }
     },
-    async auditHandler(selectIds) {
+    async auditHandler(selectIds, selectRows) {
+      const verifyList = selectRows.filter(row => row.verifyState === 'SUCCESS')
+      // 已审核的账单不能清除
+      if (verifyList.length > 0) {
+        this.$message.warning('不能清除已审核的账单')
+        return false
+      }
       const response = await paymentReportVerify({ id: selectIds.join(',') })
       this.callback(response)
     },
@@ -115,9 +121,10 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
+      debugger
       switch (type) {
         case actionCode.audit:
-          _this.auditHandler(selectIds)
+          _this.auditHandler(selectIds, selectRows)
           break
         case actionCode.reviews:
           _this.reviewsHandler(selectIds)
@@ -140,12 +147,14 @@ export default {
       })
       this.$router.push({ path: '/billing/data', query: { id: row.id }})
     },
-    uploadExcelSuccess(response) {
-      if (response && response.code !== 200) {
-        this.$message.error(response.message)
-      } else {
-        this.$message.success(response.message)
-        this.actionCallback()
+    uploadExcelSuccess(getList) {
+      return function(response) {
+        if (response && response.code !== 200) {
+          this.$message.error(response.message)
+        } else {
+          getList()
+          this.$message.success(response.message)
+        }
       }
     },
     uploadExcelError(error) {
