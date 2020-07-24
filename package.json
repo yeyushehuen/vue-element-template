@@ -52,6 +52,7 @@
     "dropzone": "5.5.1",
     "echarts": "4.2.1",
     "el-search-table-pagination": "^0.4.31",
+    "el-table-footer": "^1.0.10",
     "element-ui": "2.13.2",
     "file-saver": "2.0.1",
     "fuse.js": "3.4.4",

@@ -1,9 +1,11 @@
 <template>
-  <base-table :table-config="tableConfig" :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
-    <template slot="name" slot-scope="scope">
-      {{ scope.$index }}
-    </template>
-  </base-table>
+  <div>
+    <base-table :table-config="tableConfig" :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
+      <template slot="name" slot-scope="scope">
+        {{ scope.$index }}
+      </template>
+    </base-table>
+  </div>
 </template>
 
 <script>
@@ -25,12 +27,28 @@ export default {
       selectIds: '',
       actionTextConfig,
       tableConfig: {
-        'show-summary': true,
+        'show-summary': false,
         'sum-text': '当页合计',
-        'summary-method': this.getSummaries
+        // 'summary-method': this.getSummaries
       },
       actionType: '',
       actionCallback: () => {}
+      // summary1: {
+      //   label: '合计',
+      //   data: {
+      //     amount1: 13414,
+      //     amount2: 13414,
+      //     amount3: 13414
+      //   }
+      // },
+      // summary2: {
+      //   label: '总计',
+      //   data: {
+      //     amount1: 13414,
+      //     amount2: 13414,
+      //     amount3: 13414
+      //   }
+      // }
     }
   },
   methods: {

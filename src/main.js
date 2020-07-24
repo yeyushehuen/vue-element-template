@@ -4,6 +4,10 @@ import Cookies from 'js-cookie'
 import Element from 'element-ui'
 import './styles/element-variables.scss'
 
+import ElTableFooter from 'el-table-footer'
+// import 'pl-table/themes/index.css'
+// import 'pl-table/themes/plTableStyle.css'
+
 import '@/styles/index.scss' // global css
 
 import App from './App'
@@ -31,6 +35,8 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
  */
+// Vue.use(plTable)
+Vue.use(ElTableFooter)
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size

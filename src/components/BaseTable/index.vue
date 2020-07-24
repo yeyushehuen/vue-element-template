@@ -50,7 +50,7 @@
       <el-table
         ref="baseTable"
         v-loading="listLoading"
-        v-el-height-adaptive-table="{bottomOffset: 140}"
+        v-el-height-adaptive-table="{bottomOffset: 76}"
         height="100px"
         size="mini"
         border
@@ -67,7 +67,7 @@
             <div style="text-align: center;font-size:14px;margin-top:-41px;">暂无数据</div>
           </div>
         </template>
-        <el-table-column type="selection" align="center" :width="tableConfig['show-summary'] ? 75 : 41" />
+        <el-table-column type="selection" align="center" :width="tableConfig['show-summary'] ? 75 : 80" />
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">
@@ -79,6 +79,7 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-table-footer ref="tableFooter" :data="[summary1, summary2]" />
     </div>
 
     <div class="base-table-pagination-wrapper">
@@ -236,7 +237,23 @@ export default {
       hiddenColumns: [],
       showColumns: [],
       originColumns,
-      group: 'mission'
+      group: 'mission',
+      summary1: {
+        label: '合计',
+        data: {
+          amount1: 13414,
+          amount2: 13414,
+          amount3: 13414
+        }
+      },
+      summary2: {
+        label: '总计',
+        data: {
+          amount1: 13414,
+          amount2: 13414,
+          amount3: 13414
+        }
+      }
     }
   },
   computed: {
@@ -252,6 +269,13 @@ export default {
   },
   mounted() {
     document.querySelector('section.app-main').classList.add('base-table-scope')
+    const {
+      tableFooter,
+      baseTable
+    } = this.$refs
+
+    // 调用init方法传入表格实例初始化footer
+    tableFooter.init(baseTable)
   },
   destroyed() {
     document.querySelector('section.app-main').classList.remove('base-table-scope')
