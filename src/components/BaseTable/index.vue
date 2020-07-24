@@ -50,7 +50,7 @@
       <el-table
         ref="baseTable"
         v-loading="listLoading"
-        v-el-height-adaptive-table="{bottomOffset: 76}"
+        v-el-height-adaptive-table="{bottomOffset: 146 || 76}"
         height="100px"
         size="mini"
         border

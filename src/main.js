@@ -5,8 +5,6 @@ import Element from 'element-ui'
 import './styles/element-variables.scss'
 
 import ElTableFooter from 'el-table-footer'
-// import 'pl-table/themes/index.css'
-// import 'pl-table/themes/plTableStyle.css'
 
 import '@/styles/index.scss' // global css
 
@@ -35,7 +33,6 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
  */
-// Vue.use(plTable)
 Vue.use(ElTableFooter)
 
 Vue.use(Element, {
