@@ -50,7 +50,7 @@
       <el-table
         ref="baseTable"
         v-loading="listLoading"
-        v-el-height-adaptive-table="{bottomOffset: 146 || 76}"
+        v-el-height-adaptive-table="{bottomOffset: showSummary ? 128 : 70}"
         height="100px"
         size="mini"
         border
@@ -58,7 +58,6 @@
         stripe
         style="width: 100%;"
         :data="list"
-        v-bind="tableConfig"
         @selection-change="handleSelectionChange"
       >
         <template slot="empty">
@@ -67,7 +66,7 @@
             <div style="text-align: center;font-size:14px;margin-top:-41px;">暂无数据</div>
           </div>
         </template>
-        <el-table-column type="selection" align="center" :width="tableConfig['show-summary'] ? 75 : 80" />
+        <el-table-column type="selection" align="center" :width="showSummary ? 72 : 41" />
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">
@@ -79,7 +78,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-table-footer ref="tableFooter" :data="[summary1, summary2]" />
+      <el-table-footer v-if="showSummary" ref="tableFooter" :data="footerSummary" />
     </div>
 
     <div class="base-table-pagination-wrapper">
@@ -88,7 +87,7 @@
         :current-page.sync="pagination.currentPage"
         :page-size.sync="pagination.pageSize"
         :layout="pagination.layout"
-        :page-sizes="tableConfig['show-summary'] ? [20] : pagination.pageSizes"
+        :page-sizes="pagination.pageSizes"
         :total="pagination.total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -190,10 +189,15 @@ export default {
         return {}
       }
     },
-    // table属性配置
-    tableConfig: {
-      type: Object,
-      default: () => ({})
+    // 是否展示合计
+    showSummary: {
+      type: Boolean,
+      default: false
+    },
+    // 合计方法
+    summaryMethod: {
+      type: Function,
+      default: () => []
     },
     // 获取返回的list
     getResponse: {
@@ -237,23 +241,7 @@ export default {
       hiddenColumns: [],
       showColumns: [],
       originColumns,
-      group: 'mission',
-      summary1: {
-        label: '合计',
-        data: {
-          amount1: 13414,
-          amount2: 13414,
-          amount3: 13414
-        }
-      },
-      summary2: {
-        label: '总计',
-        data: {
-          amount1: 13414,
-          amount2: 13414,
-          amount3: 13414
-        }
-      }
+      group: 'mission'
     }
   },
   computed: {
@@ -261,6 +249,17 @@ export default {
       const api = this.$props.importConfig.action || ''
       // const subAPI = api.startsWith('/') ? api.substring(1) : api
       return process.env.VUE_APP_BASE_API + api
+    },
+    footerSummary: function() {
+      const { summaryMethod, columns } = this.$props
+      const pageData = this.list
+
+      console.log(summaryMethod({ data: pageData, columns }))
+
+      return [
+        { label: '当页合计', data: summaryMethod({ data: pageData, columns }) },
+        { label: '全部合计', data: [] }
+      ]
     }
   },
   created() {
@@ -269,13 +268,15 @@ export default {
   },
   mounted() {
     document.querySelector('section.app-main').classList.add('base-table-scope')
-    const {
-      tableFooter,
-      baseTable
-    } = this.$refs
+    if (this.$props.showSummary) {
+      const {
+        tableFooter,
+        baseTable
+      } = this.$refs
 
-    // 调用init方法传入表格实例初始化footer
-    tableFooter.init(baseTable)
+      // 调用init方法传入表格实例初始化footer
+      tableFooter.init(baseTable)
+    }
   },
   destroyed() {
     document.querySelector('section.app-main').classList.remove('base-table-scope')

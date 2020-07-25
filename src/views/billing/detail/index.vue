@@ -92,7 +92,7 @@ export default {
       const verifyList = selectRows.filter(row => row.verifyState === 'SUCCESS')
       // 已审核的账单不能清除
       if (verifyList.length > 0) {
-        this.$message.warning('不能清除已审核的账单')
+        this.$message.warning('已审核的账单不能重复审核')
         return false
       }
       const response = await paymentReportVerify({ id: selectIds.join(',') })

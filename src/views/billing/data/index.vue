@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :table-config="tableConfig" :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
+    <base-table :summary-method="summaryMethod" :show-summary="true" :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -26,11 +26,6 @@ export default {
       actionCode: [actionCode.reconciliation, actionCode.summary, actionCode.export],
       selectIds: '',
       actionTextConfig,
-      tableConfig: {
-        'show-summary': false,
-        'sum-text': '当页合计',
-        // 'summary-method': this.getSummaries
-      },
       actionType: '',
       actionCallback: () => {}
       // summary1: {
@@ -52,19 +47,20 @@ export default {
     }
   },
   methods: {
-    getSummaries(param) {
+    summaryMethod(param) {
       const { columns, data } = param
-      const sums = []
+      debugger
+      const sums = {}
       columns.forEach((column, index) => {
-        if (index === 0) { // 首列不合计
-          sums[index] = '当页合计'
-          return
-        }
+        // if (index === 0) { // 首列不合计
+        //   sums[index] = '当页合计'
+        //   return
+        // }
         if (column.type !== 'number') { // 非数字类型列不合计
-          sums[index] = '-'
+          sums[column.prop] = '-'
           return
         }
-        const values = data ? data.map(item => Number(item[column.property])) : []
+        const values = data ? data.map(item => Number(item[column.prop])) : []
         // if (!values.every(value => isNaN(value))) {
         const indexSum = values.reduce((prev, curr) => {
           const value = Number(curr)
@@ -74,11 +70,7 @@ export default {
             return prev
           }
         }, 0)
-        sums[index] = numberFormat(indexSum)
-        // sums[index] += ' 元'
-        // } else {
-        //   sums[index] = 'N/A'
-        // }
+        sums[column.prop] = numberFormat(indexSum)
       })
 
       return sums

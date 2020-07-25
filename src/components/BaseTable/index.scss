@@ -128,9 +128,14 @@
         }
       }
     }
-    .el-table__body-wrapper .el-table__body {
+    .el-table__body-wrapper .el-table__body,
+    .el-table-footer-wrapper {
       td {
         padding: 3px 0;
+      }
+      .el-table-column--selection .cell{
+        padding-left: 6px;
+        padding-right: 6px;
       }
       @media screen and (max-width: 1368px) {
         td {
