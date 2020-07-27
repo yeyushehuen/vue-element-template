@@ -44,3 +44,22 @@ export function billDataSummary({ data } = {}) {
     data
   })
 }
+
+/** ******************** 数据汇总 *********************/
+/** 结账 */
+export function paymentSummaryCheckout(data) {
+  debugger
+  return request({
+    url: '/paymentSummary/checkout',
+    method: 'post',
+    data
+  })
+}
+/** 反结账 */
+export function paymentSummaryRecheckout(data) {
+  return request({
+    url: '/paymentSummary/recheckout',
+    method: 'post',
+    data
+  })
+}
