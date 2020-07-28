@@ -37,9 +37,9 @@ export default {
     { label: '期间', props: 'period' },
     { label: '部门', props: 'deptName' },
     { label: '国家', props: 'country' },
-    { label: '店铺名称', props: '4' },
+    { label: '店铺名称', props: 'accountName' },
     { label: '币别', props: 'currency' },
-    { label: '汇率', props: '6' },
+    { label: '汇率', props: 'exchangeRate' },
     { label: '业务类型', props: 'type' },
     { label: '原币金额', props: 'originCurrency' },
     { label: '本币金额', props: 'standardCurrency' }

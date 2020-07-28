@@ -66,7 +66,7 @@
             <div style="text-align: center;font-size:14px;margin-top:-41px;">暂无数据</div>
           </div>
         </template>
-        <el-table-column type="selection" align="center" :width="showSummary ? 72 : 41" />
+        <el-table-column type="selection" align="center" :style="{width: showSummary ? '72px' : '41px'}" />
         <el-table-column v-for="(col, index) in showColumns" :key="index" :show-overflow-tooltip="true" v-bind="col">
           <template slot-scope="scope">
             <span v-if="col.slotName">
@@ -251,11 +251,11 @@ export default {
       return process.env.VUE_APP_BASE_API + api
     },
     footerSummary: function() {
-      const { summaryMethod, columns } = this.$props
+      const { summaryMethod, columns, showSummary } = this.$props
+      if (!showSummary) {
+        return []
+      }
       const pageData = this.list
-
-      console.log(summaryMethod({ data: pageData, columns }))
-
       return [
         { label: '当页合计', data: summaryMethod({ data: pageData, columns }) },
         { label: '全部合计', data: [] }
@@ -459,5 +459,12 @@ export default {
 
 <style lang="scss">
 @import "./index.scss";
+
+.showSummarySelection{
+
+}
+.hideSummarySelection{
+  
+}
 
 </style>

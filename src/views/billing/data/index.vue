@@ -49,7 +49,6 @@ export default {
   methods: {
     summaryMethod(param) {
       const { columns, data } = param
-      debugger
       const sums = {}
       columns.forEach((column, index) => {
         // if (index === 0) { // 首列不合计

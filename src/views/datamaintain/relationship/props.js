@@ -1,4 +1,4 @@
-import { periodFormat, textFormatter } from "@/views/billing/data/props";
+import { periodFormat, textFormatter } from '@/views/billing/data/props'
 
 export default {
   formOptions: {
@@ -32,6 +32,10 @@ export default {
       prop: 'fnSku',
       label: 'FNSku',
       formatter: textFormatter('fnSku')
+    },
+    {
+      prop: 'deptName',
+      label: '部门'
     },
     {
       prop: 'companySku',

@@ -74,3 +74,10 @@ export function rateValueMethodDropdown() {
     method: 'get'
   })
 }
+/** 获取成本取值方式 */
+export function methodSkuCostDroodown() {
+  return request({
+    url: '/basic/methodSkuCost',
+    method: 'get'
+  })
+}
