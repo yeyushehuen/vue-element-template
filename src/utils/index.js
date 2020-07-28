@@ -474,29 +474,6 @@ export function stateConvert(state, type = true) {
 }
 
 /**
- * 把json转URL参数
- * @param {*} params
- */
-function toUrlParams(params) {
-  const type = getDataType(params)
-  if (type !== 'object') {
-    return ''
-  }
-
-  const concatParams = Object.keys(params).reduce((res, curKey, idx) => {
-    if (idx === 0) {
-      res += `${curKey}=${params[curKey]}`
-    } else {
-      res += `&${curKey}=${params[curKey]}`
-    }
-    return res
-  }, '')
-
-  return window.encodeURIComponent(concatParams)
-  // return concatParams
-}
-
-/**
  * 导出Excel公用方法
  * @param api 导出接口
  * @param query 导出查询参数
@@ -506,7 +483,7 @@ export function downLoadFile(api, query, fileName, http = false) {
   // if (http) {
   //   try {
   //     const a = document.createElement('a')
-  //     const clearHref = process.env.VUE_APP_BASE_API + api + '?' + toUrlParams(query)
+  //     const clearHref = process.env.VUE_APP_BASE_API + api + '?' + param(query)
   //     a.href = clearHref.replace(/\/\//, '/')
   //     debugger
   //     const event = document.createEvent('MouseEvents')
@@ -540,11 +517,9 @@ export function downLoadFile(api, query, fileName, http = false) {
     return false
   }
   // const subAPI = `${api}`.startsWith('/') ? `${api}`.substring(1) : api
-  debugger
   try {
     const a = document.createElement('a')
-    a.href = process.env.VUE_APP_BASE_API + api + '?' + toUrlParams(query)
-    debugger
+    a.href = process.env.VUE_APP_BASE_API + api + '?' + param(query)
     const event = document.createEvent('MouseEvents')
     event.initEvent('click', true, true)
     a.dispatchEvent(event)
