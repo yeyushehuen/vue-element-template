@@ -1,5 +1,5 @@
 import { parseTime, numberFormat, dateRangeFormat } from '@/utils'
-import { deptDropdown, areaDropdown, accountDropdown } from '@/api/common'
+import { deptDropdown, areaDropdown, accountDropdown, changeTypeDownload } from '@/api/common'
 
 const deptSelectConfig = {
   itemType: 'select',
@@ -19,6 +19,13 @@ const accountSelectConfig = {
   selectFetch: accountDropdown,
   selectResultField: 'data',
   selectResultHandler: (item) => ({ value: item.name, label: item.name })
+}
+const changeTypeConfig = {
+  params: {},
+  itemType: 'select',
+  selectFetch: changeTypeDownload,
+  selectResultField: 'data',
+  selectResultHandler: (item) => ({ value: item.changeType, label: item.changeType })
 }
 export const periodFormat = (value, key) => {
   const formatVal = parseTime(value, '{y}-{m}')
@@ -52,7 +59,7 @@ export default {
           { value: 'N', label: '非月结' }
         ] },
       { prop: 'reportType', label: '账单类型' },
-      { prop: 'changeType', label: '转换类型' }
+      { prop: 'changeType', label: '转换类型', ...changeTypeConfig, selectOptions: { multiple: true }}
     ]
   },
   columns: [

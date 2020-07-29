@@ -62,7 +62,7 @@ export default {
         actionCode.delete,
         actionCode.disable,
         actionCode.enable,
-        actionCode.translate,
+        // actionCode.translate,
         actionCode.export,
         actionCode.import
       ],
@@ -166,7 +166,7 @@ export default {
           _this.stateHandler(selectIds)
           break
         case actionCode.translate:
-          _this.translateHandler(selectIds)
+          // _this.translateHandler(selectIds)
           break
         default:
           break

@@ -23,14 +23,14 @@ const dataMaintainRouter = {
         // roles: ['admin'] // or you can only set roles in sub nav
       }
     },
-    {
-      path: 'relationship',
-      component: () => import('@/views/datamaintain/relationship'),
-      name: '关系维护',
-      meta: {
-        title: '关系维护'
-      }
-    },
+    // {
+    //   path: 'relationship',
+    //   component: () => import('@/views/datamaintain/relationship'),
+    //   name: '关系维护',
+    //   meta: {
+    //     title: '关系维护'
+    //   }
+    // },
     {
       path: 'rate',
       component: () => import('@/views/datamaintain/rate'),

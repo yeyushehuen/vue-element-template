@@ -119,7 +119,7 @@ export default {
       query = query || {}
       const _this = this
       if (selectIds.length < 1 && !query.period) {
-        _this.$message.warning(command === actionCode.export ? '请勾选数据或执行间查询' : '请勾选数据或按区间查询后再进行重算')
+        _this.$message.warning(command === actionCode.export ? '请勾选数据或选择区间' : '请勾选数据或选择区间后再进行重算')
         return false
       }
       return true

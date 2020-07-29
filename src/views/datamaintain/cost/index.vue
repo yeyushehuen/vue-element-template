@@ -6,7 +6,6 @@
       </template>
     </base-table>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`成本数据 - ${actionTextConfig[editStatus]}`" width="800px" :visible.sync="dialogVisible" :before-close="handleClose">
-      {{ skuCostForm.deptValues }}
       <el-form ref="skuCostForm" class="cost-modal-form" size="small" label-position="right" :inline="true" :model="skuCostForm" :rules="rules">
         <el-form-item label="期间" prop="period">
           <el-date-picker v-model="skuCostForm.period" value-format="yyyy-MM" type="month" />
@@ -34,6 +33,9 @@
         </el-form-item>
         <el-form-item label="公司型号" label-width="100" prop="companySku">
           <el-input v-model="skuCostForm.companySku" placeholder="请填写公司型号" />
+        </el-form-item>
+        <el-form-item label="内部型号" label-width="100" prop="internalSku">
+          <el-input v-model="skuCostForm.internalSku" placeholder="请填写内部型号" />
         </el-form-item>
         <el-form-item label="产品名称" label-width="100" prop="productName">
           <el-input v-model="skuCostForm.productName" placeholder="请填写产品名称" />
@@ -104,6 +106,7 @@ export default {
         sellerSku: '',
         asin: '',
         companySku: '',
+        internalSku: '',
         productName: '',
         deptValues: null
       },
@@ -138,6 +141,9 @@ export default {
         ],
         companySku: [
           { required: true, message: '请填写公司型号', trigger: 'blur' }
+        ],
+        internalSku: [
+          { required: true, message: '请填写内部型号', trigger: 'blur' }
         ],
         productName: [
           // { required: true, message: '请填写产品名称', trigger: 'blur' },

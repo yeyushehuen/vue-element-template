@@ -81,3 +81,10 @@ export function methodSkuCostDroodown() {
     method: 'get'
   })
 }
+/** 获取转换类型下拉 */
+export function changeTypeDownload() {
+  return request({
+    url: '/basic/changeTypeDownload',
+    method: 'get'
+  })
+}
