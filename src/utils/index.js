@@ -516,7 +516,7 @@ export function downLoadFile(api, query, fileName, http = false) {
   if (!api) {
     return false
   }
-  // const subAPI = `${api}`.startsWith('/') ? `${api}`.substring(1) : api
+
   try {
     const a = document.createElement('a')
     a.href = process.env.VUE_APP_BASE_API + api + '?' + param(query)

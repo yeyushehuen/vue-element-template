@@ -24,7 +24,7 @@ import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
 import { paymentSummaryCheckout, paymentSummaryRecheckout } from '@/api/bill'
-import { downLoadFile } from '../../../utils'
+import { downLoadFile, deleteNullProps } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -52,7 +52,8 @@ export default {
     },
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      downLoadFile('/summary/export', params)
+      debugger
+      downLoadFile('/summary/export', deleteNullProps(params))
     },
     async setUpHandler(query) {
       const response = await paymentSummaryCheckout(query)

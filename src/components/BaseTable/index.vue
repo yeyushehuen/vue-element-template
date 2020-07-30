@@ -153,7 +153,7 @@ const exSlot = {
 export default {
   name: 'BaseTable',
   components: { searchForm, CustomColumn, exSlot },
-  directives: { elHeightAdaptiveTable }, // v-el-height-adaptive-table="{bottomOffset: 76}"  // height="100px"
+  directives: { elHeightAdaptiveTable },
   props: {
     api: {
       type: String,
@@ -409,25 +409,6 @@ export default {
     },
     handleDownTemplate() {
       downLoadFile(this.$props.importConfig.template)
-      // const api = this.$props.importConfig.template
-
-      // request({
-      //   url: api,
-      //   method: 'get',
-      //   responseType: 'blob'
-      // }).then(function(response) {
-      //   var blob = new Blob([response.data])
-      //   var downloadElement = document.createElement('a')
-      //   var href = window.URL.createObjectURL(blob) // 创建下载的链接
-      //   downloadElement.href = href
-      //   downloadElement.download = '导入模板.csv' // 下载后文件名
-      //   document.body.appendChild(downloadElement)
-      //   downloadElement.click() // 点击下载
-      //   document.body.removeChild(downloadElement) // 下载完成移除元素
-      //   window.URL.revokeObjectURL(href) // 释放掉blob对象
-      // }).catch(function(error) {
-      //   console.log(error)
-      // })
     },
     uploadExcelSuccess(response) {
       if (response && response.code !== 200) {
@@ -459,12 +440,5 @@ export default {
 
 <style lang="scss">
 @import "./index.scss";
-
-.showSummarySelection{
-
-}
-.hideSummarySelection{
-  
-}
 
 </style>

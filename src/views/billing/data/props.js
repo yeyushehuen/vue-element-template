@@ -29,11 +29,14 @@ const changeTypeConfig = {
 }
 export const periodFormat = (value, key) => {
   const formatVal = parseTime(value, '{y}-{m}')
+  if (formatVal === 'null') {
+    return { [key]: null }
+  }
   return { [key]: formatVal }
 }
 
-function generateFormater(key) {
-  return row => numberFormat(row[key] || 0, 2)
+export function generateFormater(key, decimalLen = 2) {
+  return row => numberFormat(row[key] || 0, decimalLen)
 }
 
 export function textFormatter(key) {

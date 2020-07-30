@@ -124,5 +124,5 @@ export function validatenull(value) {
     return Object.keys(value).length === 0
   }
   // 值是否为null,undefined,空字符串
-  return valueType === 'undefined' || value === 'null' || `${value}`.trim() === ''
+  return valueType === 'undefined' || valueType === 'null' || `${value}`.trim() === ''
 }

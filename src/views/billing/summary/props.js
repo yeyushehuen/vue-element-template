@@ -1,5 +1,5 @@
 import { deptDropdown, areaDropdown, accountDropdown } from '@/api/common'
-import { periodFormat } from '../data/props'
+import { periodFormat, generateFormater } from '../data/props'
 
 const deptSelectConfig = {
   itemType: 'select',
@@ -27,21 +27,21 @@ export default {
     submitBtnText: '查询',
     forms: [
       { prop: 'period', label: '期间', itemType: 'month', format: periodFormat },
-      { prop: 'country', label: '国家', ...countrySelectConfig },
-      { prop: 'accountId', label: '店铺', ...accountSelectConfig },
-      { prop: 'deptId', label: '部门', ...deptSelectConfig },
+      { prop: 'countryId', label: '国家', ...countrySelectConfig, selectOptions: { multiple: true }},
+      { prop: 'accountId', label: '店铺', ...accountSelectConfig, selectOptions: { multiple: true }},
+      { prop: 'deptId', label: '部门', ...deptSelectConfig, selectOptions: { multiple: true }},
       { prop: 'type', label: '业务类型' }
     ]
   },
   columns: [
-    { label: '期间', props: 'period' },
-    { label: '部门', props: 'deptName' },
-    { label: '国家', props: 'country' },
-    { label: '店铺名称', props: 'accountName' },
-    { label: '币别', props: 'currency' },
-    { label: '汇率', props: 'exchangeRate' },
-    { label: '业务类型', props: 'type' },
-    { label: '原币金额', props: 'originCurrency' },
-    { label: '本币金额', props: 'standardCurrency' }
+    { align: 'center', label: '期间', prop: 'period' },
+    { align: 'center', label: '部门', prop: 'deptGroup' },
+    { align: 'center', label: '国家', prop: 'country' },
+    { align: 'center', label: '店铺名称', prop: 'accountName' },
+    { align: 'center', label: '币别', prop: 'currency' },
+    { align: 'center', label: '汇率', prop: 'exchangeRate', formatter: generateFormater('exchangeRate', 6) },
+    { align: 'center', label: '业务类型', prop: 'type' },
+    { align: 'right', label: '原币金额', prop: 'originCurrency', formatter: generateFormater('originCurrency', 6) },
+    { align: 'right', label: '本币金额', prop: 'standardCurrency', formatter: generateFormater('standardCurrency', 6) }
   ]
 }

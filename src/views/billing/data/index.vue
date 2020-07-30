@@ -118,10 +118,16 @@ export default {
     commandValidator({ selectIds, selectRows, query, command }) {
       query = query || {}
       const _this = this
-      if (selectIds.length < 1 && !query.period) {
-        _this.$message.warning(command === actionCode.export ? '请勾选数据或选择区间' : '请勾选数据或选择区间后再进行重算')
+      if (command === actionCode.export) {
+        if (Object.keys(query || {}).length < 1 && selectIds.length < 1) {
+          _this.$message.warning('请勾选数据或选择查询条件导出')
+          return false
+        }
+      } else if (selectIds.length < 1 && !query.period) {
+        _this.$message.warning('请勾选数据或选择区间后再进行操作')
         return false
       }
+
       return true
     }
   }
