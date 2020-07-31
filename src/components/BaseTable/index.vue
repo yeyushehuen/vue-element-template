@@ -415,6 +415,7 @@ export default {
         this.$message.error(response.message)
       } else {
         this.$message.success(response.message)
+        this.getList()
       }
     },
     uploadExcelError(error) {

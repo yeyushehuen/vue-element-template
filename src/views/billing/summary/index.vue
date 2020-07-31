@@ -92,6 +92,9 @@ export default {
           return false
         }
         return true
+      } else if (Object.keys(query).length < 1 && selectIds.length < 1) {
+        _this.$message.warning('请选择查询条件或者勾选数据后进行导出')
+        return false
       }
       return true
     }
