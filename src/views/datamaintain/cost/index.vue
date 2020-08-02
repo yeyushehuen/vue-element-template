@@ -10,26 +10,11 @@
         <el-form-item label="期间" prop="period">
           <el-date-picker v-model="skuCostForm.period" value-format="yyyy-MM" type="month" />
         </el-form-item>
-        <el-form-item label="品类" prop="category">
-          <el-input v-model="skuCostForm.category" placeholder="请填写品类" />
-        </el-form-item>
-        <el-form-item label="采购成本" prop="purchaseCost">
-          <el-input v-model="skuCostForm.purchaseCost" placeholder="请填写采购成本" />
-        </el-form-item>
-        <el-form-item label="头程运费" prop="headTripFee">
-          <el-input v-model="skuCostForm.headTripFee" placeholder="请填写头程运费" />
-        </el-form-item>
-        <el-form-item label="转运运费" prop="transportFee">
-          <el-input v-model="skuCostForm.transportFee" placeholder="请填写转运运费" />
-        </el-form-item>
-        <el-form-item label="自发货运费" label-width="100" prop="selfShipmentFee">
-          <el-input v-model="skuCostForm.selfShipmentFee" placeholder="请填写自发货运费" />
+        <el-form-item label="ASIN" label-width="100" prop="asin">
+          <el-input v-model="skuCostForm.asin" placeholder="请填写ASIN" />
         </el-form-item>
         <el-form-item label="Seller Sku" label-width="100" prop="sellerSku">
           <el-input v-model="skuCostForm.sellerSku" placeholder="请填写Seller Sku" />
-        </el-form-item>
-        <el-form-item label="ASIN" label-width="100" prop="asin">
-          <el-input v-model="skuCostForm.asin" placeholder="请填写ASIN" />
         </el-form-item>
         <el-form-item label="公司型号" label-width="100" prop="companySku">
           <el-input v-model="skuCostForm.companySku" placeholder="请填写公司型号" />
@@ -44,6 +29,21 @@
           <el-select v-model="skuCostForm.deptValues" style="width: 100%" placeholder="请选择销售小组">
             <el-option v-for="option in selectOption.deptDropdown" :key="option.value" :label="option.label" :value="option" :value-key="option.value" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="品类" prop="category">
+          <el-input v-model="skuCostForm.category" placeholder="请填写品类" />
+        </el-form-item>
+        <el-form-item label="采购成本" prop="purchaseCost">
+          <el-input v-model="skuCostForm.purchaseCost" placeholder="请填写采购成本" />
+        </el-form-item>
+        <el-form-item label="头程运费" prop="headTripFee">
+          <el-input v-model="skuCostForm.headTripFee" placeholder="请填写头程运费" />
+        </el-form-item>
+        <el-form-item label="转运运费" prop="transportFee">
+          <el-input v-model="skuCostForm.transportFee" placeholder="请填写转运运费" />
+        </el-form-item>
+        <el-form-item label="自发货运费" label-width="100" prop="selfShipmentFee">
+          <el-input v-model="skuCostForm.selfShipmentFee" placeholder="请填写自发货运费" />
         </el-form-item>
       </el-form>
       <span slot="footer">
@@ -143,7 +143,7 @@ export default {
           { required: true, message: '请填写公司型号', trigger: 'blur' }
         ],
         internalSku: [
-          { required: true, message: '请填写内部型号', trigger: 'blur' }
+          // { required: true, message: '请填写内部型号', trigger: 'blur' }
         ],
         productName: [
           // { required: true, message: '请填写产品名称', trigger: 'blur' },
@@ -197,7 +197,7 @@ export default {
         this.setFormVal({ ...rest, period: record.period, deptValues: { value: deptId + '', label: deptName }})
       }
     },
-    // 修改取值方式
+    // 设置取值方式
     async saveValueType() {
       if (!this.typeId) {
         this.$message.warning('请选择取值方式')

@@ -214,7 +214,8 @@ export default {
     setFormVal(defaultData = {}) {
       const _this = this
       Object.keys(_this.shopForm).forEach(key => {
-        _this.shopForm[key] = defaultData[key] + '' || 'defaultData'
+        console.log(key, defaultData[key])
+        _this.shopForm[key] = (defaultData[key] || '') + ''
       })
     },
     async deleteHandler(selectIds) {

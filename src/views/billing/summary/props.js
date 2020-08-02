@@ -12,7 +12,7 @@ const accountSelectConfig = {
   itemType: 'select',
   selectFetch: accountDropdown,
   selectResultField: 'data',
-  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+  selectResultHandler: (item) => ({ value: item.name, label: item.name })
 }
 const countrySelectConfig = {
   itemType: 'select',

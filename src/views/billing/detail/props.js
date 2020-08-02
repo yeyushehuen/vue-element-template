@@ -99,8 +99,8 @@ export default {
     },
     {
       prop: 'reportName',
-      label: '报表类型'
-      // width: 120
+      label: '报表类型',
+      width: 150
     },
     {
       prop: 'deptName',
@@ -109,13 +109,13 @@ export default {
     },
     {
       prop: 'country',
-      label: '国家'
-      // width: 120
+      label: '国家',
+      width: 120
     },
     {
       prop: 'accountName',
-      label: '店铺名称'
-      // width: 120
+      label: '店铺名称',
+      width: 120
     },
     {
       prop: 'paymentState',
@@ -128,19 +128,19 @@ export default {
       prop: 'startDate',
       label: '开始时间',
       formatter: row => parseTime(row.startDate, '{y}-{m}-{d}'),
-      width: 150
+      width: 120
     },
     {
       prop: 'endDate',
       label: '结束时间',
       formatter: row => parseTime(row.endDate, '{y}-{m}-{d}'),
-      width: 150
+      width: 120
     },
     {
       prop: 'createTime',
       label: '生成时间',
       formatter: row => parseTime(row.createTime, '{y}-{m}-{d}'),
-      width: 150
+      width: 120
     },
     {
       prop: 'verifyState',
@@ -156,7 +156,7 @@ export default {
     {
       prop: 'verifyTime',
       label: '审核时间',
-      formatter: row => parseTime(row.verifyTime, '{y}-{m}-{d}'),
+      // formatter: row => parseTime(row.verifyTime, '{y}-{m}-{d}'),
       width: 150
     },
     {

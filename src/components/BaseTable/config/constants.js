@@ -27,7 +27,7 @@ export const actionTextConfig = {
   setUp: '结账',
   reconciliation: '重算',
   summary: '汇总',
-  valueMethod: '修改取值方式',
+  valueMethod: '设置取值方式',
   checkOut: '反结账'
 }
 

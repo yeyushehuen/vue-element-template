@@ -194,10 +194,15 @@ export default {
       type: Boolean,
       default: false
     },
-    // 合计方法
+    // 单页合计方法
     summaryMethod: {
       type: Function,
-      default: () => []
+      default: () => ({})
+    },
+    // 全部合计方法
+    allSummaryMethod: {
+      type: Function,
+      default: null
     },
     // 获取返回的list
     getResponse: {
@@ -214,7 +219,7 @@ export default {
     },
     actionCode: {
       type: Array,
-      default: () => []
+      default: () => ({})
     },
     crossness: {
       type: Boolean,
@@ -241,7 +246,8 @@ export default {
       hiddenColumns: [],
       showColumns: [],
       originColumns,
-      group: 'mission'
+      group: 'mission',
+      allSummary: {}
     }
   },
   computed: {
@@ -256,9 +262,11 @@ export default {
         return []
       }
       const pageData = this.list
+
+      // return { label: '当页合计', data: summaryMethod({ data: pageData, columns }) }
       return [
         { label: '当页合计', data: summaryMethod({ data: pageData, columns }) },
-        { label: '全部合计', data: [] }
+        { label: '全部合计', data: this.allSummary }
       ]
     }
   },
@@ -276,6 +284,12 @@ export default {
 
       // 调用init方法传入表格实例初始化footer
       tableFooter.init(baseTable)
+    }
+    // 计算全部汇总
+    if (this.$props.allSummaryMethod) {
+      this.$props.allSummaryMethod().then(res => {
+        this.allSummary = res
+      })
     }
   },
   destroyed() {

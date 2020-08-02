@@ -28,11 +28,6 @@ export default {
       label: '期间',
       width: 150
     },
-    {
-      prop: 'deptName',
-      label: '销售小组',
-      width: 150
-    },
     // 格式化为字符串
     {
       prop: 'asin',
@@ -57,6 +52,11 @@ export default {
     {
       prop: 'productName',
       label: '产品名称',
+      width: 150
+    },
+    {
+      prop: 'deptName',
+      label: '销售小组',
       width: 150
     },
     {

@@ -27,7 +27,7 @@ export function paymentReportClear(data) {
 }
 
 /** ******************** 数据详情 *********************/
-/** 重算 */
+/** 重算钮功能 */
 export function billDataReconciliation({ data } = {}) {
   debugger
   return request({
@@ -36,12 +36,19 @@ export function billDataReconciliation({ data } = {}) {
     data
   })
 }
-/** 汇总 */
+/** 汇总按钮功能 */
 export function billDataSummary({ data } = {}) {
   return request({
     url: '/paymentAnalysis/summary',
     method: 'post',
     data
+  })
+}
+/** 全部合计接口 */
+export async function billDataAllsum() {
+  return request({
+    url: '/paymentAnalysis/allsum',
+    method: 'get'
   })
 }
 

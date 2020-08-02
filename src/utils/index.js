@@ -534,11 +534,11 @@ export function downLoadFile(api, query, fileName, http = false) {
  * @param {*} num 输入值
  * @param {*} v 保留位数，默认为2
  */
-export const numberFormat = (num, decimalLen = 2, options) => {
-  if (validatenull(num) || decimalLen < 0) return num
+export const numberFormat = (num, decimalLen = 2, options, defaultVal) => {
+  if (validatenull(num) || decimalLen < 0) return defaultVal || num
 
   if (Number.isNaN(+num)) {
-    return num
+    return defaultVal || num
   }
 
   // 默认的格式化配置

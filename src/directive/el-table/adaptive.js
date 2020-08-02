@@ -19,10 +19,7 @@ const doResize = async(el, binding, vnode) => {
 
   if (!$table) return
 
-  console.log('$table', $table)
-
   const height = window.innerHeight - el.getBoundingClientRect().top - bottomOffset
-  console.log(height);
   setTimeout(function() {
     $table.layout.setHeight(height)
     $table.doLayout()

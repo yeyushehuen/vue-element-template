@@ -56,6 +56,9 @@ export default {
       {
         prop: 'deptId', label: '部门', itemType: 'select', ...deptSelectConfig, selectOptions: { multiple: true }},
       {
+        prop: 'deptGroup', label: '销售小组', itemType: 'select', ...deptSelectConfig, selectOptions: { multiple: true }},
+      { prop: 'companySku', label: '公司型号', placeholder: '多个请用英文逗号隔开' },
+      {
         prop: 'monthlyType', label: '数据类型', itemType: 'select', options: [
           { value: '', label: '全部' },
           { value: 'Y', label: '月结' },

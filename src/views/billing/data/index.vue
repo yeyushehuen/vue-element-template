@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :summary-method="summaryMethod" :show-summary="true" :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
+    <base-table :summary-method="summaryMethod" :all-summary-method="allSummaryMethod" :show-summary="true" :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -12,7 +12,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { billDataReconciliation, billDataSummary } from '../../../api/bill'
+import { billDataReconciliation, billDataSummary, billDataAllsum } from '../../../api/bill'
 import { downLoadFile, numberFormat } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
@@ -73,6 +73,15 @@ export default {
       })
 
       return sums
+    },
+    async allSummaryMethod() {
+      const res = await billDataAllsum()
+      const summary = res.data || {}
+      Object.keys(summary).forEach(key => {
+        summary[key] = numberFormat(summary[key], 2, {}, '-')
+      })
+
+      return summary
     },
     callback(response) {
       if (response && response.code !== 200) {

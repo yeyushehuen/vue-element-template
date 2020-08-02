@@ -144,7 +144,7 @@ export default {
         this.setFormVal(res.data)
       }
     },
-    // 修改取值方式
+    // 设置取值方式
     async saveValueType() {
       if (!this.typeId) {
         this.$message.warning('请选择取值方式')
