@@ -5,7 +5,7 @@ const deptSelectConfig = {
   itemType: 'select',
   selectFetch: deptDropdown,
   selectResultField: 'data',
-  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+  selectResultHandler: (item) => ({ value: item.name, label: item.name })
 }
 
 export default {
@@ -19,7 +19,7 @@ export default {
       { prop: 'category', label: '品类' },
       { prop: 'sku', label: '公司型号' },
       { prop: 'username', label: '创建人' },
-      { prop: 'deptId', label: '销售小组', ...deptSelectConfig, selectOptions: { multiple: true }}
+      { prop: 'deptGroup', label: '销售小组', ...deptSelectConfig, selectOptions: { multiple: true }}
     ]
   },
   columns: [
