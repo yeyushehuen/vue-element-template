@@ -11,7 +11,6 @@ export function addCurrency({ data } = {}) {
 }
 /* 修改 */
 export function updateCurrency({ id, data } = {}) {
-  debugger
   return request({
     url: `/currency/edit`,
     method: 'put',

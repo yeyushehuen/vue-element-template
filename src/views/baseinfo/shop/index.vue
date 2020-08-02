@@ -120,7 +120,7 @@ export default {
       actionCode: [
         actionCode.add,
         actionCode.update,
-        actionCode.delete,
+        /* actionCode.delete, */
         actionCode.disable,
         actionCode.enable,
         actionCode.view,
