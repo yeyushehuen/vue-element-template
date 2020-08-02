@@ -53,7 +53,7 @@ export default {
     exportHandler(selectIds, query) {
       const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
       debugger
-      downLoadFile('/summary/export', deleteNullProps(params))
+      downLoadFile('/paymentSummary/export', deleteNullProps(params))
     },
     async setUpHandler(query) {
       const response = await paymentSummaryCheckout(query)

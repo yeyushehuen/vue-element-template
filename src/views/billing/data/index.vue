@@ -55,7 +55,7 @@ export default {
         //   sums[index] = '当页合计'
         //   return
         // }
-        if (column.type !== 'number') { // 非数字类型列不合计
+        if (column.type !== 'number' || column.prop === 'exchangeRate') { // 非数字类型列不合计, 汇率不合计
           sums[column.prop] = '-'
           return
         }

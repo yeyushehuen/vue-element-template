@@ -106,7 +106,7 @@ export default {
   methods: {
     async getSelectOption() {
       const currencyDropdownRes = await currencyDropdown()
-      const list = toSelectOption(currencyDropdownRes.data, 'code', 'name')
+      const list = toSelectOption(currencyDropdownRes.data, 'name', 'name')
       this.selectOption.currencyDropdown = list
 
       // const valueMethodData = await rateValueMethodDropdown()

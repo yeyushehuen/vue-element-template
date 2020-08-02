@@ -71,7 +71,7 @@ export default {
     { prop: 'deptName', width: 120, align: 'center', label: '部门' },
     { prop: 'period', width: 120, align: 'center', label: '期间' },
     { prop: 'originDate', width: 150, align: 'center', label: '当地时间', formatter: row => parseTime(row.originDate, '{y}-{m}-{d}') },
-    { prop: 'unifyDate', width: 150, align: 'center', label: '转换时间', formatter: row => parseTime(row.unifyDate, '{y}-{m}-{d}') },
+    // { prop: 'unifyDate', width: 150, align: 'center', label: '转换时间', formatter: row => parseTime(row.unifyDate, '{y}-{m}-{d}') },
     { prop: 'settlementId', width: 150, align: 'center', label: '结算号' },
     { prop: 'type', width: 150, align: 'center', label: '类型' },
     { prop: 'orderId', width: 150, align: 'center', label: '订单号', formatter: textFormatter('orderId') },

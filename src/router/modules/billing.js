@@ -18,7 +18,8 @@ const billingRouter = {
       component: () => import('@/views/billing/detail'),
       name: '账单详情',
       meta: {
-        title: '账单详情'
+        title: '账单详情',
+        affix: true
       }
     },
     {
