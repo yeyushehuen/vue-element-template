@@ -29,7 +29,7 @@
         <el-button size="small" type="primary" @click="submitForm('rateForm')">保存</el-button>
       </span>
     </el-dialog>
-    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="汇率取值方式" width="600px" :visible.sync="valueMethodModal" :before-close="handleClose">
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="汇率取值方式" width="800px" :visible.sync="valueMethodModal" :before-close="handleClose">
       <div>
         <!-- <el-radio v-model="typeId" label="1" border>月初第一天</el-radio>
         <el-radio v-model="typeId" label="2" border>月末倒数第二天</el-radio>

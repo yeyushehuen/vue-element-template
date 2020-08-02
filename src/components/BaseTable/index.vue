@@ -286,16 +286,19 @@ export default {
       tableFooter.init(baseTable)
     }
     // 计算全部汇总
-    if (this.$props.allSummaryMethod) {
-      this.$props.allSummaryMethod().then(res => {
-        this.allSummary = res
-      })
-    }
+    this.getAllSummary({})
   },
   destroyed() {
     document.querySelector('section.app-main').classList.remove('base-table-scope')
   },
   methods: {
+    getAllSummary(query) {
+      if (this.$props.allSummaryMethod) {
+        this.$props.allSummaryMethod(query).then(res => {
+          this.allSummary = res
+        })
+      }
+    },
     renderCodeText(code) {
       const { crossness } = this.$props
       if (code === actionCode.view && !crossness) {
@@ -350,6 +353,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
+          this.getAllSummary(query)
         }, 0.3 * 1000)
       })
     },
@@ -402,7 +406,7 @@ export default {
         command !== codeRepo.view && // 一键查看无需校验
         command !== codeRepo.valueMethod && // 取值方式无需校验
         // command !== codeRepo.translate && // 一键查看
-        command !== codeRepo.manualReport && // 手动生成报表记录无需校验
+        // command !== codeRepo.manualReport && // 手动生成报表记录无需校验
         _this.$props.validate && // validate为false时，无需校验勾选
         !this.commandValidate(command)
       ) {

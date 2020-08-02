@@ -74,8 +74,8 @@ export default {
 
       return sums
     },
-    async allSummaryMethod() {
-      const res = await billDataAllsum()
+    async allSummaryMethod(query) {
+      const res = await billDataAllsum(query)
       const summary = res.data || {}
       Object.keys(summary).forEach(key => {
         summary[key] = numberFormat(summary[key], 2, {}, '-')

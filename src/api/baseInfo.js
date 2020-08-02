@@ -177,6 +177,14 @@ export function addAccount({ data } = {}) {
     data
   })
 }
+// 手动生成报表记录
+export function manualReportRequest(data) {
+  return request({
+    url: '/account/handmade',
+    method: 'post',
+    data: data
+  })
+}
 /* 修改 */
 export function updateAccount({ id, data } = {}) {
   return request({

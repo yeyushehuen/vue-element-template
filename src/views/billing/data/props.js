@@ -1,12 +1,12 @@
 import { parseTime, numberFormat, dateRangeFormat } from '@/utils'
 import { deptDropdown, areaDropdown, accountDropdown, changeTypeDownload } from '@/api/common'
 
-const deptSelectConfig = {
+const deptSelectConfig = (vKey = 'id', textKey = 'name') => ({
   itemType: 'select',
   selectFetch: deptDropdown,
   selectResultField: 'data',
-  selectResultHandler: (item) => ({ value: item.id, label: item.name })
-}
+  selectResultHandler: (item) => ({ value: item[vKey], label: item[textKey] })
+})
 const countrySelectConfig = {
   itemType: 'select',
   selectFetch: areaDropdown,
@@ -54,9 +54,9 @@ export default {
       { prop: 'countryId', label: '国家', itemType: 'select', ...countrySelectConfig, selectOptions: { multiple: true }},
       { prop: 'accountId', label: '店铺', ...accountSelectConfig, selectOptions: { multiple: true }},
       {
-        prop: 'deptId', label: '部门', itemType: 'select', ...deptSelectConfig, selectOptions: { multiple: true }},
+        prop: 'deptId', label: '部门', itemType: 'select', ...deptSelectConfig(), selectOptions: { multiple: true }},
       {
-        prop: 'deptGroup', label: '销售小组', itemType: 'select', ...deptSelectConfig, selectOptions: { multiple: true }},
+        prop: 'deptGroup', label: '销售小组', itemType: 'select', ...deptSelectConfig('name', 'name'), selectOptions: { multiple: true }},
       { prop: 'companySku', label: '公司型号', placeholder: '多个请用英文逗号隔开' },
       {
         prop: 'monthlyType', label: '数据类型', itemType: 'select', options: [

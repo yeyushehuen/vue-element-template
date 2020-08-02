@@ -11,7 +11,6 @@ export function addTypeConversion({ data } = {}) {
 }
 /* 修改 */
 export function updateTypeConversion({ id, data } = {}) {
-  debugger
   return request({
     url: `/typeChange/edit`,
     method: 'put',

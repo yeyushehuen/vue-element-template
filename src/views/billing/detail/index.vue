@@ -121,7 +121,6 @@ export default {
       const _this = this
       _this.editStatus = type
       _this.actionCallback = callback
-      debugger
       switch (type) {
         case actionCode.audit:
           _this.auditHandler(selectIds, selectRows)

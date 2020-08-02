@@ -5,14 +5,14 @@ const deptSelectConfig = {
   itemType: 'select',
   selectFetch: deptDropdown,
   selectResultField: 'data',
-  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+  selectResultHandler: (item) => ({ value: item.name, label: item.name })
 }
 const accountSelectConfig = {
   params: {},
   itemType: 'select',
   selectFetch: accountDropdown,
   selectResultField: 'data',
-  selectResultHandler: (item) => ({ value: item.id, label: item.name })
+  selectResultHandler: (item) => ({ value: item.name, label: item.name })
 }
 const countrySelectConfig = {
   itemType: 'select',
@@ -29,13 +29,13 @@ export default {
       { prop: 'period', label: '期间', itemType: 'month', format: periodFormat },
       { prop: 'countryId', label: '国家', ...countrySelectConfig, selectOptions: { multiple: true }},
       { prop: 'accountId', label: '店铺', ...accountSelectConfig, selectOptions: { multiple: true }},
-      { prop: 'deptId', label: '部门', ...deptSelectConfig, selectOptions: { multiple: true }},
+      { prop: 'deptGroup', label: '销售小组', ...deptSelectConfig, selectOptions: { multiple: true }},
       { prop: 'type', label: '业务类型' }
     ]
   },
   columns: [
     { align: 'center', label: '期间', prop: 'period' },
-    { align: 'center', label: '部门', prop: 'deptGroup' },
+    { align: 'center', label: '销售小组', prop: 'deptGroup' },
     { align: 'center', label: '国家', prop: 'country' },
     { align: 'center', label: '店铺名称', prop: 'accountName' },
     { align: 'center', label: '币别', prop: 'currency' },

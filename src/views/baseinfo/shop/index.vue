@@ -72,19 +72,29 @@
       </span>
     </el-dialog>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="手动生成报表记录" width="520px" :visible.sync="manualReportRangeVisible" :before-close="handleClose">
-      <div>
-        <span style="margin-right: 8px;">生成时间</span>
-        <el-date-picker
-          v-model="manualReportRange"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        />
-      </div>
+      <el-form ref="manualReportForm" size="small" label-position="right" :inline="true" :model="manualReportForm" :rules="manualReportFormRules">
+        <el-form-item label="生成区间" required>
+          <el-col :span="7">
+            <el-form-item prop="startDate">
+              <el-date-picker v-model="manualReportForm.startDate" type="date" placeholder="选择日期" style="width: 100%;" />
+            </el-form-item>
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <el-col :span="7">
+            <el-form-item prop="endDate">
+              <el-date-picker v-model="manualReportForm.endDate" placeholder="选择时间" style="width: 100%;" />
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="报表类型" prop="reportTypeId">
+          <el-select v-model="manualReportForm.reportTypeId" style="width: 100%" placeholder="请选择报表类型">
+            <el-option v-for="option in selectOption.reportTypeDropdown" :key="option.value" :label="option.label" :value="option.value" />
+          </el-select>
+        </el-form-item>
+      </el-form>
       <span slot="footer">
         <el-button size="small" @click="manualReportRangeVisible = false">取消</el-button>
-        <el-button size="small" type="primary" @click="generateReportRecord">生成</el-button>
+        <el-button size="small" type="primary" @click="generateReportRecord('manualReportForm')">生成</el-button>
       </span>
     </el-dialog>
   </div>
@@ -94,9 +104,9 @@
 import BaseTable from '@/components/BaseTable'
 import tableConfig from './props.js'
 import { actionCode, actionTextConfig, successText } from '@/components/BaseTable/config/constants'
-import { addAccount, deleteAccount, getAccountById, updateAccount } from '@/api/baseInfo'
-import { areaDropdown, deptDropdown, leDropdown } from '@/api/common'
-import { toSelectOption, downLoadFile, replaceSpecificChar } from '@/utils'
+import { addAccount, deleteAccount, getAccountById, updateAccount, manualReportRequest } from '@/api/baseInfo'
+import { areaDropdown, deptDropdown, leDropdown, reportTypeDropdown } from '@/api/common'
+import { toSelectOption, downLoadFile, replaceSpecificChar, parseTime } from '@/utils'
 
 const { formOptions, columns } = tableConfig
 
@@ -121,6 +131,7 @@ export default {
       selectOption: {
         areaDropdown: [],
         deptDropdown: [],
+        reportTypeDropdown: [],
         leDropdown: []
       },
       dialogVisible: false,
@@ -129,8 +140,12 @@ export default {
       editStatus: actionCode.add,
       selectIds: '',
       actionTextConfig,
-      manualReportRange: [],
       actionCallback: () => {},
+      manualReportForm: {
+        startDate: '',
+        endDate: '',
+        reportTypeId: ''
+      },
       shopForm: {
         name: '',
         nameShort: '',
@@ -143,6 +158,17 @@ export default {
         secretKey: '',
         awsAccessKeyId: '',
         state: 'Y'
+      },
+      manualReportFormRules: {
+        reportTypeId: [
+          { required: true, message: '请选择报表类型', tirgger: 'blur' }
+        ],
+        startDate: [
+          { type: 'date', required: true, message: '请选择开始时间', tirgger: 'change' }
+        ],
+        endDate: [
+          { type: 'date', required: true, message: '请选择结束时间', tirgger: 'change' }
+        ]
       },
       rules: {
         name: [
@@ -204,12 +230,27 @@ export default {
       const leDropdownSelect = await leDropdown()
       this.selectOption.leDropdown = toSelectOption(leDropdownSelect.data, 'id', 'legalName')
     },
-    generateReportRecord() {
-      console.log()
-      if (this.manualReportRange.length < 2) {
-        this.$message.warning('请选择区间')
-        return false
-      }
+    async getReportTypeSelect() {
+      const res = await reportTypeDropdown()
+      this.selectOption.reportTypeDropdown = toSelectOption(res.data, 'id', 'reportName')
+    },
+    generateReportRecord(formName) {
+      const _this = this
+      _this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const { startDate, endDate, ...rest } = _this[formName]
+          manualReportRequest({ id: _this.selectIds, startDate: parseTime(startDate, '{y}-{m}-{d}'), endDate: parseTime(endDate, '{y}-{m}-{d}'), ...rest }).then(res => {
+            this.$message.success('操作成功')
+            _this.actionCallback()
+            _this.$refs[formName].resetFields()
+            _this.manualReportRangeVisible = false
+            return true
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     setFormVal(defaultData = {}) {
       const _this = this
@@ -253,6 +294,7 @@ export default {
     },
     reportHandler() {
       this.manualReportRangeVisible = true
+      this.getReportTypeSelect()
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
@@ -284,6 +326,7 @@ export default {
           _this.viewHandler()
           break
         case actionCode.manualReport:
+          _this.selectIds = selectIds.join(',')
           _this.reportHandler()
           break
         default:

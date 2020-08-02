@@ -17,7 +17,7 @@ export default {
       { prop: 'sellerSku', label: 'Seller Sku' },
       { prop: 'internalSku', label: '内部型号' },
       { prop: 'category', label: '品类' },
-      { prop: 'sku', label: 'SKU' },
+      { prop: 'sku', label: '公司型号' },
       { prop: 'username', label: '创建人' },
       { prop: 'deptId', label: '销售小组', ...deptSelectConfig, selectOptions: { multiple: true }}
     ]
