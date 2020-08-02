@@ -12,7 +12,7 @@ const accountSelectConfig = {
   itemType: 'select',
   selectFetch: accountDropdown,
   selectResultField: 'data',
-  selectResultHandler: (item) => ({ value: item.name, label: item.name })
+  selectResultHandler: (item) => ({ value: item.id, label: item.name })
 }
 const countrySelectConfig = {
   itemType: 'select',
@@ -39,9 +39,9 @@ export default {
     { align: 'center', label: '国家', prop: 'country' },
     { align: 'center', label: '店铺名称', prop: 'accountName' },
     { align: 'center', label: '币别', prop: 'currency' },
-    { align: 'center', label: '汇率', prop: 'exchangeRate', formatter: generateFormater('exchangeRate', 6) },
+    { align: 'center', label: '汇率', prop: 'exchangeRate', formatter: generateFormater('exchangeRate', 2) },
     { align: 'center', label: '业务类型', prop: 'type' },
-    { align: 'right', label: '原币金额', prop: 'originCurrency', formatter: generateFormater('originCurrency', 6) },
-    { align: 'right', label: '本币金额', prop: 'standardCurrency', formatter: generateFormater('standardCurrency', 6) }
+    { align: 'right', label: '原币金额', prop: 'originCurrency', formatter: generateFormater('originCurrency', 2) },
+    { align: 'right', label: '本币金额', prop: 'standardCurrency', formatter: generateFormater('standardCurrency', 2) }
   ]
 }
