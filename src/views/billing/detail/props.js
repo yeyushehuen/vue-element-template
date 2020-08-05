@@ -99,29 +99,29 @@ export default {
     },
     {
       prop: 'reportName',
-      label: '报表类型',
-      width: 150
+      label: '报表类型'
+      // width: 150
     },
     {
       prop: 'deptName',
-      label: '部门',
-      width: 120
+      label: '部门'
+      // width: 120
     },
     {
       prop: 'country',
-      label: '国家',
-      width: 120
+      label: '国家'
+      // width: 120
     },
     {
       prop: 'accountName',
-      label: '店铺名称',
-      width: 120
+      label: '店铺名称'
+      // width: 120
     },
     {
       prop: 'paymentState',
       label: '账单状态',
-      width: 120,
-      align: 'center',
+      // width: 120,
+      // align: 'center',
       slotName: 'paymentState'
     },
     {

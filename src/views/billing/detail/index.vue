@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative;">
+  <div v-loading="loading" :element-loading-text="loadingText" style="position: relative;">
     <base-table :action-code="actionCode" :import-config="importConfig" :form-options="formOptions" :columns="columns" api="/paymentReport/list" @dispatch="actionHandler">
       <template slot="billingDetails" slot-scope="scope">
         <i class="el-icon-connection" @click="showDetail(scope.row)" />
@@ -69,7 +69,9 @@ export default {
         FAIL: '上传失败',
         CLEAR: '账单清除',
         NONE: '未传账单'
-      }
+      },
+      loadingText: '',
+      loading: false
     }
   },
   computed: {
@@ -95,22 +97,36 @@ export default {
         this.$message.warning('已审核的账单不能重复审核')
         return false
       }
-      const response = await paymentReportVerify({ id: selectIds.join(',') })
-      this.callback(response)
+      try {
+        this.loadingText = '正在审核……'
+        this.loading = true
+        const response = await paymentReportVerify({ id: selectIds.join(',') })
+        this.loading = false
+        this.callback(response)
+      } catch (error) {
+        this.loading = false
+      }
     },
     async reviewsHandler(selectIds) {
-      const response = await paymentReportUnverify({ id: selectIds.join(',') })
-      this.callback(response)
+      try {
+        this.loadingText = '正在反审核……'
+        this.loading = true
+        const response = await paymentReportUnverify({ id: selectIds.join(',') })
+        this.callback(response)
+        this.loading = false
+      } catch (error) {
+        this.loading = false
+      }
     },
     async clearHandler(selectIds, selectRows) {
-      const verifyList = selectRows.filter(row => row.verifyState === 'SUCCESS')
-      // 已审核的账单不能清除
-      if (verifyList.length > 0) {
-        this.$message.warning('不能清除已审核的账单')
+      // 只有未审核，并且上传成功的账单，才可以清除
+      const filterIds = selectRows.filter(row => row.verifyState !== 'SUCCESS' && row.paymentState === 'SUCCESS').map(row => row.id)
+      if (filterIds.length < 1) {
+        this.$message.warning('没有可清除的账单')
         return false
       }
 
-      const response = await paymentReportClear({ id: selectIds.join(',') })
+      const response = await paymentReportClear({ id: filterIds.join(',') })
       this.callback(response)
     },
     exportHandler(selectIds, query) {

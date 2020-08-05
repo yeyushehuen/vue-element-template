@@ -125,7 +125,7 @@ export default {
     { prop: 'transferOc', width: 150, label: '转款(原币)', align: 'right', type: 'number', formatter: generateFormater('transferOc') },
     { prop: 'creditCardOc', width: 150, label: '信用卡扣款(原币)', align: 'right', type: 'number', formatter: generateFormater('creditCardOc') },
     { prop: 'currency', width: 150, align: 'center', label: '币别' },
-    { prop: 'exchangeRate', width: 100, label: '汇率', align: 'right', type: 'number', formatter: generateFormater('exchangeRate') },
+    { prop: 'exchangeRate', width: 100, label: '汇率', align: 'right', formatter: generateFormater('exchangeRate') },
     { prop: 'orderRevenueCny', width: 150, label: '订单收入(本位币)', align: 'right', type: 'number', formatter: generateFormater('orderRevenueCny') },
     { prop: 'salesRevenueCny', width: 150, label: '销售收入(本位币)', align: 'right', type: 'number', formatter: generateFormater('salesRevenueCny') },
     { prop: 'shippingTevenueCny', width: 150, label: '运费收入(本位币)', align: 'right', type: 'number', formatter: generateFormater('shippingTevenueCny') },

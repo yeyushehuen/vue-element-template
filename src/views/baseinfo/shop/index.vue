@@ -73,14 +73,14 @@
     </el-dialog>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="手动生成报表记录" width="520px" :visible.sync="manualReportRangeVisible" :before-close="handleClose">
       <el-form ref="manualReportForm" size="small" label-position="right" :inline="true" :model="manualReportForm" :rules="manualReportFormRules">
-        <el-form-item label="生成区间" required>
-          <el-col :span="7">
+        <el-form-item label="生成区间" required style="display: flex">
+          <el-col :span="10">
             <el-form-item prop="startDate">
               <el-date-picker v-model="manualReportForm.startDate" type="date" placeholder="选择日期" style="width: 100%;" />
             </el-form-item>
           </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="7">
+          <el-col style="text-align: center; margin-right: 8px;" :span="2">-</el-col>
+          <el-col :span="10">
             <el-form-item prop="endDate">
               <el-date-picker v-model="manualReportForm.endDate" placeholder="选择时间" style="width: 100%;" />
             </el-form-item>

@@ -1,6 +1,18 @@
 <template>
   <div>
-    <base-table :summary-method="summaryMethod" :all-summary-method="allSummaryMethod" :show-summary="true" :command-validator="commandValidator" :action-code="actionCode" :form-options="formOptions" api="/paymentAnalysis/list" :columns="columns" @dispatch="actionHandler">
+    <base-table
+      v-loading="loading"
+      :element-loading-text="loadingText"
+      :summary-method="summaryMethod"
+      :all-summary-method="allSummaryMethod"
+      :show-summary="true"
+      :command-validator="commandValidator"
+      :action-code="actionCode"
+      :form-options="formOptions"
+      api="/paymentAnalysis/list"
+:columns="columns"
+      @dispatch="actionHandler"
+    >
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -27,23 +39,9 @@ export default {
       selectIds: '',
       actionTextConfig,
       actionType: '',
-      actionCallback: () => {}
-      // summary1: {
-      //   label: '合计',
-      //   data: {
-      //     amount1: 13414,
-      //     amount2: 13414,
-      //     amount3: 13414
-      //   }
-      // },
-      // summary2: {
-      //   label: '总计',
-      //   data: {
-      //     amount1: 13414,
-      //     amount2: 13414,
-      //     amount3: 13414
-      //   }
-      // }
+      actionCallback: () => {},
+      loadingText: '',
+      loading: false
     }
   },
   methods: {
@@ -51,11 +49,7 @@ export default {
       const { columns, data } = param
       const sums = {}
       columns.forEach((column, index) => {
-        // if (index === 0) { // 首列不合计
-        //   sums[index] = '当页合计'
-        //   return
-        // }
-        if (column.type !== 'number' || column.prop === 'exchangeRate') { // 非数字类型列不合计, 汇率不合计
+        if (column.type !== 'number') { // 非数字类型列不合计, 汇率不合计
           sums[column.prop] = '-'
           return
         }
@@ -95,16 +89,30 @@ export default {
       downLoadFile('/paymentAnalysis/export', params, '数据详情', true)
     },
     async reconciliationHandler(selectIds, query) {
-      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      const response = await billDataReconciliation({
-        data: params
-      })
-      this.callback(response)
+      try {
+        this.loading = true
+        this.loadingText = '正在重算……'
+        const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+        const response = await billDataReconciliation({
+          data: params
+        })
+        this.loading = false
+        this.callback(response)
+      } catch (error) {
+        this.loading = false
+      }
     },
     async summaryHandler(selectIds, query) {
-      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
-      const response = await billDataSummary({ data: params })
-      this.callback(response)
+      try {
+        this.loading = true
+        this.loadingText = '正在汇总……'
+        const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+        const response = await billDataSummary({ data: params })
+        this.loading = false
+        this.callback(response)
+      } catch (error) {
+        this.loading = false
+      }
     },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this

@@ -67,17 +67,16 @@ const baseInfoRouter = {
         title: '报表类型'
         // roles: ['admin']
       }
+    },
+    {
+      path: 'scheduledtask',
+      component: () => import('@/views/baseinfo/scheduledtask'),
+      name: '计划任务',
+      meta: {
+        title: '计划任务',
+        roles: ['admin']
+      }
     }
-    // ,
-    // {
-    //   path: 'scheduledtask',
-    //   component: () => import('@/views/baseinfo/scheduledtask'),
-    //   name: '计划任务',
-    //   meta: {
-    //     title: '计划任务',
-    //     roles: ['admin']
-    //   }
-    // }
   ]
 }
 

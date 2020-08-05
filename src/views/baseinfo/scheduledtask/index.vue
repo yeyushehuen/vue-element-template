@@ -1,7 +1,7 @@
 <template>
-  <base-table :form-options="formOptions" :columns="columns">
-    <template slot="name" slot-scope="scope">
-      {{ scope.$index }}
+  <base-table :action-code="actionCode" :form-options="formOptions" :columns="columns">
+    <template slot="operate">
+      <span>-</span>
     </template>
   </base-table>
 </template>
@@ -20,8 +20,8 @@ export default {
       formOptions,
       columns,
       actionCode: [
-        actionCode.start,
-        actionCode.stop
+        // actionCode.start,
+        // actionCode.stop
       ],
       actionTextConfig
     }
