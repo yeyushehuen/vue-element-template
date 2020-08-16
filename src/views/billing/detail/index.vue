@@ -39,7 +39,7 @@ import { downLoadFile } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
-  name: 'BillingDetail',
+  name: 'BillingDetail', // fgpp
   components: { BaseTable },
   data() {
     return {
