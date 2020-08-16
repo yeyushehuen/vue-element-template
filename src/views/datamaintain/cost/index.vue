@@ -249,6 +249,19 @@ export default {
     handleClose(done) {
       done()
     },
+    submitCallback(formName) {
+      const _this = this
+      return function(res) {
+        if (res && res.code === 200) {
+          _this.$message.success(successText[_this.editStatus])
+          _this.actionCallback()
+          _this.$refs[formName].resetFields()
+          _this.dialogVisible = false
+        } else {
+          _this.$message.warning(res.message || '操作失败')
+        }
+      }
+    },
     submitForm(formName) {
       const _this = this
       const apiRep = {
@@ -261,13 +274,7 @@ export default {
           const { value: deptId, label: deptName } = deptValues || {}
           const data = Object.assign(rest, { deptId, deptName })
 
-          apiRep[_this.editStatus]({ id: _this.selectIds, data }).then(res => {
-            this.$message.success(successText[_this.editStatus])
-            _this.actionCallback()
-            _this.$refs[formName].resetFields()
-            _this.dialogVisible = false
-            return true
-          })
+          apiRep[_this.editStatus]({ id: _this.selectIds, data }).then(_this.submitCallback(formName))
         } else {
           console.log('error submit!!')
           return false

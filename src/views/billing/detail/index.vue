@@ -2,7 +2,8 @@
   <div v-loading="loading" :element-loading-text="loadingText" style="position: relative;">
     <base-table :action-code="actionCode" :import-config="importConfig" :form-options="formOptions" :columns="columns" api="/paymentReport/list" @dispatch="actionHandler">
       <template slot="billingDetails" slot-scope="scope">
-        <i class="el-icon-connection" @click="showDetail(scope.row)" />
+        <a v-if="/pdf/i.test(scope.row.suffix)" target="_blank" :href="scope.row.pdfUrl"><i class="el-icon-connection" /></a>
+        <i v-else class="el-icon-connection" @click="showDetail(scope.row)" />
       </template>
       <template slot="fileUpload" slot-scope="scope">
         <i v-if="canDownload[scope.row.paymentState]" class="el-icon-download" @click="exportHandler([scope.row.id])" />

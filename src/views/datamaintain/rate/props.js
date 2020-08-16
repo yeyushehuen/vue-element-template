@@ -5,7 +5,7 @@ const currencySelectConfig = {
   params: {},
   selectFetch: currencyDropdown,
   selectResultField: 'data',
-  selectResultHandler: (item) => ({ value: item.code, label: item.name })
+  selectResultHandler: (item) => ({ value: item.name, label: item.name })
 }
 
 export default {
