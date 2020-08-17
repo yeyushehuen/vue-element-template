@@ -28,6 +28,7 @@ export const actionTextConfig = {
   reconciliation: '重算',
   summary: '汇总',
   valueMethod: '设置取值方式',
+  pushEAS: '推送凭证',
   checkOut: '反结账'
 }
 
@@ -51,7 +52,8 @@ export const actionCode = {
   checkOut: 'checkOut',
   reconciliation: 'reconciliation',
   summary: 'summary',
-  valueMethod: 'valueMethod'
+  valueMethod: 'valueMethod',
+  pushEAS: 'pushEAS'
 }
 
 /** 动作操作成功之后对应的提示信息 */

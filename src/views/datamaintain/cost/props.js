@@ -15,9 +15,9 @@ export default {
     forms: [
       { prop: 'period', label: '期间', itemType: 'month', format: periodFormat },
       { prop: 'sellerSku', label: 'Seller Sku' },
-      { prop: 'internalSku', label: '内部型号' },
+      { prop: 'internalSku', label: '公司型号' },
       { prop: 'category', label: '品类' },
-      { prop: 'sku', label: '公司型号' },
+      { prop: 'sku', label: '内部型号' },
       { prop: 'username', label: '创建人' },
       { prop: 'deptGroup', label: '销售小组', ...deptSelectConfig, selectOptions: { multiple: true }}
     ]
@@ -41,12 +41,12 @@ export default {
     },
     {
       prop: 'companySku',
-      label: '公司型号',
+      label: '内部型号',
       width: 150
     },
     {
       prop: 'internalSku',
-      label: '内部型号',
+      label: '公司型号',
       width: 150
     },
     {

@@ -57,15 +57,21 @@ export default {
         prop: 'deptId', label: '部门', itemType: 'select', ...deptSelectConfig(), selectOptions: { multiple: true }},
       {
         prop: 'deptGroup', label: '销售小组', itemType: 'select', ...deptSelectConfig('name', 'name'), selectOptions: { multiple: true }},
-      { prop: 'companySku', label: '公司型号', placeholder: '多个请用英文逗号隔开' },
+      { prop: 'companySku', label: '内部型号', placeholder: '多个请用英文逗号隔开' },
+      {
+        prop: '阿斯顿发放到', label: '是否结账', itemType: 'select', options: [
+          { value: '', label: '全部' },
+          { value: 'Y', label: '是' },
+          { value: 'N', label: '否' }
+        ] },
+      { prop: 'reportType', label: '账单类型' },
+      { prop: 'changeType', label: '转换类型', ...changeTypeConfig, selectOptions: { multiple: true }},
       {
         prop: 'monthlyType', label: '数据类型', itemType: 'select', options: [
           { value: '', label: '全部' },
           { value: 'Y', label: '月结' },
           { value: 'N', label: '非月结' }
-        ] },
-      { prop: 'reportType', label: '账单类型' },
-      { prop: 'changeType', label: '转换类型', ...changeTypeConfig, selectOptions: { multiple: true }}
+        ] }
     ]
   },
   columns: [
@@ -74,9 +80,12 @@ export default {
     { prop: 'deptName', width: 120, align: 'center', label: '部门' },
     { prop: 'period', width: 120, align: 'center', label: '期间' },
     { prop: 'originDate', width: 150, align: 'center', label: '当地时间', formatter: row => parseTime(row.originDate, '{y}-{m}-{d}') },
-    // { prop: 'unifyDate', width: 150, align: 'center', label: '转换时间', formatter: row => parseTime(row.unifyDate, '{y}-{m}-{d}') },
     { prop: 'settlementId', width: 150, align: 'center', label: '结算号' },
     { prop: 'type', width: 150, align: 'center', label: '类型' },
+    { prop: 'sdf', width: 150, align: 'center', label: '是否结账' },
+    { prop: 'fffff', width: 150, align: 'center', label: '凭证状态' },
+    { prop: 'dddddd', width: 150, align: 'center', label: '凭证号' },
+    { prop: 'dddddddd', width: 150, align: 'center', label: '失败原因' },
     { prop: 'orderId', width: 150, align: 'center', label: '订单号', formatter: textFormatter('orderId') },
     { prop: 'sku', width: 150, align: 'center', label: 'Seller SKU', formatter: textFormatter('sku') },
     { prop: 'description', width: 150, align: 'center', label: '描述' },
@@ -145,7 +154,7 @@ export default {
     { prop: 'vatCny', width: 150, label: 'VAT（本位币）', align: 'right', type: 'number', formatter: generateFormater('vatCny') },
     { prop: 'transferCny', width: 150, label: '转款(本位币)', align: 'right', type: 'number', formatter: generateFormater('transferCny') },
     { prop: 'creditCardCny', width: 150, label: '信用卡扣款(本位币)', align: 'right', type: 'number', formatter: generateFormater('creditCardCny') },
-    { prop: 'companySku', width: 150, label: '公司型号', align: 'center', formatter: textFormatter('companySku') },
+    { prop: 'companySku', width: 150, label: '内部型号', align: 'center', formatter: textFormatter('companySku') },
     { prop: 'deptGroup', width: 120, label: '销售小组', align: 'center', formatter: textFormatter('deptGroup') },
     { prop: 'purchaseCost', width: 120, label: '采购成本', align: 'right', type: 'number', formatter: generateFormater('purchaseCost') },
     { prop: 'headTripFee', width: 120, label: '头程运费', align: 'right', type: 'number', formatter: generateFormater('headTripFee') },

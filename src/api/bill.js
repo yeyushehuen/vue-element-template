@@ -51,6 +51,14 @@ export async function billDataAllsum(query) {
     params: query
   })
 }
+/** 全部合计接口 */
+export async function billDataPushEAS(data) {
+  return request({
+    url: '/paymentAnalysis/voucher',
+    method: 'post',
+    data
+  })
+}
 
 /** ******************** 数据汇总 *********************/
 /** 结账 */

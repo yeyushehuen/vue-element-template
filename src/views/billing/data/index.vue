@@ -10,13 +10,24 @@
       :action-code="actionCode"
       :form-options="formOptions"
       api="/paymentAnalysis/list"
-:columns="columns"
+      :columns="columns"
       @dispatch="actionHandler"
     >
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
     </base-table>
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="重算" width="520px" :visible.sync="calculationDialog" :before-close="handleClose">
+      <el-checkbox-group v-model="method" style="margin-bottom: 41px;">
+        <el-checkbox label="TYPE">重算类型转换</el-checkbox>
+        <el-checkbox label="EXRATE">重算汇率</el-checkbox>
+        <el-checkbox label="COST">重算内部型号</el-checkbox>
+      </el-checkbox-group>
+      <span slot="footer">
+        <el-button size="small" @click="calculationDialog = false">取消</el-button>
+        <el-button size="small" type="primary" @click="onCalSubmit">保存</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -24,7 +35,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { billDataReconciliation, billDataSummary, billDataAllsum } from '../../../api/bill'
+import { billDataReconciliation, billDataSummary, billDataAllsum, billDataPushEAS } from '../../../api/bill'
 import { downLoadFile, numberFormat } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
@@ -35,16 +46,22 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.reconciliation, actionCode.summary, actionCode.export],
+      actionCode: [actionCode.reconciliation, actionCode.summary, actionCode.pushEAS, actionCode.export],
       selectIds: '',
+      queryParams: null,
       actionTextConfig,
       actionType: '',
+      calculationDialog: false,
       actionCallback: () => {},
       loadingText: '',
-      loading: false
+      loading: false,
+      method: []
     }
   },
   methods: {
+    handleClose(done) {
+      done()
+    },
     summaryMethod(param) {
       const { columns, data } = param
       const sums = {}
@@ -92,7 +109,7 @@ export default {
       try {
         this.loading = true
         this.loadingText = '正在重算……'
-        const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+        const params = selectIds.length > 0 ? { id: selectIds.join(','), method: query.method } : query
         const response = await billDataReconciliation({
           data: params
         })
@@ -114,16 +131,45 @@ export default {
         this.loading = false
       }
     },
+    calcProxy(selectIds, query) {
+      this.calculationDialog = true
+      this.selectIds = selectIds
+      this.queryParams = query
+    },
+    onCalSubmit() {
+      if (this.method.length < 1) {
+        this.$message.warning('至少选择一项')
+        return false
+      }
+      const query = { ...this.queryParams, method: this.method.join() }
+      this.reconciliationHandler(this.selectIds, query)
+    },
+    async pushEASHandler(query) {
+      try {
+        this.loading = true
+        this.loadingText = '正在推送……'
+        const { period, accountId } = query
+        const response = await billDataPushEAS({ accountId, period })
+        this.loading = false
+        this.callback(response)
+      } catch (error) {
+        this.loading = false
+      }
+    },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.actionCallback = callback
       _this.actionType = type
       switch (type) {
         case actionCode.reconciliation: // 重算
-          _this.reconciliationHandler(selectIds, query)
+          // _this.reconciliationHandler(selectIds, query)
+          _this.calcProxy(selectIds, query)
           break
         case actionCode.summary: // 汇总
           _this.summaryHandler(selectIds, query)
+          break
+        case actionCode.pushEAS: // 汇总
+          _this.pushEASHandler(query)
           break
         case actionCode.export: // 导出
           _this.exportHandler(selectIds, query)
@@ -140,8 +186,13 @@ export default {
           _this.$message.warning('请勾选数据或选择查询条件导出')
           return false
         }
+      } else if (command === actionCode.pushEAS) {
+        if (!query.period) {
+          _this.$message.warning('期间必选')
+          return false
+        }
       } else if (selectIds.length < 1 && !query.period) {
-        _this.$message.warning('请勾选数据或选择区间后再进行操作')
+        _this.$message.warning('请勾选数据或选择期间后再进行操作')
         return false
       }
 

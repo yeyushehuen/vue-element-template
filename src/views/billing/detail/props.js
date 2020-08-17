@@ -33,7 +33,8 @@ const reportTypeSelectConfig = {
 const verifyStateText = {
   WAITING: '待审核',
   SUCCESS: '已审核',
-  CLEAR: '反审核'
+  CLEAR: '反审核',
+  FAIL: '失败'
 }
 const badgeType = {
   WAITING: 'primary',
@@ -84,7 +85,8 @@ export default {
           { value: '', label: '全部' },
           { value: 'SUCCESS', label: '已审核' },
           { value: 'WAITING', label: '待审核' },
-          { value: 'CLEAR', label: '反审核' }
+          { value: 'CLEAR', label: '反审核' },
+          { value: 'FAIL', label: '审核失败' }
         ]
       }
     ]
@@ -152,6 +154,11 @@ export default {
       prop: 'verifyUser',
       label: '审核人',
       width: 120
+    },
+    {
+      prop: 'errMsg',
+      label: '失败原因',
+      width: 190
     },
     {
       prop: 'verifyTime',
