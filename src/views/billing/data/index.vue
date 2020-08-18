@@ -34,9 +34,10 @@
 <script>
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
-import tableConfig from './props.js'
-import { billDataReconciliation, billDataSummary, billDataAllsum, billDataPushEAS } from '../../../api/bill'
+import { billDataReconciliation, billDataSummary, billDataAllsum } from '@/api/bill'
 import { downLoadFile, numberFormat } from '../../../utils'
+import tableConfig from './props.js'
+
 const { formOptions, columns } = tableConfig
 
 export default {
@@ -46,7 +47,7 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.reconciliation, actionCode.summary, actionCode.pushEAS, actionCode.export],
+      actionCode: [actionCode.reconciliation, actionCode.summary, actionCode.export],
       selectIds: '',
       queryParams: null,
       actionTextConfig,
@@ -144,18 +145,18 @@ export default {
       const query = { ...this.queryParams, method: this.method.join() }
       this.reconciliationHandler(this.selectIds, query)
     },
-    async pushEASHandler(query) {
-      try {
-        this.loading = true
-        this.loadingText = '正在推送……'
-        const { period, accountId } = query
-        const response = await billDataPushEAS({ accountId, period })
-        this.loading = false
-        this.callback(response)
-      } catch (error) {
-        this.loading = false
-      }
-    },
+    // async pushEASHandler(query) {
+    //   try {
+    //     this.loading = true
+    //     this.loadingText = '正在推送……'
+    //     const { period, accountId } = query
+    //     const response = await billDataPushEAS({ accountId, period })
+    //     this.loading = false
+    //     this.callback(response)
+    //   } catch (error) {
+    //     this.loading = false
+    //   }
+    // },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.actionCallback = callback
@@ -168,9 +169,9 @@ export default {
         case actionCode.summary: // 汇总
           _this.summaryHandler(selectIds, query)
           break
-        case actionCode.pushEAS: // 汇总
-          _this.pushEASHandler(query)
-          break
+        // case actionCode.pushEAS: // 汇总
+        //   _this.pushEASHandler(query)
+        //   break
         case actionCode.export: // 导出
           _this.exportHandler(selectIds, query)
           break

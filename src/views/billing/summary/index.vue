@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :action-code="actionCode" :validate="false" :form-options="formOptions" :columns="columns" api="/paymentSummary/list" :command-validator="commandValidator" @dispatch="actionHandler">
+    <base-table v-loading="loading" :element-loading-text="loadingText" :action-code="actionCode" :validate="false" :form-options="formOptions" :columns="columns" api="/paymentSummary/list" :command-validator="commandValidator" @dispatch="actionHandler">
       <template slot="name" slot-scope="scope">
         {{ scope.$index }}
       </template>
@@ -23,7 +23,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { paymentSummaryCheckout, paymentSummaryRecheckout } from '@/api/bill'
+import { paymentSummaryCheckout, paymentSummaryRecheckout, paymentSummaryPushEAS } from '@/api/bill'
 import { downLoadFile, deleteNullProps } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
@@ -34,11 +34,13 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.setUp, actionCode.checkOut, actionCode.export],
+      actionCode: [actionCode.setUp, actionCode.checkOut, actionCode.pushEAS, actionCode.export],
       selectIds: '',
       dialogVisible: false,
       actionTextConfig,
       actionCallback: () => {},
+      loadingText: '',
+      loading: false,
       radio1: '1'
     }
   },
@@ -62,6 +64,18 @@ export default {
       const response = await paymentSummaryRecheckout(query)
       this.callback(response)
     },
+    async pushEASHandler(query) {
+      try {
+        this.loading = true
+        this.loadingText = '正在推送……'
+        const { period, accountId } = query
+        const response = await paymentSummaryPushEAS({ accountName: accountId, period })
+        this.loading = false
+        this.callback(response)
+      } catch (error) {
+        this.loading = false
+      }
+    },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.actionCallback = callback
@@ -72,9 +86,13 @@ export default {
         case actionCode.checkOut: // 反结账
           _this.checkOutHandler(query)
           break
+        case actionCode.pushEAS: // 汇总
+          _this.pushEASHandler(query)
+          break
         case actionCode.export: // 导出
           _this.exportHandler(selectIds, query)
           break
+          
         default:
           break
       }
@@ -87,10 +105,15 @@ export default {
       const _this = this
       if (command === actionCode.setUp || command === actionCode.checkOut) {
         if (!query.period) {
-          _this.$message.warning('请选择区间')
+          _this.$message.warning('期间必选')
           return false
         }
         return true
+      } else if (command === actionCode.pushEAS) {
+        if (!query.period) {
+          _this.$message.warning('期间必选')
+          return false
+        }
       } else if (Object.keys(query).length < 1 && selectIds.length < 1) {
         _this.$message.warning('请选择查询条件或者勾选数据后进行导出')
         return false

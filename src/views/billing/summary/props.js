@@ -30,7 +30,14 @@ export default {
       { prop: 'countryId', label: '国家', ...countrySelectConfig, selectOptions: { multiple: true }},
       { prop: 'accountId', label: '店铺', ...accountSelectConfig, selectOptions: { multiple: true }},
       { prop: 'deptGroup', label: '销售小组', ...deptSelectConfig, selectOptions: { multiple: true }},
-      { prop: 'type', label: '业务类型' }
+      { prop: 'type', label: '业务类型' },
+      {
+        prop: 'sdafadsf', label: '是否结账', itemType: 'select', options: [
+          { value: '', label: '全部' },
+          { value: 'Y', label: '是' },
+          { value: 'N', label: '否' }
+        ]
+      }
     ]
   },
   columns: [
@@ -39,6 +46,10 @@ export default {
     { align: 'center', label: '国家', prop: 'country' },
     { align: 'center', label: '店铺名称', prop: 'accountName' },
     { align: 'center', label: '币别', prop: 'currency' },
+    { prop: 'sdf', width: 150, align: 'center', label: '是否结账' },
+    { prop: 'fffff', width: 150, align: 'center', label: '凭证状态' },
+    { prop: 'dddddd', width: 150, align: 'center', label: '凭证号' },
+    { prop: 'dddddddd', width: 150, align: 'center', label: '失败原因' },
     { align: 'center', label: '汇率', prop: 'exchangeRate', formatter: generateFormater('exchangeRate', 2) },
     { align: 'center', label: '业务类型', prop: 'type' },
     { align: 'right', label: '原币金额', prop: 'originCurrency', formatter: generateFormater('originCurrency', 2) },
