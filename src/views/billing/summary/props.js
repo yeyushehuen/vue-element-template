@@ -46,13 +46,13 @@ export default {
     { align: 'center', label: '国家', prop: 'country' },
     { align: 'center', label: '店铺名称', prop: 'accountName' },
     { align: 'center', label: '币别', prop: 'currency' },
-    { prop: 'sdf', width: 150, align: 'center', label: '是否结账' },
-    { prop: 'fffff', width: 150, align: 'center', label: '凭证状态' },
-    { prop: 'dddddd', width: 150, align: 'center', label: '凭证号' },
-    { prop: 'dddddddd', width: 150, align: 'center', label: '失败原因' },
     { align: 'center', label: '汇率', prop: 'exchangeRate', formatter: generateFormater('exchangeRate', 2) },
     { align: 'center', label: '业务类型', prop: 'type' },
     { align: 'right', label: '原币金额', prop: 'originCurrency', formatter: generateFormater('originCurrency', 2) },
-    { align: 'right', label: '本币金额', prop: 'standardCurrency', formatter: generateFormater('standardCurrency', 2) }
+    { align: 'right', label: '本币金额', prop: 'standardCurrency', formatter: generateFormater('standardCurrency', 2) },
+    { prop: 'sdf', width: 150, align: 'center', label: '是否结账' },
+    { prop: 'voucherState', width: 150, align: 'center', label: '凭证状态' },
+    { prop: 'voucherNumber', width: 150, align: 'center', label: '凭证号' },
+    { prop: 'voucherFailure', width: 150, align: 'center', label: '失败原因' }
   ]
 }

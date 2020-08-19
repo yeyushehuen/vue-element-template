@@ -77,3 +77,11 @@ export async function paymentSummaryPushEAS(data) {
     data
   })
 }
+
+/** 查询结账区间 */
+export async function paymentSummaryCheckPeriod(data) {
+  return request({
+    url: '/paymentSummary/checkPeriod',
+    method: 'get'
+  })
+}

@@ -5,17 +5,17 @@
         {{ scope.$index }}
       </template>
     </base-table>
-    <!-- <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="期末结账" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
-      <div style="text-align: center;">
-        <el-radio v-model="radio1" label="1" border>月结</el-radio>
-        <el-radio v-model="radio1" label="2" border>反月结</el-radio>
-      </div>
+    <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" title="期末结账" width="520px" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-alert
         style="margin-top: 20px;"
         title="警告提示的文案警告提示的文案警告提示的文案警告提示的文案警告提示的文案警告提示的文案警告提示的文案警告提示的文案警告提示的文案警告提示的文案警告提示的文案警告提示的文案警告提示的文案"
         type="warning"
       />
-    </el-dialog> -->
+      <span slot="footer">
+        <el-button size="small" @click="dialogVisible = false">取消</el-button>
+        <el-button size="small" type="primary" @click="onCheckOnfirm">保存</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -23,7 +23,7 @@
 import BaseTable from '@/components/BaseTable'
 import { actionCode, actionTextConfig } from '@/components/BaseTable/config/constants'
 import tableConfig from './props.js'
-import { paymentSummaryCheckout, paymentSummaryRecheckout, paymentSummaryPushEAS } from '@/api/bill'
+import { paymentSummaryCheckout, paymentSummaryRecheckout, paymentSummaryPushEAS, paymentSummaryCheckPeriod } from '@/api/bill'
 import { downLoadFile, deleteNullProps } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
@@ -41,7 +41,8 @@ export default {
       actionCallback: () => {},
       loadingText: '',
       loading: false,
-      radio1: '1'
+      radio1: '1',
+      checkType: '' // 结账类型
     }
   },
   methods: {
@@ -76,23 +77,38 @@ export default {
         this.loading = false
       }
     },
+    async checkFilter(type) {
+      const res = await paymentSummaryCheckPeriod()
+      console.log(res)
+      
+      this.dialogVisible = true
+      this.checkType = type
+    },
+    onCheckOnfirm() {
+      const method = this[this.checkType]
+      if (method) {
+        method()
+      }
+    },
     actionHandler(type, { selectIds, selectRows, callback, query }) {
       const _this = this
       _this.actionCallback = callback
       switch (type) {
         case actionCode.setUp: // 结账
-          _this.setUpHandler(query)
+          // _this.setUpHandler(query)
+          _this.checkFilter('setUpHandler')
           break
         case actionCode.checkOut: // 反结账
-          _this.checkOutHandler(query)
+          // _this.checkOutHandler(query)
+          _this.checkFilter('checkOutHandler')
           break
-        case actionCode.pushEAS: // 汇总
+        case actionCode.pushEAS: // 推送凭证
           _this.pushEASHandler(query)
           break
         case actionCode.export: // 导出
           _this.exportHandler(selectIds, query)
           break
-          
+
         default:
           break
       }
