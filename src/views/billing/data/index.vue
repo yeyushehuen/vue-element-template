@@ -25,7 +25,7 @@
       </el-checkbox-group>
       <span slot="footer">
         <el-button size="small" @click="calculationDialog = false">取消</el-button>
-        <el-button size="small" type="primary" @click="onCalSubmit">保存</el-button>
+        <el-button size="small" type="primary" @click="onCalSubmit">执行</el-button>
       </span>
     </el-dialog>
   </div>

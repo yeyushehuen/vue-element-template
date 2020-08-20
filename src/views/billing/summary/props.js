@@ -37,6 +37,13 @@ export default {
           { value: 'Y', label: '是' },
           { value: 'N', label: '否' }
         ]
+      },
+      {
+        prop: 'voucherState', label: '凭证状态', itemType: 'select', options: [
+          { value: '', label: '全部' },
+          { value: 'Y', label: '是' },
+          { value: 'N', label: '否' }
+        ]
       }
     ]
   },
@@ -50,7 +57,7 @@ export default {
     { align: 'center', label: '业务类型', prop: 'type' },
     { align: 'right', label: '原币金额', prop: 'originCurrency', formatter: generateFormater('originCurrency', 2) },
     { align: 'right', label: '本币金额', prop: 'standardCurrency', formatter: generateFormater('standardCurrency', 2) },
-    { prop: 'sdf', width: 150, align: 'center', label: '是否结账' },
+    { prop: 'checkOut', width: 150, align: 'center', label: '是否结账', formatter: row => row.checkOut === 'Y' ? '是' : '否' },
     { prop: 'voucherState', width: 150, align: 'center', label: '凭证状态' },
     { prop: 'voucherNumber', width: 150, align: 'center', label: '凭证号' },
     { prop: 'voucherFailure', width: 150, align: 'center', label: '失败原因' }

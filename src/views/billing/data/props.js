@@ -65,6 +65,12 @@ export default {
           { value: '', label: '全部' },
           { value: 'Y', label: '月结' },
           { value: 'N', label: '非月结' }
+        ] },
+      {
+        prop: 'checkOut', label: '是否汇总', itemType: 'select', options: [
+          { value: '', label: '全部' },
+          { value: 'Y', label: '是' },
+          { value: 'N', label: '否' }
         ] }
     ]
   },
@@ -149,6 +155,7 @@ export default {
     { prop: 'purchaseCost', width: 120, label: '采购成本', align: 'right', type: 'number', formatter: generateFormater('purchaseCost') },
     { prop: 'headTripFee', width: 120, label: '头程运费', align: 'right', type: 'number', formatter: generateFormater('headTripFee') },
     { prop: 'transportFee', width: 120, label: '转运运费', align: 'right', type: 'number', formatter: generateFormater('transportFee') },
-    { prop: 'selfShipmentFee', width: 120, label: '自发货运费', align: 'right', type: 'number', formatter: generateFormater('selfShipmentFee') }
+    { prop: 'selfShipmentFee', width: 120, label: '自发货运费', align: 'right', type: 'number', formatter: generateFormater('selfShipmentFee') },
+    { prop: 'checkOut', width: 150, align: 'center', label: '是否汇总', formatter: row => row.checkOut === 'Y' ? '是' : '否' }
   ]
 }
