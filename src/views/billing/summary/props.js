@@ -32,7 +32,7 @@ export default {
       { prop: 'deptGroup', label: '销售小组', ...deptSelectConfig, selectOptions: { multiple: true }},
       { prop: 'type', label: '业务类型' },
       {
-        prop: 'sdafadsf', label: '是否结账', itemType: 'select', options: [
+        prop: 'checkOut', label: '是否结账', itemType: 'select', options: [
           { value: '', label: '全部' },
           { value: 'Y', label: '是' },
           { value: 'N', label: '否' }
@@ -41,8 +41,10 @@ export default {
       {
         prop: 'voucherState', label: '凭证状态', itemType: 'select', options: [
           { value: '', label: '全部' },
-          { value: 'Y', label: '是' },
-          { value: 'N', label: '否' }
+          { value: '推送成功', label: '推送成功' },
+          { value: '推送失败', label: '推送失败' },
+          { value: '待推送', label: '待推送' },
+          { value: '待推送-原始凭证删除', label: '待推送-原始凭证删除' }
         ]
       }
     ]
