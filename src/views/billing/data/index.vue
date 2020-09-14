@@ -41,7 +41,7 @@ import tableConfig from './props.js'
 const { formOptions, columns } = tableConfig
 
 export default {
-  name: 'Cost',
+  name: 'BillingData',
   components: { BaseTable },
   data() {
     return {

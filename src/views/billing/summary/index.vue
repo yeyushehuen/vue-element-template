@@ -26,7 +26,7 @@ import { downLoadFile, deleteNullProps, parseTime } from '../../../utils'
 const { formOptions, columns } = tableConfig
 
 export default {
-  name: 'Cost',
+  name: 'BillingSummary',
   components: { BaseTable },
   data() {
     return {

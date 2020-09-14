@@ -17,7 +17,7 @@ const baseInfoRouter = {
     {
       path: 'money',
       component: () => import('@/views/baseinfo/money'),
-      name: '货币管理',
+      name: 'Money',
       meta: {
         title: '货币管理'
         // roles: ['admin'] // or you can only set roles in sub nav
@@ -26,7 +26,7 @@ const baseInfoRouter = {
     {
       path: 'area',
       component: () => import('@/views/baseinfo/area'),
-      name: '区域管理',
+      name: 'Area',
       meta: {
         title: '区域管理'
         // roles: ['admin'] // or you can only set roles in sub nav
@@ -35,7 +35,7 @@ const baseInfoRouter = {
     {
       path: 'department',
       component: () => import('@/views/baseinfo/department'),
-      name: '部门管理',
+      name: 'Department',
       meta: {
         title: '部门管理'
         // if do not set roles, means: this page does not require permission
@@ -44,7 +44,7 @@ const baseInfoRouter = {
     {
       path: 'salesentity',
       component: () => import('@/views/baseinfo/salesentity'),
-      name: '销售主体',
+      name: 'SalesEntity',
       meta: {
         title: '销售主体'
         // roles: ['admin']
@@ -53,7 +53,7 @@ const baseInfoRouter = {
     {
       path: 'shop',
       component: () => import('@/views/baseinfo/shop'),
-      name: '店铺管理',
+      name: 'Shop',
       meta: {
         title: '店铺管理'
         // roles: ['admin']
@@ -62,7 +62,7 @@ const baseInfoRouter = {
     {
       path: 'reporttype',
       component: () => import('@/views/baseinfo/reporttype'),
-      name: '报表类型',
+      name: 'ReportType',
       meta: {
         title: '报表类型'
         // roles: ['admin']
@@ -71,10 +71,10 @@ const baseInfoRouter = {
     {
       path: 'scheduledtask',
       component: () => import('@/views/baseinfo/scheduledtask'),
-      name: '计划任务',
+      name: 'Scheduledtask',
       meta: {
-        title: '计划任务',
-        roles: ['admin']
+        title: '计划任务'
+        // roles: ['admin']
       }
     }
   ]

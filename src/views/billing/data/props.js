@@ -49,6 +49,7 @@ export default {
     submitBtnText: '查询',
     forms: [
       { prop: 'orderId', label: '订单号' },
+      { prop: 'sku', label: 'Seller SKU' },
       { prop: 'period', label: '期间', itemType: 'month', format: periodFormat },
       { prop: 'originDate', label: '账单时间', itemType: 'daterange', format: dateRangeFormat },
       { prop: 'countryId', label: '国家', itemType: 'select', ...countrySelectConfig, selectOptions: { multiple: true }},
@@ -57,7 +58,7 @@ export default {
         prop: 'deptId', label: '部门', itemType: 'select', ...deptSelectConfig(), selectOptions: { multiple: true }},
       {
         prop: 'deptGroup', label: '销售小组', itemType: 'select', ...deptSelectConfig('name', 'name'), selectOptions: { multiple: true }},
-      { prop: 'companySku', label: '内部型号', placeholder: '多个请用英文逗号隔开' },
+      { prop: 'companySku', label: '公司型号', placeholder: '多个请用英文逗号隔开' },
       { prop: 'reportType', label: '账单类型' },
       { prop: 'changeType', label: '转换类型', ...changeTypeConfig, selectOptions: { multiple: true }},
       {
@@ -150,7 +151,7 @@ export default {
     { prop: 'vatCny', width: 150, label: 'VAT（本位币）', align: 'right', type: 'number', formatter: generateFormater('vatCny') },
     { prop: 'transferCny', width: 150, label: '转款(本位币)', align: 'right', type: 'number', formatter: generateFormater('transferCny') },
     { prop: 'creditCardCny', width: 150, label: '信用卡扣款(本位币)', align: 'right', type: 'number', formatter: generateFormater('creditCardCny') },
-    { prop: 'companySku', width: 150, label: '内部型号', align: 'center', formatter: textFormatter('companySku') },
+    { prop: 'companySku', width: 150, label: '公司型号', align: 'center', formatter: textFormatter('companySku') },
     { prop: 'deptGroup', width: 120, label: '销售小组', align: 'center', formatter: textFormatter('deptGroup') },
     { prop: 'purchaseCost', width: 120, label: '采购成本', align: 'right', type: 'number', formatter: generateFormater('purchaseCost') },
     { prop: 'headTripFee', width: 120, label: '头程运费', align: 'right', type: 'number', formatter: generateFormater('headTripFee') },

@@ -16,11 +16,11 @@
         <el-form-item label="Seller Sku" label-width="100" prop="sellerSku">
           <el-input v-model="skuCostForm.sellerSku" placeholder="请填写Seller Sku" />
         </el-form-item>
-        <el-form-item label="公司型号" label-width="100" prop="companySku">
-          <el-input v-model="skuCostForm.companySku" placeholder="请填写公司型号" />
+        <el-form-item label="内部 SKU" label-width="100" prop="companySku">
+          <el-input v-model="skuCostForm.companySku" placeholder="请填写" />
         </el-form-item>
-        <el-form-item label="内部型号" label-width="100" prop="internalSku">
-          <el-input v-model="skuCostForm.internalSku" placeholder="请填写内部型号" />
+        <el-form-item label="公司型号" label-width="100" prop="internalSku">
+          <el-input v-model="skuCostForm.internalSku" placeholder="请填写" />
         </el-form-item>
         <el-form-item label="产品名称" label-width="100" prop="productName">
           <el-input v-model="skuCostForm.productName" placeholder="请填写产品名称" />
@@ -78,7 +78,7 @@ const { formOptions, columns } = tableConfig
 const commonRules = { pattern: /^\d+(\.\d{1,6})?$/, message: '只能填写数字，最多6位小数' }
 
 export default {
-  name: 'Rate',
+  name: 'Cost',
   components: { BaseTable },
   data() {
     return {
@@ -140,7 +140,8 @@ export default {
           // { required: true, message: '请填写asin', trigger: 'blur' },
         ],
         companySku: [
-          { required: true, message: '请填写公司型号', trigger: 'blur' }
+          // { required: true, message: '请填写公司型号', trigger: 'blur' }
+          { required: true, message: '请填写内部SKU', trigger: 'blur' }
         ],
         internalSku: [
           // { required: true, message: '请填写内部型号', trigger: 'blur' }

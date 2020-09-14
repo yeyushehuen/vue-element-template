@@ -1,5 +1,6 @@
 <template>
   <div ref="baseTableWrapper" class="emm-base-table-root">
+    <!-- 搜索表单 start -->
     <div v-if="formOptions" class="base-table-search-form-wrapper">
       <search-form
         ref="searchForm"
@@ -12,13 +13,17 @@
         @getSearhRef="getSearhRef"
       />
     </div>
+    <!-- 搜索表单 end -->
 
+    <!-- table -->
     <div class="base-table-wrapper">
       <div>
+        <!-- table 工具栏 - start -->
         <div class="base-table-action-wrapper">
           <template v-for="(code) in actionCode">
             <span v-if="code !== codeRepo.import" :key="code" :class="code + '-button'" @click="handleCommand(code)">{{ renderCodeText(code) }}</span>
           </template>
+          <!-- 导出按钮要放最后一个 -->
           <span v-if="actionCode.indexOf('import') !== -1" class="import-button">
             <el-dropdown placement="bottom-start" type="primary">
               <span class="import-button-inner">导入<i class="el-icon-arrow-down el-icon--right" /></span>
@@ -42,11 +47,14 @@
           </span>
           <div class="custome-columns" @click="showDialog"><i class="el-icon-setting" /></div>
         </div>
-        <!-- 自定义字段例子 -->
+        <!-- table 工具栏 - end -->
+        <!-- 自定义字 -->
         <el-dialog title="自定义字段" class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" width="1100px" :visible.sync="dialogVisible" :before-close="handleClose">
           <CustomColumn :list="originColumns" :show-columns="showColumns" :group="group" @changeShowColumns="changeShowColumns" />
         </el-dialog>
       </div>
+
+      <!-- table列表 -->
       <el-table
         ref="baseTable"
         v-loading="listLoading"
@@ -80,7 +88,7 @@
       </el-table>
       <el-table-footer v-if="showSummary" ref="tableFooter" :data="footerSummary" />
     </div>
-
+    <!-- 分页器 -->
     <div class="base-table-pagination-wrapper">
       <el-pagination
         :background="pagination.background"

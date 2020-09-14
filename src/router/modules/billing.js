@@ -16,7 +16,7 @@ const billingRouter = {
     {
       path: 'detail',
       component: () => import('@/views/billing/detail'),
-      name: '账单详情',
+      name: 'BillingDetail',
       meta: {
         title: '账单详情',
         affix: true
@@ -25,7 +25,7 @@ const billingRouter = {
     {
       path: 'data',
       component: () => import('@/views/billing/data'),
-      name: '数据详情',
+      name: 'BillingData',
       meta: {
         title: '数据详情'
         // if do not set roles, means: this page does not require permission
@@ -34,7 +34,7 @@ const billingRouter = {
     {
       path: 'summary',
       component: () => import('@/views/billing/summary'),
-      name: '数据汇总',
+      name: 'BillingSummary',
       meta: {
         title: '数据汇总'
       }

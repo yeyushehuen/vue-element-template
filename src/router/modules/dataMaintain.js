@@ -17,7 +17,7 @@ const dataMaintainRouter = {
     {
       path: 'conversion',
       component: () => import('@/views/datamaintain/conversion'),
-      name: '类型转换',
+      name: 'Conversion',
       meta: {
         title: '类型转换'
         // roles: ['admin'] // or you can only set roles in sub nav
@@ -34,7 +34,7 @@ const dataMaintainRouter = {
     {
       path: 'rate',
       component: () => import('@/views/datamaintain/rate'),
-      name: '汇率数据',
+      name: 'Rate',
       meta: {
         title: '汇率数据'
         // roles: ['admin']
@@ -43,7 +43,7 @@ const dataMaintainRouter = {
     {
       path: 'cost',
       component: () => import('@/views/datamaintain/cost'),
-      name: '成本数据',
+      name: 'Cost',
       meta: {
         title: '成本数据'
         // roles: ['admin']
