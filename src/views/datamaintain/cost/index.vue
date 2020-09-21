@@ -2,7 +2,7 @@
   <div>
     <base-table :import-config="importConfig" :action-code="actionCode" :form-options="formOptions" :columns="columns" api="/skuCost/list" @dispatch="actionHandler">
       <template slot="operate" slot-scope="scope">
-        <span>-</span>
+        <span> - </span>
       </template>
     </base-table>
     <el-dialog class="base-dialog-wrapper" destroy-on-close :close-on-click-modal="false" :title="`成本数据 - ${actionTextConfig[editStatus]}`" width="800px" :visible.sync="dialogVisible" :before-close="handleClose">

@@ -227,7 +227,7 @@ export default {
     },
     actionCode: {
       type: Array,
-      default: () => ({})
+      default: () => ([])
     },
     crossness: {
       type: Boolean,
