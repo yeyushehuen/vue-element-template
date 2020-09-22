@@ -26,6 +26,17 @@
           <i class="el-icon-upload2" /><span>{{ billState[scope.row.paymentState] || '未传账单' }}</span>
         </el-upload>
       </template>
+      <template slot="dropdownSlot" slot-scope="scope">
+        <el-dropdown placement="bottom-start" type="primary" style="margin: 0 -20px 0 -16px;">
+          <span class="import-button-inner">导出<i class="el-icon-arrow-down el-icon--right" /></span>
+          <el-dropdown-menu slot="dropdown" class="handleExcel">
+            <el-dropdown-item>
+              <span size="small" @click.stop="exportExcel(scope.query)">导出页面</span>
+            </el-dropdown-item>
+            <el-dropdown-item @click.stop="exportExcel(scope.query)">导出文件</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </template>
     </base-table>
   </div>
 </template>
@@ -45,7 +56,7 @@ export default {
     return {
       formOptions: formOptions,
       columns: columns,
-      actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, actionCode.export, actionCode.import],
+      actionCode: [actionCode.audit, actionCode.reviews, actionCode.clear, { slot: true, key: 'export' }/* actionCode.export */, actionCode.import],
       editStatus: actionCode.add,
       selectIds: '',
       actionTextConfig,
@@ -90,6 +101,9 @@ export default {
         this.$message.success(response.message)
         this.actionCallback()
       }
+    },
+    exportExcel(query) {
+      downLoadFile('/paymentReport/simpleExport', {}, '数据详情', true)
     },
     async auditHandler(selectIds, selectRows) {
       const verifyList = selectRows.filter(row => row.verifyState === 'SUCCESS')
