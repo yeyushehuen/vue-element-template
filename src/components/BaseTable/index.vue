@@ -22,7 +22,7 @@
         <div :class="actionCode.length > 0 ? 'base-table-action-wrapper' : ''">
           
           <template v-for="(code) in actionCode">
-            <span v-if="typeof code === 'object' && code.slot" :key="code.key"><slot name="dropdownSlot" :query="searchQuery"></slot></span>
+            <span v-if="typeof code === 'object' && code.slot" :key="code.key"><slot name="dropdownSlot" :queryHandler="{getQueryParams, getSelection}"></slot></span>
             <span v-else-if="code !== codeRepo.import" :key="code" :class="code + '-button'" @click="handleCommand(code)">{{ renderCodeText(code) }}</span>
           </template>
           <!-- 导出按钮要放最后一个 -->

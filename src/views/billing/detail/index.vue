@@ -31,9 +31,11 @@
           <span class="import-button-inner">导出<i class="el-icon-arrow-down el-icon--right" /></span>
           <el-dropdown-menu slot="dropdown" class="handleExcel">
             <el-dropdown-item>
-              <span size="small" @click.stop="exportExcel(scope.query)">导出页面</span>
+              <span size="small" @click="exportExcel(scope.queryHandler)">导出页面</span>
             </el-dropdown-item>
-            <el-dropdown-item @click.stop="exportExcel(scope.query)">导出文件</el-dropdown-item>
+            <el-dropdown-item>
+              <span size="small" @click="exportZip(scope.queryHandler)">导出文件</span>
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </template>
@@ -102,8 +104,19 @@ export default {
         this.actionCallback()
       }
     },
-    exportExcel(query) {
-      downLoadFile('/paymentReport/simpleExport', {}, '数据详情', true)
+    // 导出列表数据
+    exportExcel({ getQueryParams, getSelection }) {
+      const query = getQueryParams() || {}
+      const { selectIds } = getSelection()
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      downLoadFile('/paymentReport/exportPage', params, '数据详情', true)
+    },
+    // 导出Excel账单文件
+    exportZip({ getQueryParams, getSelection }) {
+      const query = getQueryParams() || {}
+      const { selectIds } = getSelection()
+      const params = selectIds.length > 0 ? { id: selectIds.join(',') } : query
+      downLoadFile('/paymentReport/simpleExport', params, '数据详情', true)
     },
     async auditHandler(selectIds, selectRows) {
       const verifyList = selectRows.filter(row => row.verifyState === 'SUCCESS')

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-table :form-options="formOptions" :columns="columns" api="/paymenthorizontalreport/list">
+    <base-table :form-options="formOptions" :columns="columns" api="/paymenthorizontalreportTwo/list">
       <template slot="operate" slot-scope="scope">
         <span> - </span>
       </template>
